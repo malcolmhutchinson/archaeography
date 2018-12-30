@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Data dictionary
+DC.creator: 
+DC.subject: Data dictionary, database structure, tables
+DC.description: Description of the relevant database tables in the archaeography project.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-12-24 03:23:25.933217

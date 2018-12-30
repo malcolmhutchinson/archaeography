@@ -1,0 +1,17 @@
+#children {
+    font-family: sans-serif;
+    border-top: black solid 1px;
+    background: #ffc;
+}
+
+#viewFilecontent {
+    max-height: 20em;
+    overflow-y: auto;
+}
+#fileEditor {
+    border-top: 1px black solid;
+}
+.caption {
+    font-style: italic;
+    font-size: 80%;
+}

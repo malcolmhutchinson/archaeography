@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: SQL code
+DC.creator: M.G.Hutchinson
+DC.subject: 
+DC.description: Collections of code in Standard Query Language (SQL), which do useful things with the data in the archaeography databases. 
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: text/markup
+DC.source: 
+DC.language: en
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-11-03 00:26:20.227492

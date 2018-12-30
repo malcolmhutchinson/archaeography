@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Getting started with archaeography.nz
+DC.creator: 
+DC.subject: 
+DC.description: A short description of what you can do here.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-08-08 05:19:58.029470

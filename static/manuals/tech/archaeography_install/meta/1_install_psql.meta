@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: PostgreSQL: Install and configure
+DC.creator: M.G.Hutchinson
+DC.subject: dba, postgresql
+DC.description: Install the DBMS and create user roles and databases.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: text/markup
+DC.source: 
+DC.language: en
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-10-31 23:02:29.339749

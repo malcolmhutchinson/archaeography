@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Statistics NZ: geographic boundaries
+DC.creator: 
+DC.subject: 
+DC.description: 
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-05-19 02:07:07.802872

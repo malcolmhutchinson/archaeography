@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Site administration
+DC.creator: 
+DC.subject: archaeography.nz, site administration
+DC.description: How-tos on operating the archaeography website.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: feature
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-10-31 22:37:18.269102

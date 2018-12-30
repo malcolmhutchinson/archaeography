@@ -1,0 +1,249 @@
+
+
+#mainRecordForm {
+    font-family: sans-serif;
+}
+#mainRecordForm label {
+    display: block;
+}
+
+
+#siteAssessment {
+    border: 1px solid black;
+    padding: 1em;
+    font-family: sans-serif;
+    font-size: 70%;
+    max-width: 400px;
+    background: #ccc;
+    position: fixed;
+    right: 30px;
+    bottom: 60px;    
+}
+#siteAssessment input, #siteAssessment select {
+    width: 10em;
+    font-size: 10px;
+}
+#siteAssessment p, #siteAssessment h2 {
+    margin: 0;
+}
+#siteAssessment textarea {
+    max-width: 14em;
+    max-height: 4em;
+}
+
+
+#siteMetadata {
+    margin-top: 2em;
+}
+
+
+#sitePanel table, #updatePanel table {
+    width: 100%;
+    border-bottom: 1px solid black;
+    margin-bottom: 0.5em;
+    font-size: 75%;
+}
+#sitePanel th, #updatePanel th {
+    color: #333;
+    width: 30%;
+    padding-bottom: .3em;
+}
+
+#siteReview {
+    background: #ccc;
+    position: fixed;
+    bottom: 60px;
+    right: 0;
+    
+    border: 1px solid black;
+    border-right: 0;
+    padding: 0.5em;
+    padding-top: 0;
+    font-family: sans-serif;
+    font-size: 90%;
+    width: 40%;
+    max-height: 60%;
+    overflow-y: auto;
+    
+}
+
+
+.listUpdates {
+    width: 640px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.listUpdates table {
+    font-size: 75%;
+}
+
+
+.notifications {
+    font-family: sans-serif;
+    border: 2px solid #fcc;
+    background: #fcc;
+    padding: 0.5em;
+    max-width: 40em;
+    list-style-type: none;
+}
+.surround {
+    max-height: 300px;
+    overflow-y: auto;
+    background: #eee;
+}
+    
+.sitelist {
+    font-size: 80%;
+    height: 100%;
+}
+
+
+/*  These may be retired. */
+
+.SiteListSummary {
+    font-size: 80%;
+    font-family: sans-serif;
+    list-style-type: none;
+}
+.SiteListSummary li {
+    margin-left: -3em;
+}
+
+.siteRecordList {
+    font-size: 75%;
+    font-family: sans-serif;
+    width: 100%;
+    table-layout: fixed;
+}
+.siteRecordList .id {
+    font-weight: bold;
+    font-size: 120%;
+}
+.siteRecordList table th {
+    font-weight: normal;
+    font-style: italic;
+}
+.siteRecordList td {
+    
+}
+
+/* Not these though */
+.site-card {
+    font-size: 100%;
+    border: black 0px solid;
+    max-width: 640px;
+
+}
+.site-card th, .site-card td {
+    font-size: 90%;
+}
+
+.site-card p {
+    margin: 0;
+}
+    
+.site-card .ident {
+    font-weight: bold;
+    font-size: 150%;
+}    
+.site-card .coords {
+    font-size: 70%;
+}
+.site-card .site-title {
+    font-size: 150%;
+    padding-bottom: 10px;
+}
+.site-card .short-desc {
+    font-size: 100%;
+    padding-bottom: 10px;
+}
+
+.archData {
+    width: 100%;
+    border-bottom: 0px solid black;
+    margin-bottom: 0.5em;
+    font-size: 75%;
+}
+.archData th {
+    color: #333;
+    width: 30%;
+    padding-bottom: .3em;
+}
+
+.update-record {
+    border-top: 2px grey solid;
+    margin-top: 2em;
+    padding-top: 2em;
+}
+
+
+
+
+
+/* To be retired  */
+/*
+.siteSummary {
+    border-width: 0px 0px 1px 0;
+    border-color: black;
+    border-style: solid;
+    
+    width: 640px;
+    background: #fff;
+    padding: 0.5em;
+    font-family: sans-serif;
+    font-size: 75%;
+}
+.siteSummary table {
+    border: 0px black solid;
+    padding: 0;
+    margin: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+.siteSummary td, .siteSummary th {
+    padding: 0;
+    margin: 0;
+    border: 0px black solid;
+    padding-right: 1em;
+}
+.siteSummary .list1 { 
+    width: 200px;
+}
+.siteSummary .ident {
+    width: 150px;
+}
+.siteSummary .ident h2 {
+    font-size: 200%;
+    text-align: left;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+}
+.siteSummary .ident p {
+    font-weight: bold;
+    font-size: 120%;
+}
+.siteSummary p.coords {
+    font-weight: normal;
+    font-size: 90%;
+}
+.siteSummary th {
+    font-size: 90%;
+}
+
+.update h2 {
+    border-top: black 0px solid;
+    padding-top: 1em;
+}
+.update .metadata {
+    margin-right: 1em;
+}
+.uploadRecord {
+    font-size: 75%;
+}
+
+.upload {
+    background: #ccc;
+    border: 1px solid black;
+}
+*/

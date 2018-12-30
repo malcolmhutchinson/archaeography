@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Natural site groups
+DC.creator: 
+DC.subject: 
+DC.description: Easy lists of sites; by region, TLA or map sheet.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-08-08 05:24:57.031307

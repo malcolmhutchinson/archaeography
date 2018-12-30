@@ -1,0 +1,56 @@
+@import url('framework.css');
+
+@page {
+    margin: 1cm 1.5cm 2cm 2cm;
+    padding: 0cm 0 1cm 0;
+}
+
+h1, h2, h3 {
+    page-break-after: avoid;
+}
+
+p, table {
+    page-break-inside: avoid;
+}
+
+p {
+    line-height: 110%;
+}
+
+table {
+    max-width: 16cm;
+}    
+
+
+#navigation, #pagehead, #panel, #pagefoot, .notifications,
+.noprint, .sidebarnoprint {
+    display: None;
+}
+
+#main {
+    padding: 0;
+    margin: 0;
+    float: none;
+}
+
+
+.block-page, .two-col {
+    width: 100%;
+    max-width: 100%;
+    float: none;
+}
+.data {
+    page-break-inside: avoid;
+
+.noprint {
+    display: none;
+}
+.overflowY {
+
+    overflow-y: none;
+    font-size: 60%;
+}
+
+.update {
+    page-break-before: always;
+}

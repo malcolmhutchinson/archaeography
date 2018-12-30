@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Non-generic data
+DC.creator: 
+DC.subject: non-generic data
+DC.description: Non-generic data are those data we hold on the system, which change. These are distinct from library files, for example, which are copies of static, unchanging datasets.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-12-24 03:43:36.367083

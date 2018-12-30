@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Site record fields
+DC.creator: 
+DC.subject: 
+DC.description: Explanation of the fields in a site record and what they store.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-08-08 05:29:23.482665

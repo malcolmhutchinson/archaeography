@@ -1,0 +1,732 @@
+/* Framework stylesheet. Controls all major page functions.
+
+Applications may introduce separate styles, by including these as the
+the context['stylesheet'] variable.
+
+*/
+/*    background-image: url('/static/img/soils_P3248820.JPG'); */
+
+
+html {
+    font-family: sans-serif;
+    margin: 0px;
+    height: 100%;
+}
+body {
+    background-size: 100%;
+    background-attachment: fixed; 
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    padding-bottom: 5em;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    border-bottom: 1px dotted #bbb;
+}
+a:hover {
+    color: white;
+    background: black;
+}
+
+
+h1, h2, h3, p, li, th, td, hr {
+    max-width: 40em;
+}
+ol, ul {
+    max-width: 36em;
+}
+
+h1, h2 {
+    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 150%;
+    font-weight: normal;
+    margin-top: 0.5em;
+    max-width: 25em;
+    font-family: serif;
+}
+h2 {
+    font-size: 100%;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 100%;
+    font-weight: normal;
+    font-style: italic;
+    margin-top: 2em;
+}
+
+h3.note {
+    margin-bottom: 1em;
+}
+
+
+blockquote {
+    font-family: serif;
+    font-size: 90%;
+}
+
+table {
+    font-family: sans-serif;
+}
+
+textarea {
+    max-width: 100%;
+}
+
+th, td {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    padding-right: 1em;
+    vertical-align: text-top;
+}
+th {
+    font-size: 80%;
+    vertical-align: top;
+}
+/* Sortable tables */
+table.sortable thead {
+    background-color:#eee;
+    color:#666666;
+    font-weight: bold;
+    cursor: default;
+}
+
+#headline {
+    padding: 0;
+    margin: 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 1px black solid;
+    text-align: center;
+    font-family: serif;
+    background: #aba;
+}
+#headline h1, #headline h2, #headline p {
+    max-width: 100%;
+    font-family: serif;
+}
+#headline h1, #headline h2 {
+    letter-spacing: .5em;
+    padding-top: 0.5em;
+    font-weight: normal;
+}
+#headline p {
+    font-size: 80%;
+    letter-spacing: .3em;
+}
+
+
+#main {
+    border: black 0px solid;
+    font-family: serif;
+    padding: 0;
+    margin: 0;
+    margin-left: 190px;
+    padding-bottom: 100px;
+}
+#main p {
+    line-height: 150%;
+}
+
+#navigation {
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 5px;
+    
+    margin: 0;
+    font-size: 80%;
+    border-right: black 1px solid;
+
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height:100%;
+    width: 170px;
+    overflow-y: auto;
+    background: #bca;
+}
+#navigation h2 {
+    font-size: 100%;
+    font-weight: bold;
+    border-top: black solid 1px;
+    padding-top: 5px;
+}
+#navigation h2.top{
+    border: 0;
+    padding-top: 0;
+}
+#navigation h3 {
+    font-size: 100%;
+    margin: 0;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    padding: 0;
+    line-height: 1.2;
+}
+#navigation ol {
+    margin: 0;
+}
+#navigation ol li{
+    list-style-type: none;
+    margin-left: -5em;
+    padding-left: 2em;
+    padding-bottom: 0.3em;
+}
+#navigation input, #navigation select {
+    width: 100%;
+    font-size: 90%;
+    background: none;
+}
+
+#pagefoot {
+    background: #fff;
+
+    border-top: black 1px solid;
+    padding: 0.5em 1em 0.5em 0;
+
+    position: fixed;
+    width: 85%;
+    right: 189px;
+    bottom: 0px;
+    left: 189px;
+    z-index: 1;
+}
+#pagehead {
+    border-bottom: black 1px solid;
+    margin: 0;
+    margin-left: 190px;
+    padding: 0.3em 1em 0.5em 0;
+    position: relative;
+    z-index: 1;
+
+}
+#pagehead ol {
+    margin: 0;
+    padding: 0;
+}
+#pagehead p, #pagefoot p, #pagehead span, #pagefoot span {
+    font-size: 80%;
+}
+#pagehead ol, #pagefoot ol {
+    margin: 0;
+    padding: 0;
+}
+
+#panel {
+    position: fixed;
+    bottom: 35px;
+    right: 10px;
+    max-width: 90%;
+
+
+    font-family: sans-serif;
+    font-size: 80%;
+    border: black 1px solid;
+    padding: 1em;
+    padding-bottom: 4em;
+    margin-left: 1em;
+
+
+    background: #bcc;
+    
+}
+#panel input {
+    text-align: left;
+    width: 90%;
+    border: black solid 1px;
+}
+#panel option {
+    font-size: 80%;
+
+}
+
+#panel p {
+    line-height: 130%;
+}
+#panel h3 {
+    padding-top: 0em;
+    line-height: 150%;
+}
+
+#pageMetadata {
+    font-size: 90%;
+    background: #fff;
+    width: 100%;
+}
+#pageMetadata th {
+    text-align: right;
+    vertical-align: top;
+}
+
+#usertile {
+    border: green 2px solid;
+    padding: 5px;
+    font-size: 80%;
+}
+#usertile p {
+}
+
+
+
+.alert {
+    color: red;
+}
+
+.block {
+    page-break-inside:avoid;
+}
+
+.breadcrumbs {
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 0 32px;
+    max-width: 100%;
+}
+.breadcrumbs li{
+    font-size: 80%;
+    display: inline;
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0.5em 0 0.5em;
+    border-right: black solid 1px;
+
+}
+
+.boxItem {
+    display: inline;
+    float: left;
+    width: 200px;
+    height: 20em;
+    font-family: sans-serif;
+    font-size: 75%;
+
+    padding: 0.5em;
+    margin: 0.5em;
+    border: 1px solid black;
+}
+.boxItem ol, .boxItem .container {
+    background: white;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+.block-half {
+    font-size: 90%;
+    font-family: sans-serif;
+    width: 23%;
+    max-width: 400px;
+    border-right: black 1px solid;
+    border-bottom: black opx solid;
+    margin: 0 10px 10px 0;
+    margin: 0;
+    padding: 1em;
+    float: left;
+    display: inline;
+}
+
+.block-note {
+    border: 2px #556 solid;
+    padding: 1em;
+    font-family: sans-serif;
+    font-size: 90%;
+}
+
+.block-page {
+    clear: both;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 3em;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
+.block-page .figure, .two-col .figure {
+    max-width: 640px;
+    float: left;
+}
+.block-page table {
+    max-width: 640px;
+}
+
+.block-search {
+    font-family: sans-serif;
+    border: none;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+
+
+.block-whole {
+    clear: both;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.caption, .figure p, .table p {
+    font-family: serif;
+    font-size: 80%;
+    line-height: 100%;
+    margin: 2px;
+    padding: 0;
+    max-width: 620px;
+}
+
+.centre {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.content {
+    margin: 0 auto;
+    padding: 5px;
+}
+    
+.data { 
+    font-family: sans-serif;
+    font-size: 80%;
+    width: 100%;
+    margin-bottom: 0.5em;
+    margin-right: 0.5em;
+    border-bottom: 1px black solid;
+    padding: 0.5em;
+}
+.data h3 {
+    margin: 0;
+    font-style: normal;
+    font-weight: bold;
+    border-top: 0px black solid;
+}
+.data p {
+    max-width: 100%;
+}
+
+.data ol li {
+    margin-left: -2em;
+    max-width: 100%;
+}
+
+.datapanel {
+    font-size: 90%;
+    width: 200px;
+    display: inline-block;
+    border: 1px black solid;
+    margin: 5px;
+    padding: 5px;
+    
+}
+.datapanel h3 {
+    margin: 0;
+}
+
+.dateline {
+    font-family: sans-serif;
+    font-size: 80%;
+    letter-spacing: .2em;
+}
+
+.doc-summary {
+    border-bottom: 1px black solid;
+    margin: 0 1em 1em 0;
+    clear:both;
+}
+.doc-summary img {
+    width: 80px;
+}
+.endnote {
+    font-family: sans-serif;
+    border: 2px #2cf solid;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.errorlist {
+    list-style-type: none;
+    background: #fcc;
+}
+.errorlist li {
+    margin-left: -2em;
+}
+
+.figure, .figure-left, .figure-right {
+    align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1em;
+}
+
+.figure-left, .figure-right {
+    max-width: 45%;
+}
+
+.figure-left {
+    float: left;
+    margin-right: 1em;
+    max-width: 45%;
+}
+
+.figure-right {
+    float: right;
+    margin-left: 1em;
+    max-width: 45%;
+}
+
+.figure img, .figure-left img, .figure-right img {
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    max-width: 100%;
+}
+
+.figure, .table {
+    page-break-inside: avoid;
+}
+
+.form {
+    font-size: 80%;
+}
+.form th {
+    text-align: right;
+}
+.form th, .form td {
+    padding: 0;
+    padding-left: 0.5em;
+    margin: 0;
+}
+
+.form input, .form select {
+    width: 150px;
+    font-size: 90%;
+    background: none;
+}
+
+.formset {
+    margin-bottom: 1em;
+}
+.formset input {
+    max-width: 100px;
+}
+.formset p {
+    display: inline;
+}
+
+.full-width {
+    border: 1px black solid;
+    clear: both;
+
+    padding: 1em;
+    width: 95%;
+    min-width: 400px;
+    margin-right: 5px;
+}
+
+.footnote {
+    font-family: sans-serif;
+    font-size: 80%;
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
+}
+.indextile {
+    font-family: sans-serif;
+    clear: both;
+    margin-bottom: 2em;
+    font-size: 90%;
+}
+.indextile h2, .indextile h3, .indextile p {
+    margin: 1em 0 1em 0;
+    padding: 0;
+}
+.indextile h2 {
+    clear: both;
+}
+
+.indextile img {
+    float: left;
+    margin: 2px 10px 2em 0;
+    max-size: 150px;
+}
+
+.left {
+    float: left;
+    margin-right: 1em;
+}
+
+.legal {
+    border: 2px #556 solid;
+    padding: 1.5em;
+    font-family: sans-serif;
+    font-size: 90%;
+}
+
+.longtable thead, .longtable tbody{
+
+}
+.longtable tbody {
+    overflow: auto;
+    height: 100%;
+}
+
+.note {
+    font-family: sans-serif;
+    font-size: 80%;
+    line-height: 100%;
+    margin: 0;
+    margin-bottom: 0.5em;
+}
+
+.notifications {
+    margin: 10px;
+    padding: 10px;
+    background: #ffa;
+    border: red solid 2px;
+    font-family: sans-serif;
+}
+.notifications li{
+    list-style-type: none;
+    margin-left: 0em;
+    padding-left: 2em;
+    padding-bottom: 0.3em;
+    color: green;
+}
+
+.one-col {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+}
+
+.overflowY {
+    max-height: 480px;
+    overflow: auto;
+}
+
+.PageForm p {
+    font-size: 90%;
+}
+
+.papers {
+    padding-left: 2em;
+}
+
+.r {
+    text-align: right;
+}
+
+.recordForm {
+    font-size: 80%;
+}
+.recordForm input, .recordForm textarea, .recordForm select  {
+    font-size: 100%;
+}
+
+.right {
+    float:right;
+    text-align: right;
+}
+
+.rights {
+    font-family: sans-serif;
+    font-size: 70%;
+    border-top: 1px black solid;
+    padding: 0.5em;
+    max-width: 600px;
+}
+
+.references p {
+    font-size: 80%;
+}
+.rights p {
+    max-width: 600px;
+}
+
+.scrolltable {
+    max-height: 100%;
+}
+.scrolltable tbody {
+    height: 100px;
+    overflow-y: auto;
+}
+                    
+.selector {
+    font-family: sans-serif;
+    margin-bottom: 1em;
+}
+
+.selector p {
+    display: inline;
+}
+
+.sidebar, .sidebarnoprint {
+    font-family: sans-serif;
+    font-size: 80%;
+    max-width: 50%;
+    float: left;
+}
+
+.site-left {
+    width: 65%;
+    clear: both;
+    float: left;
+
+    padding: 0 1em 0 1em;
+}
+.site-right {
+    width: 25%;
+    float: left;
+
+    padding: 0 1em 0 1em;
+}
+
+.table {
+    margin-left: auto;
+    margin-right: auto;
+    align: center;
+}
+.table img {
+    max-width: 640px;
+}
+
+.two-col {
+    height: 100%;
+    padding: 1em;
+    display: inline;
+    float: left;
+    width: 45%;
+    min-width: 400px;
+    margin-right: 5px;
+
+}
+.two-col table {
+    max-width: 640px;
+}
+
+.thb80, .thb150 {
+    width: 150px;
+    display: inline;
+    float: left;
+    margin: 0 3px 3px 0;
+}
+.thb80 {
+    width: 80px;
+}
+.thb80 img {
+    width: 80px;
+}
+
+
+
+
+
+
+
+

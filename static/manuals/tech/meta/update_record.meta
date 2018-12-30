@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Site update record
+DC.creator: 
+DC.subject: archaeological site record, update record
+DC.description: Technical description of the archaeological site update record.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-12-24 04:18:01.873713

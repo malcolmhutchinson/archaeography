@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: tech
+DC.creator: M.G.Hutchinson
+DC.subject: systems administration, unix, linux, postgresql, postgis, dba
+DC.description: Technical information on installing and configuring an archaeography database setup on a Debian GNU/Linux operating system.
+DC.contributor: 
+DC.coverage: 
+DC.date: 2018-11-01
+DC.type: 
+DC.format: text/markup
+DC.source: 
+DC.language: en
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: feature
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-12-19 00:49:23.833566

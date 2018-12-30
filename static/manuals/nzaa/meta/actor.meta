@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: actor
+DC.creator: 
+DC.subject: actor, name, archaeologist
+DC.description: A name in the dataset
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-08-08 05:16:49.232105

@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: Django: Install and configure
+DC.creator: 
+DC.subject: 
+DC.description: Install the archaeography code in a Django development space, and the tables in the database.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-10-31 22:56:41.133409

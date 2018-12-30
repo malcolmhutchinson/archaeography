@@ -1,0 +1,29 @@
+# Dublin core metadata.
+DC.title: nzaa_id
+DC.creator: 
+DC.subject: 
+DC.description: The NZAA site identifier.
+DC.contributor: 
+DC.coverage: 
+DC.date: 
+DC.type: 
+DC.format: 
+DC.source: 
+DC.language: 
+DC.relation: 
+DC.identifier: 
+DC.publisher: 
+DC.rights: 
+# end Dublin core elements.
+
+# Page commands.
+allow: 
+deny: 
+embargo: 
+liststyle: default
+sort: forward
+status: draft
+stylesheet: normal
+type: 
+# End page commands.
+# Record written by webnote.metadata at 2018-08-08 05:26:38.242699
