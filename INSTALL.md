@@ -445,8 +445,6 @@ Now run the Python setup scripts, from the Django shell.
     q = utils.GenerateTopo50grid(commit=True)
 
 
-
-
 Step 7: Download reference raster datasets
 ------------------------------------------
 
