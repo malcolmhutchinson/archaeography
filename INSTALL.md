@@ -132,7 +132,7 @@ available to the archaeography code. In shell:
         mechanize psycopg2-binary requests smartypants
 
     # Place a symlink to the webnote code.
-    ln -s ~/dev/webnote/code/webnote ~/dev/webnote/env/lib/python2.7/site-packages/webnote
+    ln -s ~/dev/webnote/ ~/dev/arch/env/lib/python2.7/site-packages/webnote
 
 
 You will need to enter your password for the machine role, into a
@@ -162,7 +162,8 @@ comment this line:
     from secrets import *
 
 Alternatively, follow the instructions in that settings file, and
-create a secrets file.
+create a secrets file. This is listed in .githubignore, so git will
+ignore it. 
 
 Run the Django migrations to set up the database. In shell:
 
@@ -377,14 +378,11 @@ Scripts to assist the install and setup process are kept in `setup/`,
 and accessed from `setup/setup.sh`.
 
 Check execute privileges are set on the file at
-`~/dev/arch/code/setup/setup.sh`, and review it. The first uncommented
-line should be:
+`~/dev/arch/code/setup/setup.sh`, and review it. 
 
-    echo 'CREATE SCHEMA IF NOT EXISTS work' | psql -d archaeography
-
-It will then copy the NZMS1 map series geometries from a file in
-setup, and proceed to inject the geographic data from LINZ and
-Statistics NZ into the database. This takes a bit of time. 
+It will copy the NZMS1 map series geometries from a file in setup, and
+proceed to inject the geographic data from LINZ and Statistics NZ into
+the database. This takes a bit of time.
 
 CD to the directory where your shapefiles are stored, and run the
 setup script:
@@ -462,11 +460,11 @@ We use three topographic map series:
     Land Information New Zealand  
     [http://topo.linz.govt.nz/Topo50_raster_images/TIFFTopo50/](http://topo.linz.govt.nz/Topo50_raster_images/TIFFTopo50/)
     
--   the older metric NZMS260 series, and  
+-   the older metric NZMS260 series  
     Auckland University public FTP server  
     [https://gdh.auckland.ac.nz/maps/LINZ/NZMS/NZMS_260/geotif/](https://gdh.auckland.ac.nz/maps/LINZ/NZMS/NZMS_260/geotif/)
 
--   the original imperial series NZMS1.  
+-   the original imperial series NZMS1  
     Auckland University public FTP server  
     [https://gdh.auckland.ac.nz/maps/LINZ/NZMS/NZMS_001/geotif/](https://gdh.auckland.ac.nz/maps/LINZ/NZMS/NZMS_001/geotif/)
 

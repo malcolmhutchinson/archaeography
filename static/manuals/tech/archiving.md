@@ -53,7 +53,7 @@ The process is:
 
 2.  Export the contents of the work schema into a dump file. In shell: 
 
-        pg-dump -n work -O archaeography | gzip > data.sql.gz
+        pg_dump -n work -O archaeography | gzip > data.sql.gz
 
 3.  Copy the resulting file to the destination system, unpack it and
     run it against the destination database. Still in shell:

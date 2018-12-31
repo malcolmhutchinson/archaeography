@@ -44,8 +44,6 @@ ALLOWED_HOSTS = [
     'localhost',
     'archaeography.nz', 'archaeography.co.nz',
     'archaeography',
-    'okataina',
-    'hikurangi',
 ]
 
 INSTALLED_APPS = [
