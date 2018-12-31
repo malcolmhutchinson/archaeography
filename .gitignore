@@ -5,7 +5,6 @@ etc/
 secrets.py
 static/admin
 static/geolib
-static/img
 static/nzaa
 static/tmp
 
