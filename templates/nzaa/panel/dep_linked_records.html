@@ -1,0 +1,40 @@
+<!-- nzaa/panel/linked_records.html -->
+
+    {% if site.updates_count %}
+    <div class='data'>
+
+        <h2>This site has {{ site.updates_count }} update records</h2>
+      
+{% include 'nzaa/panel/updates.html' %}
+
+    </div><!-- close updates-->{% endif %}
+
+{% if site.get_aerialframes %}
+    <div class='data'>
+
+        <h2>Historic photographs</h2>
+
+        <p>The site may be visible on one or more of these historic
+        aerial photographs.</p>
+	 
+{% include 'nzaa/panel/historicPhotos.html' %}
+
+    </div><!-- close historic photos -->{% endif %}
+    
+    <div class='data'>
+
+        <h2>Geographic library notifications</h2>
+	 
+{% include 'nzaa/panel/library_notes.html' %}
+
+    </div>
+    
+    <div class='data'>
+
+        <h2>Cadastral parcels affected by this site</h2>
+	 
+{% include 'nzaa/panel/cadastre.html' %}
+
+	</div><!-- close the cadastral -->
+
+<!-- nzaa/panel/linked_records.html -->

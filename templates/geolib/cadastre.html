@@ -1,0 +1,263 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- geolib/cadastre.html -->
+
+
+{% if parcel %}
+<div class='block-page'>
+  <p>Cadastral parcel search</p>
+  
+  <h1>{{ parcel.handle }}</h1>
+
+      <div class='data'>
+
+
+        <table>
+          <tr>
+            <td>
+
+        <h3>Cadastral values</h3>
+
+        <table>
+          <tr>
+            <th>appellation</th>
+            <td>{{ parcel.appellation }}</td>
+          </tr>
+          <tr>
+            <th>survey</th>
+            <td>{{ parcel.affected_surveys }}</td>
+          </tr>
+          <tr>
+            <th>intent</th>
+            <td>{{ parcel.parel_intent }}</td>
+          </tr>
+          <tr>
+            <th>type</th>
+            <td>{{ parcel.topology_type }}</td>
+          </tr>
+          <tr>
+            <th>actions</th>
+            <td>{{ parcel.statutory_actions }}</td>
+          </tr>
+          <tr>
+            <th>district</th>
+            <td>{{ parcel.land_district }}</td>
+          </tr>
+          <tr>
+            <th>titles</th>
+            <td>{{ parcel.titles }}</td>
+          </tr>
+          <tr>
+            <th>survey area</th>
+            <td>{{ parcel.survey_area|intcomma }} m<sup>2</sup></td>
+          </tr>
+          <tr>
+            <th>calc area</th>
+            <td>{{ parcel.cala_area|intcomma }}</td>
+          </tr>
+          <tr>
+            <th>provenance</th>
+            <td>{{ parcel.provenance }}</td>
+          </tr>
+        </table>
+
+            </td>
+            <td>
+
+              <h3>Geographical data</h3>
+              
+        <table>
+          <tr>
+            <th>Region</th>
+            <td>{{ parcel.region.0.name }}</td>
+          </tr>
+
+          <tr>
+            <th>Terr. Auth.</th>
+            <td>{{ parcel.ta.0.name }}</td>
+          </tr>
+          <tr>
+            <th>Closest places</th>
+            <td>{% for place in parcel.closest_placenames %}
+              {{ place.name }} ({{ place.distance|floatformat:0|intcomma }} m)
+              <br />{% endfor %}</td>
+          </tr>
+          
+          <tr>
+            <th>Closest road</th>
+            <td>{{ parcel.closest_road.name }}
+              ({{ parcel.closest_road.distance|floatformat:0|intcomma }} m)</td>
+          </tr>
+
+          <tr>
+            <th>calculated area</th>
+            <td>{{ parcel.geom.area|floatformat:0|intcomma }} m<sup>2</sup></td>
+          </tr>
+
+
+        </table>
+
+            </td>
+          </tr>
+        </table>
+        
+          
+      </div>
+
+
+      <h3>Archaeological sites recorded within this parcel
+        ({{ parcel.sites_within.count }})</h3>
+
+
+    {% if parcel.sites_within %}
+    <table class='sortable' style='font-size: 80%; width: 100%;'>
+      <tr>
+        <th>NZAA id</th>
+        <th>title</th>
+        <th>type</th>
+      </tr>
+      {% for site in parcel.sites_within %}
+      <tr>
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+    {% else %}
+    
+    <p>There are no archaeological sites recorded within this
+      parcel. The closest archaeological sites to this parcel are:</p>
+
+    <table class='sortable' style='font-size: 80%; width: 100%;'>
+      <tr>
+        <th>NZAA id</th>
+        <th>title</th>
+        <th>type</th>
+        <th>distance (m)</th>
+      </tr>
+      {% for site in parcel.closest_sites %}
+      <tr>
+        <td><a href='{{ site.url }}'>
+            {{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+        <td style='text-align:right;'>
+          {{ site.distance|floatformat:0|intcomma }}</td>
+      </tr>{% endfor %}
+    </table>
+    {% endif %}
+
+    {% if parcel.sites_adjacent %}
+    <h3>Archaeological sites within parcels adjacent to this one
+      ({{ parcel.sites_adjacent.count }})</h3>
+
+    <table class='sortable' style='font-size: 80%; width: 100%;'>
+      <tr>
+        <th>NZAA id</th>
+        <th>title</th>
+        <th>type</th>
+        <th>distance (m)</td>
+      </tr>
+      {% for site in parcel.sites_adjacent %}
+      <tr>
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+        <td style='text-align:right;'>
+          {{ site.distance|floatformat:0|intcomma }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+
+    <h3>Sites within 500 m of this parcel ({{parcel.sites_buffer.count  }})</h3>
+
+    <table class='sortable' style='font-size: 80%; width: 100%;'>
+      <tr>
+        <th>NZAA id</th>
+        <th>title</th>
+        <th>type</th>
+        <th>distance (m)</td>
+      </tr>
+      {% for site in parcel.sites_buffer %}
+      <tr>
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+        <td style='text-align:right;'>
+          {{ site.distance|floatformat:0|intcomma }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+</div>
+
+{% elif parcels %}
+<div class='block-page'>
+
+     <h1>Multiple parcels returned ({{ parcels.count|intcomma }})</h1>
+  
+    <p>You searched on: "{{ terms }}"</p>
+
+    <table class='sortable'>
+      <tr>
+        <th>Legal description</th>
+        <th>area (m<sup>2</sup>)</th>
+      {% for parcel in parcels %}
+      <tr>
+        <td><a href='{{ parcel.url }}'>{{ parcel.handle }}</a></td>
+        <td style='text-align: right;'>
+          {{ parcel.geom.area|floatformat:0|intcomma }}</td>
+      </tr>
+     {% endfor %}
+    </table>
+    
+</div>
+{% elif terms %}
+<div class='block-page'>
+
+  <h1>Parcel not found</h1>
+
+  <p>We're sorry, we can't find a parcel matching your search terms.</p>
+
+  <p><b>Terms:</b> {{ terms }}</p>
+
+</div>
+{% endif %}
+
+<div class='block-page'>
+    
+    <h2>Search a property appellation (legal description).</h2>
+
+    <div class='block-search'>
+    <form action='/geolib/cadastre/' method='get'>
+
+        <p><input type='text' name='terms' /></p>
+
+        <p><input type='submit' value='search' /></p>
+
+    </form>
+    </div>
+
+    <div class='endnote'>
+
+      <h2>Disclaimer</h2>
+
+
+          <p>This machine is entirely experimental. Results have no
+          legal signifiance, and carry no guarantees. Not even as to
+          being correct.</p>
+
+          <p>Archaeological data sourced from the NZ Archaeological
+          Association's Site Recording Scheme. </p>
+
+
+    </div>
+
+</div>
+
+
+<div style='clear:both'></div>
+
+<!-- end geolib/cadastre.html -->
+{% endblock %}

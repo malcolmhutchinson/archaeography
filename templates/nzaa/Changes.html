@@ -1,0 +1,53 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Changes.html -->
+<div class='block-whole'>
+
+  <p class='note'>
+    <a href='/manuals/nzaa/recent_changes'>/manuals/nzaa/recent changes</a></p>
+
+  <h1>Recent changes ({{ count|intcomma }})</h1>
+
+  {% if count %}
+  <p>These site records have changed since the last ArchSite scan,
+    which was completed {{ last_scan|date:"Y-m-d H:i:s" }}.</p>
+
+  <textarea style='width: 100%;'>{{ idlist }}</textarea>
+
+  <p></p>
+
+  <table style='font-size: 80%;' class='sortable'>
+
+    <tr>
+
+        <th>NZAA id</th>
+        <th>Title</th>
+        <th>type (legacy)</th>
+        <th>Created</th>
+        <th>Last checked</th>
+        <th>Last changed</th>
+
+    </tr>
+{% for site in sites %}
+    <tr>
+
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+        <td>{{ site.created|date:"Y-m-d H:i:s" }}</td>
+        <td>{{ site.extracted|date:"Y-m-d H:i:s" }}</td>
+        <td>{{ site.last_change|date:"Y-m-d H:i:s" }}</td>
+
+    </tr>
+{% endfor %}
+</table>
+  {% else %}
+
+    <p>There have been no recent changes to site records following the
+    last ArchSite scan, which was completed
+    {{ last_scan|date:"Y-m-d H:i:s" }}.</p>
+
+  {% endif %}
+</div>
+<!-- end nzaa/Changes.html -->
+{% endblock %}

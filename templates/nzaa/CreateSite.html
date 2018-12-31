@@ -1,0 +1,28 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/CreateSite.html -->
+<div class='block-page'>
+
+    <h1>Create a new site record</h1>
+
+  <p class='note'><a href='/manuals/nzaa/create_site'>
+      /manuals: create a site record</a><br />
+    See also <a href='/manuals/nzaa/reference_figs'>How to reference figures</a>
+  </p>
+
+    {% if notifications %}
+      <ol class='notifications'>
+        {% for note in notifications %}<li>{{ note }}</li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+
+      
+    <table class=''>
+      {{ NewSiteForm }}
+    </table>    
+</div>
+{% endblock %}
+<!-- nzaa/CreateSite.html -->
+
+

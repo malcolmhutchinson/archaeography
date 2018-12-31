@@ -1,0 +1,51 @@
+#<pre>
+# Mapfile output by archaeography.nz
+
+MAP
+
+  SIZE {{ map.size_x }} {{ map.size_y }}
+  EXTENT {{ map.extent }}
+
+  WEB
+    IMAGEPATH "/home/malcolm/tmp/"
+    IMAGEURL ...
+  END
+
+  SYMBOL
+    NAME "circle"
+    TYPE ELLIPSE
+    FILLED TRUE
+    POINTS
+      1 1
+    END
+  END
+
+# NZAA sites
+  LAYER
+    CONNECTION "dbname='archaeography' 
+                host=localhost port=5432 
+                user='{{ map.username }}' password='{{ map.password }}' 
+                sslmode=require"
+    CONNECTIONTYPE POSTGIS
+    DATA 'geom FROM "public"."nzaa_view" USING UNIQUE nzaa_id USING srid=2193'
+    EXTENT {{ map.extent }}
+    NAME "nzaa_view"
+    PROJECTION
+      {{ map.projection }}
+    END # PROJECTION
+    STATUS ON
+    TILEITEM "location"
+    TYPE POINT
+    UNITS PIXELS
+    CLASS
+      NAME "nzaa_sites"
+      STYLE
+        COLOR 120 35 15
+        SIZE 6
+        SYMBOL "circle"
+      END # STYLE
+    END # CLASS
+  END # LAYER nzaa_sites
+
+END # MAP
+</pre>

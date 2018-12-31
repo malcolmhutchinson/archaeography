@@ -1,0 +1,161 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Site.html -->
+
+
+<div class='site-left'>
+<p class='note'>{{ subhead }}</p>
+
+<h1>{{ h1 }}</h1>
+{% if site %}
+
+
+<h2>Description</h2>
+
+{{ site.display_description|safe }}
+
+<h2>Finder aid</h2>
+
+{{ site.display_finder_aid|safe }}
+
+<hr />
+
+<h2>Reviews of this site</h2>
+
+{% for review in site.review.all %}
+<table style='font-size: 80%'>
+  <tr>
+    <td colspan='3' style='border-top: 2px black solid'>
+      <b>assessed</b> {{ review.reviewed|date:"Y-m-d H:i:s" }} by
+      {{ review.assessed_by }}</td>
+  </tr>
+  <tr>
+    <th>field</th>
+    <th>new</th>
+    <th>old</th>
+  </tr>
+  <tr>
+    <th>site_name</th>
+    <td>{{ review.site_name }}</td>
+    <td>{{ review.from_site_name }}</td>
+  </tr>
+  
+  <tr>
+    <th>site_type</th>
+    <td>{{ review.site_type }}</td>
+    <td>{{ review.from_site_type }}</td>
+  </tr>
+  
+  <tr>
+    <th>site_subtype</th>
+    <td>{{ review.site_subtype }}</td>
+    <td>{{ review.from_site_subtype }}</td>
+  </tr>
+  
+  <tr>
+    <th>location</th>
+    <td>{{ review.location }}</td>
+    <td>{{ review.from_location }}</td>
+  </tr>
+  
+  <tr>
+    <th>period</th>
+    <td>{{ review.period }}</td>
+    <td>{{ review.from_period }}</td>
+  </tr>
+  
+  <tr>
+    <th>ethnicity</th>
+    <td>{{ review.ethnicity }}</td>
+    <td>{{ review.from_ethnicity }}</td>
+  </tr>
+  
+  <tr>
+    <th>features</th>
+    <td>{{ review.features }}</td>
+    <td>{{ review.from_features }}</td>
+  </tr>
+  
+  <tr>
+    <th>assoc. sites</th>
+    <td>{{ review.associated_sites }}</td>
+    <td>{{ review.from_associated_sites }}</td>
+  </tr>
+  
+  <tr>
+    <th>recorded</th>
+    <td>{{ review.recorded }}</td>
+    <td>{{ review.from_recorded }}</td>
+  </tr>
+  
+  <tr>
+    <th>recorded_by</th>
+    <td>{{ review.recorded_by }}</td>
+    <td>{{ review.from_recorded_by }}</td>
+  </tr>
+  
+  <tr>
+    <th>visited</th>
+    <td>{{ review.visited }}</td>
+    <td>{{ review.from_visited }}</td>
+  </tr>
+  
+  <tr>
+    <th>visited_by</th>
+    <td>{{ review.visited_by }}</td>
+    <td>{{ review.from_visited_by }}</td>
+  </tr>
+  
+  <tr>
+    <th>record_quality</th>
+    <td>{{ review.record_quality }}</td>
+    <td>{{ review.from_record_quality }}</td>
+  </tr>
+  
+</table>
+{% endfor %}
+
+<!-- closing the site code -->{% endif %}
+</div><!-- close the left column -->
+
+<div class='site-right'>
+  {% if site %}
+
+  <div class='data'>    
+    {% include 'nzaa/panel/archaeological.html' %}
+    {% include 'nzaa/panel/geographic.html' %}
+  </div>
+
+  {% if site.review.all.count %}
+  <p class='note'>Reviews of this site record:<br />
+  {% for item in site.review.all %}
+  {{ item.reviewed }} by {{ item.assessed_by }}<br />
+  {% endfor %}</p>{% endif %}
+
+
+
+
+  
+{% endif %}
+</div><!-- close the right column -->
+
+<div class='block-whole'>
+
+
+</div>
+
+
+
+{% if review %}
+{% include 'nzaa/panel/siteReview.html' %}
+{% endif %}
+
+
+
+
+
+
+
+
+<!-- end nzaa.html -->
+{% endblock %}

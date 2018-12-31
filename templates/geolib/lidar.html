@@ -1,0 +1,61 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- geolib/lidar.html -->
+{% if series %}
+<div class='block-page'>
+
+  <h2>{{ series.identifier }}</h2>
+
+  <h1>{{ series.name }}</h1>
+
+  <p>This series contains {{ series.tiles.count|intcomma }} tiles.</p>
+
+  <p>Available from  <a href='{{ series.imagelayer_uri }}'>
+      {{ series.imagelayer_uri }}</a></p>
+
+  <table class='sortable'>
+    <tr>
+      <th>Tile</th>
+      <th>No. sites</th>
+    </tr>
+    {% for tile in series.tiles.all %}
+    <tr>
+      <td><a href='{{ tile.url }}'>{{ tile.identifier }}</a></td>
+      <td>{{ tile.sites.all.count }}</td>
+    </tr>{% endfor %}
+  </table>
+
+
+</div>
+{% else %}
+<div class='block-page'>
+
+  <h1>Lidar elevation data</h1>
+
+    <p>We keep indexes of these lidar datasets. The data can be
+    downloaded from Land Information NZ
+      at <a href='https://data.linz.govt.nz'>data.linz.govt.nz</a></p>
+
+    <h3>The lidar sets ({{ series.count }})</h3>
+
+    <table class='sortable'>
+      <tr>
+        <th>Set id</th>
+        <th>Lidar set</th>
+        <th>No. tiles</th>
+      </tr>
+    {% for set in allseries %}
+      <tr>
+        <td>{{ set.identifier }}</td>
+        <td>{{ set.name }}</td>
+        <td style='text-align: right'>{{ set.tiles.all.count|intcomma }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+
+</div>
+{% endif %}
+<div style='clear:both'></div>
+
+<!-- geolib/lidar.html -->
+{% endblock %}

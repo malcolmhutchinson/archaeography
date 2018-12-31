@@ -1,0 +1,26 @@
+<!-- blog/nav.html -->
+<h2>archaeography blog</h2>
+
+    <ol id='navlist_blog'>
+
+      <li><a href='/blog/'>index</a></li>
+
+    </ol>
+
+    <ol id='navlist_blog'>
+
+      {% for command in commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}
+    </ol>
+
+{% if editor %}
+<h2>editor commands</h2>
+
+    <ol id='navlist_blog'>
+
+      {% for command in edit_commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}
+    </ol>
+{% endif %}    
+    
+<!-- end blog/nav.html -->

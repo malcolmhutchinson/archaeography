@@ -1,0 +1,25 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/NewSite.html -->
+<div class='site-left'>
+<p class='note'>{{ subhead }}</p>
+
+<h1>{{ site.title }}</h1>
+{% if site %}
+{{ site.long_fields|safe }}
+
+<!-- closing the site code -->{% endif %}
+</div><!-- close the left column -->
+
+<div class='site-right'>
+  {% if site %}
+
+  <div class='data'>
+
+  </div>
+{% endif %}
+</div><!-- close the right column -->
+
+<div class='block-whole'>
+<!-- end nzaa/NewSite.html -->
+{% endblock %}

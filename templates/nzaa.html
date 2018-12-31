@@ -1,0 +1,156 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa.html -->
+<div class='two-col'>
+<p class='note'>{{ subhead }}</p>
+
+<h1>{{ h1 }}</h1>
+
+<p>There are currently {{ total_records|intcomma }} archaeological records in
+  our copy of the NZAA database.</p>
+
+<p>These relate to {{ actors.count|intcomma }}
+  <a href='/manuals/nzaa/actor'>actors</a>, and
+  {{ features.count|intcomma }}
+<a href='/manuals/nzaa/feature'>seperately-described features</a>.</p>
+
+
+</div>
+
+<div class='two-col'>
+
+  <h2>Your stuff here</h2>
+  {% if updates.count == 1 %}
+  <p>You have a site update record (<a href='{{ updates.0.url }}'>{{ updates.0 }}</a>) active.</p>
+  {% elif updates.count > 1 %}
+  <p>You have <a href='/nzaa/updates/{{ user.username }}'>{{ updates.count }} active site update records</a>.</p>
+  {% endif %}
+
+  {% if sitelists.count == 1 %}
+  <p><a href='{{ sitelists.0.url }}'>You have a site list</a>.</p>
+  {% elif sitelists.count > 1 %}
+  <p>You have <a href='/nzaa/sitelists/{{ user.username }}'>
+      {{ sitelists.count }} sitelists</a>.</p>
+  {% endif %}
+
+  {% if newsites.count == 1 %}
+  <p>You have a <a href=''>new site record</a> active.</p>
+  {% elif newsites.count > 1 %}
+  <p>You have <a href='/nzaa/newsites/{{ user.username }}/'>
+      {{ newsites.count }} new site records</a> active.</p>
+  {% endif %}
+</div>
+
+
+<div class='block-whole'>
+
+  <div class='boxItem'>
+  <h2><a href='/nzaa/regions/'>Regions</a></h2>
+
+  <ol>
+
+    {% for item in region %}
+
+    <li><a href='/nzaa/{{ item.0 }}'>{{ item.1 }}</a></li>
+
+    {% endfor %}   
+    
+  </ol>
+
+  </div>
+  <div class='boxItem'>
+  <h2><a href='/nzaa/tlas'>Territorial authorities</a></h2>
+
+  <ol>
+
+    {% for item in tla %}
+
+    <li><a href='/nzaa/{{ item.0 }}'>{{ item.1 }}</a></li>
+
+    {% endfor %}   
+    
+  </ol>
+
+  </div>
+  
+  <div class='boxItem'>
+  <h2><a href='/nzaa/nzaareg/'>NZAA recording regions</a></h2>
+
+  <ol>
+
+    {% for item in nzaa_region %}
+
+    <li><a href='/nzaa/{{ item.0 }}'>{{ item.1 }}</a></li>
+
+    {% endfor %}   
+    
+  </ol>
+  </div>
+  
+  
+  <div class='boxItem'>
+  <h2><a href='/geolib/topo/NZMS260'>NZMS 260 sheets</a></h2>
+
+  <ol>
+
+    {% for item in nzms260 %}
+
+    <li><a href='/nzaa/{{ item.0 }}'>{{ item.1 }}</a></li>
+
+    {% endfor %}   
+    
+  </ol>
+  </div>
+
+  <div class='boxItem'>
+  <h2><a href='/nzaa/actors/'>Actors</a></h2>
+
+  <ol>
+
+    {% for item in actors %}
+
+    <li><a href='/nzaa/actor/{{ item.id }}'>{{ item.get_sourcename }}</a></li>
+
+    {% endfor %}   
+    
+  </ol>
+  </div>
+
+  <div class='boxItem'>
+  <h2><a href='/nzaa/features/'>Features</a></h2>
+
+  <ol>
+
+    {% for item in features %}
+
+    <li><a href='/nzaa/features/{{ item.id }}'>{{ item.get_name }}</a></li>
+
+    {% endfor %}   
+    
+  </ol>
+  </div>
+
+  <div class='boxItem'>
+  <h2><a href='/nzaa/periods/'>Periods</a></h2>
+
+  <ol>
+
+    {% for item in periods %}
+
+    <li><a href='/nzaa/periods/{{ item.id }}'>{{ item.get_name }}</a></li>
+
+    {% endfor %}   
+    
+  </ol>
+  </div>
+
+
+
+
+
+  
+</div>
+
+
+<!-- end nzaa.html -->
+{% endblock %}

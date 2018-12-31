@@ -1,0 +1,151 @@
+<!-- nzaa/panel/siteReview.html -->
+<div id='siteReview'>
+
+  <h2>Review this site record</h2>
+
+<div id='SiteReviewForm' class='form'>
+
+  <table>
+
+    <tr>
+      <td>
+        
+        <table>
+          <tr>
+            <th>{{ siteReviewForm.site_name.label }}</th>
+            <td>{{ siteReviewForm.site_name.errors }}
+            {{ siteReviewForm.site_name }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.other_name.label }}</th>
+            <td>{{ siteReviewForm.other_name.errors }}
+            {{ siteReviewForm.other_name }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.site_type.label }}</th>
+            <td>{{ siteReviewForm.site_type.errors }}
+            {{ siteReviewForm.site_type }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.site_subtype.label }}</th>
+            <td>{{ siteReviewForm.site_subtype.errors }}
+            {{ siteReviewForm.site_subtype }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.period.label }}</th>
+            <td>{{ siteReviewForm.period.errors }}
+            {{ siteReviewForm.period }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.ethnicity.label }}</th>
+            <td>{{ siteReviewForm.ethnicity.errors }}
+            {{ siteReviewForm.ethnicity }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.associated_sites.label }}</th>
+            <td>{{ siteReviewForm.associated_sites.errors }}
+            {{ siteReviewForm.associated_sites }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.location.label }}</th>
+            <td>{{ siteReviewForm.location.errors }}
+            {{ siteReviewForm.location }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.easting.label }}</th>
+            <td>{{ siteReviewForm.easting.errors }}
+            {{ siteReviewForm.easting }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.northing.label }}</th>
+            <td>{{ siteReviewForm.northing.errors }}
+            {{ siteReviewForm.northing }}</td>
+          </tr>
+          
+        </table>
+        
+      </td>
+
+      <td>
+        <table>
+          <tr>
+            <th>{{ siteReviewForm.recorded_by.label }}</th>
+            <td>{{ siteReviewForm.recorded_by.errors }}
+            {{ siteReviewForm.recorded_by }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.recorded.label }}</th>
+            <td>{{ siteReviewForm.recorded.errors }}
+            {{ siteReviewForm.recorded }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.updated_by.label }}</th>
+            <td>{{ siteReviewForm.updated_by.errors }}
+            {{ siteReviewForm.updated_by }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.updated.label }}</th>
+            <td>{{ siteReviewForm.updated.errors }}
+            {{ siteReviewForm.updated }}</td>
+          </tr>
+          
+          <tr>
+            <th>{{ siteReviewForm.visited_by.label }}</th>
+            <td>{{ siteReviewForm.visited_by.errors }}
+            {{ siteReviewForm.visited_by }}</td>
+          </tr>
+
+          <tr>
+            <th>{{ siteReviewForm.visited.label }}</th>
+            <td>{{ siteReviewForm.visited.errors }}
+            {{ siteReviewForm.visited }}</td>
+          </tr>
+
+          <tr>
+            <th>{{ siteReviewForm.record_quality.label }}</th>
+            <td>{{ siteReviewForm.record_quality.errors }}
+            {{ siteReviewForm.record_quality }}</td>
+          </tr>
+
+        </table>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td colspan='2'>{{ siteReviewForm.features.label }}<br>
+        {{ siteReviewForm.features.errors }}
+        {{ siteReviewForm.features }}
+      </td>
+
+    </tr>
+    
+    
+  </table>
+
+  
+</div>
+
+
+
+
+
+  
+</div>
+<!-- close nzaa/panel/siteReview.html -->
+
+

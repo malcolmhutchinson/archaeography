@@ -1,0 +1,17 @@
+<!-- archlib/nav.html -->
+    <h2>search the library</h2>
+
+    <p>on author, title, keywords, or all of these.</p>
+
+    <form action='/biblio/search/' method='get'>
+      {{ simpleSearch.as_p }}
+      <input type='submit' value='go' />
+    </form>
+    
+  <h2>commands</h2>
+    <ol id='navlist_archlib'>
+      {% for command in commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}
+    </ol>
+
+<!-- end archlib/nav.html -->

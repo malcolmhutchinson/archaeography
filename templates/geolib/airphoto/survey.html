@@ -1,0 +1,110 @@
+<!-- geolib/airphoto/survey.html -->
+{% if not found %}
+
+<h2>Air survey not found</h2>
+
+<p>We're sorry, there is no record of an aerial survey called 
+{{ survey }} in our records.</p>
+
+{% else %}
+<div class='two-col'><!-- open the left column -->
+
+
+    <h2>Historic aerial survey {{ survey }}</h2>
+
+{% if edit %}
+    <h3>Change the values in the record</h3>
+
+    <table style='font-size: 80%;'>
+
+{{ form }}
+
+    </table>
+    
+{% endif %}
+
+    <table style='font-size:80%;'>
+
+        <tr>
+
+	    <th>Name</th>
+	    <td>{{ survey.name }}</td>
+
+	</tr>
+        <tr>
+
+	    <th>Years flown</th>
+	    <td>{{ survey.year_first }} to {{ survey.year_last }}</td>
+
+	</tr>
+        <tr>
+
+	    <th>Film type</th>
+	    <td>{{ survey.film_type }}
+
+	</tr>
+        <tr>
+
+	    <th>Rights</th>
+	    <td>{{ survey.rights }}</td>
+
+	</tr>
+        <tr>
+
+	    <th>Comments</th>
+	    <td>{{ survey.comments }}</td>
+
+	</tr>
+        <tr>
+
+	    <th>Runs</th>
+	    <td>{{ survey.runs.all.count }}</td>
+
+	</tr>
+        <tr>
+
+	    <th>Frames</th>
+	    <td>{{ survey.frame_count }}</td>
+
+	</tr>
+    </table>
+{% if survey.georef_frames %}
+    <h2>Georeferenced frames from this survey</h2>
+
+    <table style='font-size: 80%; font-family: sans-serif' class='sortable'>
+        <tr>
+            <th>id</th>
+            <th>location</th>
+            <th>date</th>
+            <th>nzaa sites</th>
+        </tr>
+	{% for frame in survey.georef_frames %}
+	<tr>
+            <th><a href='{{ frame.url }}'>{{ frame.identifier }}</a></th>
+            <td>{{ frame.coverage }}</td>
+	    <td>{{ frame.date_flown }}</td>
+            <td>{{ frame.sites.count }}</td>
+	</tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+</div>
+
+<div class='two-col'><!-- open the right column -->
+
+    <h2>Runs from this survey in our collection</h2>
+
+
+    <ol style='font-size: 80%; font-family: sans-serif'>
+{% for run in survey.runs.all %}
+        <li><a href='{{ run.url }}'>{{ run }}</a>
+          ({{ run.frames.all.count }} total,
+	  {{ run.georef_frames.count }} georeferenced).</li>      
+{% endfor %}
+    </ol>
+  
+
+</div>
+{% endif %}
+<!-- close geolib/airphoto/survey.html -->

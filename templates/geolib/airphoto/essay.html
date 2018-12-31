@@ -1,0 +1,71 @@
+<!-- geolib/airphoto/essay.html -->{% load humanize %}
+<div class='two-col'><!-- open the left column -->
+
+    <h2>The historic aerial photograph collection</h2>
+
+    <img src='/static/img/geolib/AirPhotoThb.jpg'
+         class='left' alt='Historic air photo' />
+
+    <p>This is a catalogue of relevent historical aerial photographic
+    surveys. The surveys were flown mostly by NZ Aerial Mapping on
+    contract for the NZ Government, from the late 1930s. The sets
+    catalogued here cover the Waikato region, and archaeological sites
+    are visible on many of the frames.</p>
+
+    <p>The collection has recently been made available online at
+    <a href='http://retrolens.nz/'>retrolens.nz</a> by a
+    consortium of local government and Land Information NZ. I have
+    downloaded frames covering areas of archaeological interest, and
+    am undertaking a project to georeference them to sufficient
+    precision to be able to measure visible archaeological
+    features.</p>
+  
+    
+    
+</div>
+
+<div class='two-col'><!-- open the right column -->
+
+    <h3>List of aerial surveys catalogued here</h3>
+
+    <ol style='font-size: 80%; font-family: sans-serif;'>
+{% for survey in surveys %}    
+        <li><a href='{{ survey.url }}'><b>{{ survey.identifier }}</b></a>
+        {{ survey.name }}</li>
+{% endfor %}
+    </ol>
+
+
+
+</div>
+<div class='block-whole'>
+
+    <h2>Georeferenced frames</h2>
+
+    <p>This is an ongoing project. Currently, there are 
+    {{ georef.count }} referenced frames.</p>
+
+    <table style='font-size: 80%; font-family: sans-serif;'
+	   class='sortable'>
+        <tr>
+	    <th>Frame</th>
+            <th>coverage</th>
+	    <th>date</th>
+	    <th>time</th>
+	    <th>No. sites</th>
+        </tr>
+{% for frame in georef %}
+        <tr>	
+            <td><a href='{{ frame.url }}'><b>{{ frame.identifier }}</b></a></td>
+            <td>{{ frame.coverage }}</td>
+            <td>{{ frame.date_flown }}</td>
+            <td>{{ frame.time_flown }}</td>
+            <td>{{ frame.sites.count }}</td>
+        </tr>
+{% endfor %}
+    </table>
+    
+</div>  
+
+
+<!-- close geolib/airphoto/essay.html -->

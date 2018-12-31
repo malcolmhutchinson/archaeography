@@ -1,0 +1,69 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Features.html -->
+{% if feature %}
+<div class='block-whole'>
+
+    <h1>Feature: {{ feature.get_name }}</h1>
+
+<p>There are {{ feature.sites.all.count|intcomma }} site records which
+mention this feature.</p>
+
+<p><textarea style='width: 100%;'>{{ identifiers }}</textarea>  </p>
+
+<table style='font-size: 80%;'>
+
+    <tr>
+
+        <th>NZAA id</th>
+
+        <th>Title</th>
+
+        <th>type (legacy)</th>
+
+        <th>features</th>
+
+    </tr>
+{% for site in feature.sites.all %}
+    <tr>
+
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+
+        <td>{{ site.title }}</td>
+
+        <td>{{ site.lgcy_type }}</td>
+
+        <td>{{ site.features }}</td>
+
+    </tr>
+{% endfor %}
+</table>
+
+
+{% else %}
+<div class='block-page'>
+
+  <p class='note'><a href='/manuals/nzaa/feature'>/manuals/nzaa/feature</a></p>
+
+  <h1>Features</h1>
+
+  <table class='sortable'>
+    <tr>
+      <th>Feature</th>
+      <th>count</th>
+    </tr>
+    {% for feature in features %}
+    <tr>
+      {% if not feature.name %}
+      <td><a href='{{ feature.url }}'>None</a></td>{% else %}
+      <td><a href='{{ feature.url }}'>{{ feature }}</a></td>{% endif %}
+      <td>{{ feature.sites.all.count|intcomma }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+
+</div>
+<!-- end nzaa/Features.html -->
+{% endblock %}

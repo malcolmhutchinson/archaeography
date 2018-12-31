@@ -1,0 +1,55 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- templates/biblio/publications.html -->
+<div id='headline'
+     style="background-image: url('/static/img/biblio/banner.jpg')">
+
+<h1>{{ h1 }}</h1>
+
+</div>
+
+<div class='two-col'><!-- open left column -->
+
+    <h2>The collections</h2>
+
+    <p>There are a small number of periodicals we endeavour to keep a
+    comprehensive catalogue of in our bibliographic section. These are
+    the newsletter of the NZ Archaeological Association (NZAA), and
+    the two journals sponsored by the Association.</p>
+
+    <p>Publications (or unpublications) produced by both the NZAA and
+    Heritage NZ Pouhere Taonga (HNZ) are represented in our index. HNZ
+    keep the digital library of consultant's reports; the repository
+    of NZ grey literature in New Zealand.</p>
+
+    
+    <p>We have also tried to collect references for other substantial
+    works on archaeology. These include the Department of
+    Conservation's <em>Science for Conservation</em> series.
+
+
+    <h3>A work in progress... </h3>  
+
+    <p>Our intention is to provide direct links to the source
+    documents where possible. Unfortunately, during the NZAA recently
+    re-organised their website, meaning all our stored URLs are now
+    obsolete. We are working on rebuilding them, and hope to bring
+    this functionality to the site in the near future.</p>
+
+</div>
+<div class='two-col'><!-- open right column -->
+
+{% for publication in publications %}
+<div class='publication'>
+  <h2><a href='{{ publication.url }}'>{{ publication.title|safe }}</a></h2>
+
+  <p class='note'><a href='{{ publication.source }}'>{{ publication.source }}</a></p>
+
+  <p>{{ publication.description|safe }}</p>
+
+</div>
+{% endfor %}
+
+
+</div>
+<!-- close templates/biblio/publications.html -->
+{% endblock %}

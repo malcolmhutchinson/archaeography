@@ -1,0 +1,62 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- notes.html -->
+{% if page %}
+
+<div class='block-page'>
+{{ page.content|safe }}
+</div>
+
+{% if page.children%}
+<div class='sidebarnoprint'>
+
+    <h2>Contents</h2>
+
+    <ol class='listContents'>
+        {% for child in page.children %}
+        <li><a href='{{ child.0 }}'>{{ child.1 }}</a></li>{% endfor %}
+    </ol>
+
+</div>{% endif %}
+
+{% if page.unref_figs %}
+<div class='sidebarnoprint'>
+  
+    <h2>Unreferenced figures</h2>
+
+    {% for fig in page.unref_figs %}<div class='figure'>
+
+        <img src='{{ fig.0 }}' alt='{{ fig.1 }}' />
+
+	<p class='caption'>{{ fig.1 }}</p>
+
+    </div>
+    {% endfor %}
+</div>{% endif %}
+
+
+
+
+{% else %}
+<div id='headline'>
+  
+    <h1>{{ h1 }}</h1>
+
+    <p>Not necessarily fully-formed</p>
+
+</div>
+
+<div class='two-col'>
+
+
+
+    
+</div><!-- Close the left column -->
+
+<div class='two-col'>
+  
+
+</div>
+{% endif %}
+
+<!-- end blog.html -->
+{% endblock %}

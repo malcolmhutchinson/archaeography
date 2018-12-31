@@ -1,0 +1,27 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/NZAAregions.html -->
+<div class='block-page'>
+  <h1>NZAA regions</h1>
+
+
+  <p>These are the NZAA recording regions, as described in Smith,
+  I.W.G.; (1994) Organisation and operation of the New Zealand
+  Archaeological Association site recording scheme in <em>Archaeology in
+  New Zealand</em> Volume 37 Number 4: December 1994.</p>
+
+  <table class='sortable'>
+    <tr>
+      <th>Region</th>
+      <th>sites</th>
+    </tr>       
+    {% for region in nzaaregions %}
+    <tr>
+      <td><a href='/nzaa/{{ region.0 }}'>{{ region.1 }}</td>
+      <td>{{ region.2|intcomma }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+</div>
+<!-- end nzaa/NZAAregions.html -->
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Site-public.html -->
+<div class='block-page'>
+
+  <h1>{{ h1 }}</h1>
+
+
+  <p>{{ subhead }}</p>
+
+
+  <p>This site record s available from the NZ Archaeological
+    Association at ArchSite:</p>
+
+  <p><a href='{{ site.archsite_url }}'>{{ site.archsite_url }}</a></p>
+
+
+
+
+
+
+
+
+</div>
+<!-- end nzaa/Site-public.html -->
+{% endblock %}

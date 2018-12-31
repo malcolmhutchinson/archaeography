@@ -1,0 +1,60 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- blog/edit.html -->
+<div id='headline'
+     style="background-image: url('/static/img/blog/banner.png')">
+
+  
+    <h2>{{ h1 }}</h2>
+
+    <p>{{ subhead }}</p>
+
+</div>
+
+<div class='two-col'>
+  
+{{ article.pagecopy|safe }}
+
+</div><!-- Close the left column -->
+
+<div class='two-col' style='border-left: 1px solid black;'>
+
+    {% if article.unref_figs %}
+    <h2>Unreferenced figures</h2>
+
+    {% for fig in article.unref_figs %}
+    <div class='thb150'>
+
+	<img style='width:150px' src='{{ fig.0 }}' alt='{{ fig.1 }}' />
+
+	<p class='caption'>{{ fig.1 }}</p>
+
+    </div>
+    {% endfor %}{% endif %}
+
+    <div class='endnote' style='clear: both;'>
+
+	<table style='font-size: 80%;'>
+	  {{ blogForm }}
+	</table>
+	{{ UploadFile }}
+
+    </div>
+
+
+	{% if notifications %}
+	<ol class='notifications'>
+	{% for note in notifications %}
+	    <li>{{ note }}</li>{% endfor %}
+	</ol>
+	{% endif %}
+
+	<div class='notes' style='font-size: 80%; font-family: sans-serif;'>
+	<h2 style='clear: both;'>Notes</h2>
+	{{ article.get_notes|safe }}
+	</div>
+
+</div><!-- Close the right column -->
+
+
+<!-- end blog/edit.html -->
+{% endblock %}

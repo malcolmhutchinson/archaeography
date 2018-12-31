@@ -1,0 +1,75 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Site.html -->
+
+
+<div class='site-left'>
+<p class='note'>{{ subhead }}</p>
+
+<h1>{{ h1 }}</h1>
+{% if site %}
+
+  {% if update_id %}
+
+<p class='note'>Viewing update record {{update_id }} </p>
+
+    {% if update %}
+{% include 'nzaa/update.html' %}
+    {% else %}
+<h1>No record found for update {{ update_id }}</h1>
+    {% endif %}
+  {% endif %}<!-- update id not given -->
+
+<h2>Short description</h2>
+
+{{ site.display_short_description|safe }}
+
+
+    {% if site.pending_updates.count %}
+<p class='note'>This site record has pending updates:
+  {% for u in site.pending_updates %}
+  <a href='{{ u.url }}'>{{ u }}</a>
+  {% endfor %}</p>
+    {% endif %}<!-- site.pending_updates.count -->
+
+<hr />
+{% for update in site.display_updates %}
+{% include 'nzaa/update.html' %}
+{% endfor %}
+  
+
+<!-- closing the site code -->
+</div><!-- close the left column -->
+
+<div class='site-right'>
+  <div class='data'>    
+    {% include 'nzaa/panel/archaeological.html' %}
+    {% include 'nzaa/panel/geographic.html' %}
+  </div>
+
+  {% if site.review.all.count %}
+  <p class='note'>Reviews of this site record:<br />
+  {% for item in site.review.all %}
+  {{ item.reviewed }} by {{ item.assessed_by }}<br />
+  {% endfor %}</p>{% endif %}
+</div><!-- close the right column -->
+
+{% else %} <!-- no site record -->
+
+  
+<div class='block-whole'>
+
+  <p>There is no site record called {{ site_id }} in our system.<p>
+
+  <p>You can try the ArchSite record at <br />
+    <a href='{{ archsite }}'>{{ archsite }}</a>.<p>
+</div>
+
+{% endif %} <!-- close the original 'if site' -->
+
+{% if review %}
+{% include 'nzaa/panel/siteReview.html' %}
+{% endif %}
+
+<!-- end nzaa.html -->
+{% endblock %}

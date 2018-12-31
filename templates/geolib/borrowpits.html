@@ -1,0 +1,143 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- geolib/borrowpits.html -->
+<div id='headline'
+     style="background-image: url('/static/img/geolib/banner.png')">
+
+  <h1>{{ h1 }}</h1>
+
+  <p>{{ subhead }}</p>
+
+</div>
+
+<div class='two-col'><!-- open the left column -->
+
+    <h2>An inventory of borrow pits</h2>
+
+
+    <p>Borrow pits are sand mines, excavated by Maori in pre-European
+    times, to source sand and gravel for mixing with the topsoil to
+    impove conditions for the tropical kumara tuber.</p>
+
+    <p>These borrow pits, and the modified soils which accompany them,
+    form the largest known archaeological complex of horticultural
+    sites in the South Pacific, and are a unique feature of the
+    mid-Waikato valley.</p>
+
+    <p>One of our research interests here
+    at <a href='https://archaeography.nz'>archaeography.nz</a> is in
+    determining the area under cultivation from the archaeological
+    evidence represented by these borrow pits. To do this, we have
+    been studying historic and modern aerial photography of the
+    valley, spotting objects we think are borrow pits, and recording
+    them in a table in our spatial database.</p>
+
+    <p>We know of {{ count_bp|intcomma }} borrow pits along the
+    Waikato River, from Horahora to Mercer. They are also found in
+    some locations along the Waipa River, and along the Komakarau
+    Stream near Gordonton.</p>
+
+    
+    <h2>Capturing borrow pit locations</h2>
+
+    <p>The pits form sub-circular (or not-quite circular) depressions
+    in the landscape. These can easily be seen on historic aerial
+    photographs. </p>
+
+    <div class='figure'>
+
+        <img src='/static/img/geolib/borrowpits_airphoto.png'
+             alt='Airphoto SN266/865/58' />
+
+	<p class='caption'>Aerial
+	photograph <a href='/geolib/airphoto/SN266/835/58'>SN266/835/58</a>,
+	flown in June 1943, showing an area by the Waikato River west
+	of Cambridge. Clusters of borrow pits appear in lines, as
+	indicated by arrows. Photo sourced from
+	http://retrolens.nz/.</p>
+
+    </div>
+
+    <p>This detail from an aerial photograph flown in 1943 shows lines
+    of borrow pits near St Peter's school, west of Cambridge. The grid
+    lines on the map are coordinates on the NZTM 2000 projection, and
+    these show that the photograph has been georeferenced, so that we
+    can determine precise coordinates for objects visible on it.</p>
+
+    <p>We know from field work that the areas around and between the
+    borrow pits contain the modified soils Maori were manufacturing
+    with sand and gravel from the pits. These are the gardens in which
+    they were growing kumara. There are archaeolgical features within
+    these soils, like fireplaces and storage pits. Some of these
+    features can provide material for dating, or microfossil samples
+    which show exactly what crops were being cultivated. </p>
+
+
+    <h2>Analysing the dataset</h2>
+
+    <p>Although plotting thousands of points on a map can sometimes be
+    a pleasant diversion; a way to soak up hundreds of hours of
+    otherwise unproductive time, the real purpose of collecting all
+    these data is so we can do something with them to help us
+    understand more about how the people in the past were living on the
+      land. </p>
+
+    <div class='figure'>
+
+        <img src='/static/img/geolib/924borrowpits.png'
+             alt='924 borrow pits' />
+
+	<p class='caption'>There are 924 borrow pits in this
+	picture. Each one placed by hand from aerial photos. The
+	scale is 3&nbsp;km long.</p>
+
+    </div>    
+
+    <p>One of the questions we hope to answer with our datasets is,
+    how extensive were the Maori gardens? We know the sand and gravel
+    comprising the modified soils were sourced from the borrow
+    pits. We presume the people were not carrying this material very
+    far, given no machinery or beasts of burden. But how far is a
+    reasonable distance? We try answering some of these questions by
+    computational archaeology, over on
+    our <a href='/archaeology/waikato-horticulture/'>Waikato valley
+    Maori horticulture</a> pages.</p>
+
+     
+
+    <h2>How much has changed?</h2>
+
+    <p>Another thing we can do with our inventory is determine how
+    much of the archaeological resource we are losing over time, to
+    urban and rural development. We have the baseline inventory from
+    historic aerial photos, and by comparing this with modern remote
+    sensing datasets
+    (the <a href='/geolib/ortho/'>orthophotography</a> and
+    the <a href='/geolib/lidar/'>lidar-derived elevation dataset</a>) we
+    can determine which archaeological sites have been affected by
+    changes in the landscape.</p>
+
+    
+
+</div>
+
+<div class='two-col'><!-- open the right column -->
+
+    <div class='figure'>
+
+        <img src='/static/img/geolib/borrowpits.png'
+	     alt='Map of borrow pits' />
+
+        <p class='caption'>The inventory of {{ count_bp|intcomma }}
+        borrow pits in the Waikato valley. These pre-European Maori
+        sand mines are known from Horahora south of Karapiro to just
+        above Mercer. They occour along approximately 120&nbsp;km of
+        Waikato riverbank. Borrow pits area also known along the Waipa
+        River, and the Komakarau Stream near Gordonton.</p>
+
+    </div>
+  
+</div>
+
+<!-- close geolib/borrowpits.html -->
+{% endblock %}

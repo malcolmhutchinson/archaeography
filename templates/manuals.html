@@ -1,0 +1,35 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa.html -->
+<div class='block-page'>
+<p class='note'>{{ subhead }}</p>
+
+{% if page %}
+
+{{ page.content|safe }}
+
+
+{% for child in page.children %}
+<div class='manlisting'>
+
+  <h2><a href='{{ child.url }}'>{{ child.title }}</a></h2>
+
+  <p>{{ child.metadata.description }}</p>
+
+</div>
+{% endfor %}
+
+
+
+{% else %}
+
+
+<h1>{{ h1 }}</h1>
+
+
+
+{% endif %}
+</div>
+
+<!-- end manuals.html -->
+{% endblock %}

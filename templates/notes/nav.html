@@ -1,0 +1,33 @@
+<!-- notes/nav.html -->
+<h2>{{ page.title }}</h2>
+
+    <ol id='navlist_blog'>
+
+      <li><a href='{{ page.parent.0 }}'>Go up</a></li>
+      <li><a href='{{ page.previous.0 }}'>Previous</a></li>
+      <li><a href='{{ page.nextpage.0 }}'>Next</a></li>
+
+    </ol>
+
+    <h3>Other entries</h3>
+    <ol>
+        {% for p in page.siblings %}<li><a href='{{ p.0 }}'>{{ p.1 }}</a></li>{% endfor %}
+    </ol>
+
+    {% if page.children %}
+    <h3>Contents of this section</h3>
+    <ol>
+        {% for p in page.children %}<li><a href='{{ p.0 }}'>{{ p.1 }}</a></li>{% endfor %}
+    </ol>{% endif %}
+
+
+
+
+    
+    <ol id='navlist_blog'>
+
+      {% for command in commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}
+    </ol>
+
+<!-- end notes/nav.html -->

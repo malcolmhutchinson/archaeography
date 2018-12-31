@@ -1,0 +1,138 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- geolib/soilset.html -->
+<div id='headline'
+     style="background-image: url('/static/img/geolib/SoilBanner.png')">
+
+  <h1>{{ h1 }}</h1>
+
+  <p>{{ subhead }}</p>
+
+</div>
+<div class='two-col'>
+{% if not soilset %}
+
+     <h2>Soil dataset: {{ command }} </h2>
+
+    <p>We're sorry, there is no dataset answering this identifier in our
+    collection.</p>
+
+    <p>You can go back to the <a href='/geolib/soils/'>index for soil
+    data</a> and try again.</p>
+
+</div>
+{% else %}
+
+    
+    <h2>{{ soilset.name }} </h2>
+
+
+    {{ soilset.get_description|safe }}
+
+    <h3>Provenance</h3>
+
+    {{ soilset.get_provenance|safe }}
+
+</div><!-- close the left column -->
+<div class='two-col'>
+
+    <h3>Summary of the dataset</h3>
+
+    <table style='font-size: 80%'>
+
+        <tr>
+
+            <td>Total number soil polygons</td>
+            <td style='text-align: right;'>{{ soilset.count }}</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Total area covered by survey</td>
+            <td style='text-align: right;'>
+              {{ soilset.totalarea|floatformat:2|intcomma }} ha</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Average area of soil polygons</td>
+            <td style='text-align: right;'>
+              {{ soilset.averagearea|floatformat:2|intcomma }} ha</td>
+
+        </tr>
+
+        <tr>
+
+          <td colspan='2' style='border-top: 1px solid black'></td>
+          
+        </tr>
+
+        <tr>
+
+            <td>Number anthropic soil deposits</td>
+            <td style='text-align: right;'>{{ soilset.numberanthropic }} </td>
+
+        </tr>
+
+        <tr>
+
+            <td>Total area anthropic soils</td>
+            <td style='text-align: right;'>
+              {{ soilset.totalanthropic|floatformat:2|intcomma }} ha</td>
+
+        </tr>
+
+        <tr>
+
+            <td>Average area anthropic soil polygons</td>
+            <td style='text-align: right;'>
+              {{ soilset.averageanthropic|floatformat:2|intcomma }} ha</td>
+
+        </tr>
+
+        <tr>
+
+          <td colspan='2' style='border-top: 1px solid black'></td>
+          
+        </tr>
+
+    </table>
+
+    <div class='figure'>
+
+        <img src='/static/img/geolib/soils/{{ soilset.identifier }}.png'
+             alt='Soil set map'
+             style='width: auto; max-width: 100;' />
+
+    </div>
+
+  
+{% if librarian %}
+        <div class='endnote' style='clear:both'>
+
+            <h2 style='clear: both;'>Change the record</h2>
+
+             <!-- soilsetForm --> 
+            <table class='recordForm'>
+{{ soilsetForm }}
+            </table>
+            <!-- end soilsetForm --> 
+
+            <p>You see this panel because you are a librarian.</p>
+        </div>
+{% endif %}
+{% endif %}
+</div><!-- close the right column -->
+<div style='clear:both'></div>
+
+
+
+
+     <!-- end geolib/soilset.html -->
+{% endblock %}
+
+
+
+

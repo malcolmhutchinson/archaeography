@@ -1,0 +1,110 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- geolib.html -->
+<div id='headline'
+     style="background-image: url('/static/img/geolib/banner.png')">
+
+  <h1>{{ h1 }}</h1>
+
+  <p>{{ subhead }}</p>
+
+</div>
+
+<div class='block-page'>
+
+    <h2>Datasets held in our collection</h2>
+
+
+    <!-- Aerial photos -->
+    <div class='indextile'>
+    <h3><a href='/geolib/airphoto/'>Aerial photo frames</a></h3>
+
+    <a href='/geolib/airphoto/'>
+    <img src='/static/img/geolib/AirPhotoThb.jpg'
+         class='left' alt='Historic air photo' /></a>
+
+    <p>This collection holds metadata, and georeferencing information,
+    on sets of historic vertical aerial surveys dating to the late
+    1930s. Recently made available by a consortium of LINZ and
+    regional governments, these frames show evidence for hundreds of
+    archaeological sites.</p>
+
+    </div>
+
+    <!-- Cadastre -->
+    <div class='indextile'>
+    <h3><a href='/geolib/cadastre/'>Cadastre (NZ property parcels)</a></h3>
+
+    <a href='/geolib/cadastre/'>
+    <img src='/static/img/geolib/CadastreThb.png'
+         class='left' alt='Cadastre' /></a>
+
+    <p>Land information NZ hold the property parcels collecton. This
+    function permits the search on parcel appellation, and presents a
+    report detailing the archaeological sites within and adjacent to
+    individual parcels.</p>
+
+    </div>
+   
+    <!-- Lidar -->
+    <div class='indextile'>
+    <h3 style='clear:both; padding-top: 1em;'>
+      <a href='/geolib/lidar/'>Lidar elevation data</a>
+    </h3>
+
+    <a href='/geolib/lidar/'>
+    <img src='/static/img/geolib/LidarThb.png'
+         class='left' alt='lidar hillshade' /></a>
+
+    <p>Land Information NZ supply selected sets of lidar elevation
+    data. Many archaeological features can be seen in hillshade images
+    from lidar data. We use lidar as a reference layer when
+    georeferencing historic aerial photos, and we use it as background
+    in our maps.</p>
+
+    </div>
+ 
+    <!-- Orthophotos -->
+    <div class='indextile'>
+    <h3 style='clear:both; padding-top: 1em;'>
+      <a href='/geolib/ortho/'>Orthorectified aerial imagery</a>
+    </h3>
+
+    <a href='/geolib/ortho/'>
+    <img src='/static/img/geolib/OrthoThb.jpg'
+         class='left' alt='Orthorectified image' /></a>
+
+    <p>Land Information NZ supply a large collection of contemporary
+    true-colour orthographic imagery. We keep references to these sets
+    to enable the easy selection of aerial image tiles against
+    archaeological sites.</p>
+
+    </div>
+
+    <!-- Topographic maps -->
+    <div class='indextile'>
+    <h3 style='clear:both; padding-top: 1em;'>
+      <a href='/geolib/topo/'>Topographic maps</a>
+    </h3>
+
+    <a href='/geolib/topo/'>
+    <img src='/static/img/geolib/TopoThb.png'
+         class='left' alt='Topographic map image' /></a>
+
+    <p>We keep references to three series of topographic maps which
+    have historic relevance to archaeology in New Zealand. The NZMS1
+    imperial series, and NZMS260 metric topographic map series are the
+    basis of the Site Recording Scheme. These have been superseded by
+    the Topo50 series.</p>
+
+    </div>
+
+</div>
+
+<div style='clear:both'></div>
+
+<!-- home.html -->
+{% endblock %}
+
+
+
+

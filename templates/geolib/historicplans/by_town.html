@@ -1,0 +1,27 @@
+<!-- end geolib/historicplans/by_town -->
+{% regroup plans by location as towns %}
+
+<table style='font-size: 80%'>
+  {% for town in towns %}
+    <tr>
+        <td colspan='4' style='border-top: black 0px'><h2>{{ town.grouper }} ({{town.list|length }})</h2></td>
+    </tr>
+    <tr>
+        <th>Plan</th>
+	<th>Year</th>
+        <th>status</th>
+        <th>Description</th>
+	<th>Notes</th>
+    </tr>
+{% for plan in town.list %}
+    <tr>
+        <td><a href='{{ plan.url }}'>{{ plan }}</a></td>
+        <td>{{ plan.pub_year }}</td>
+        <td>{{ plan.status }}</td>
+        <td>{{ plan.description }}</td>
+        <td>{{ plan.listnotes }}</td>
+    </tr>{% endfor %}
+{% endfor %}
+</table>
+<!-- end geolib/historicplans/by_town -->
+

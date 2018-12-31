@@ -1,0 +1,9 @@
+<!-- nzaa/panel/updateUnrefFigs.html -->
+{% for fig in update.unref_figs %}<div class='figure'>
+
+    <img src='{{ fig.0 }}' alt='{{ fig.1 }}' />
+
+    <p class='caption'>{{ fig.1 }}</p>
+  
+</div>{% endfor %}
+<!-- end nzaa/panel/updateUnrefFigs.html -->

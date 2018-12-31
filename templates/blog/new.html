@@ -1,0 +1,139 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- blog/edit.html -->
+<div id='headline'>
+  
+    <h1>{{ h1 }}</h1>
+
+    <p>{{ subhead }}</p>
+
+</div>
+
+<div class='two-col'>
+
+  <h2>Create a new blog entry</h2>
+  
+{% include 'blog/blogForm.html' %}
+  
+</div><!-- Close the left column -->
+
+<div class='two-col' style='border-left: 1px solid black;'>
+
+  <h2>Some guidelines to authors... </h2>
+
+<table style='font-size: 80%;'>
+
+    <tr>
+
+        <th>author & byline</th>
+
+        <td>Author is your name in the format
+	[surname]comma[initials]. eg. Smith, J.W. There should be a
+	space after the comma and no spaces between the
+	initials.<br />
+
+	Byline is the name which will be printed as
+	the author in display.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>title & subtitle</th>
+      
+        <td>These appear as the headline and subheading in display,
+        and as the listing heading and subheading. Make them
+        brief.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>status</th>
+        <td>Required. Start with 'idea'. You can change it
+        later. Status determines which list the article appears
+        on.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>series</th>
+        <td>Name of the series this enty belongs to, if any.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>embargo</th>
+        <td>If this holds a date value, when published the article
+        will list but not display. In place of the page content will
+        be an embargo notice. If today's date is later than the
+        embargo, this will have no effect.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>byline</th>
+        <td>The name which will appear in print as the author.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>subject</th>
+        <td>Keywords. A comma-separated list of subject headings.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>coverage</th>
+        <td>Comma-separated list of locations, ending with "new Zealand:.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>headline</th>
+        <td>Determines whether this article wil list in headliners or
+        not. A positive value forces it onto the list, a negative
+        value forces it off the list.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>intro</th>
+        <td>A short paragraphy which displays in long-frm list entries
+        (like what goes on teh homepage).</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>copy</th>
+        <td>This is the text content, with references to figure
+        images, which will be displayed as the content of the
+        article.</td>
+	
+    </tr>
+
+    <tr>
+
+        <th>notes</th>
+        <td>Any length text. Will display only to editors.</td>
+	
+    </tr>
+
+</table>
+  
+
+
+
+  
+</div>
+
+
+<!-- end blog/new.html -->
+{% endblock %}

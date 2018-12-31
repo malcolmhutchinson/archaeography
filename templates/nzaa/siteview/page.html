@@ -1,0 +1,42 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<div class='block-page'>
+
+    <p class='note'>NZ Archaeological Association Site Recording Scheme</p>
+
+    <h1>{{ site.title }}</h1>
+
+    <h2>Description</h2>
+
+    {{ site.display_description|safe }}
+
+    <h2>Finder aid</h2>
+
+    {{ site.display_finder_aid }}
+
+    {% if site.updates.all.count == 1 %}
+
+    <div class='update-record'>
+
+	<h2>Update: {{ update.update_type }}</h2>
+
+	 <p class='note'>Updated {{ update.updated|date:"Y-m-d" }}
+	   by {{ update.updated_by }}.</p>
+
+	{{ update.long_fields|safe }}
+
+    </div> 
+
+    {% else %}
+
+    <h2>Summary of updates to this site record</h2>
+
+    {% for update in site.updates %}
+      {{ update }}
+    {% endfor %}
+    {% endif %}
+
+
+</div><!-- close the block page -->
+
+{% endblock %}

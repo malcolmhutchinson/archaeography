@@ -1,0 +1,50 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Sitelists.html -->
+
+<div class='block-whole'>
+
+    <h1>{{ h1 }}</h1>
+
+    <h2>{{ subhead }}</h2>
+    
+    <table style='font-size: 100%' class='sortable'>
+
+        <tr>
+
+            <th>id</th>
+
+            <th>name</th>
+          
+            <th>description</th>
+          
+            <th style='text-align: right;'>No. sites</th>
+
+            <th>type</th>
+
+            <th>owner</th>
+          
+        </tr>
+        {% for list in sitelists %}<tr>
+
+            <td>{{ list.id }}</td>
+        
+            <td><a href='{{ list.url }}'>{{ list.name }}</a></td>
+          
+            <td style='padding-top: 0.5em;'>{{ list.description }}</td>
+          
+            <td style='text-align: right;'>{{ list.sites.count|intcomma }}</td>
+
+            <td>{% if list.list_type %}{{ list.list_type }}{% endif %}</td>
+
+            <td>{{ list.owner }}</td>
+
+        </tr>{% endfor %}
+
+    </table>
+    
+</div>
+{% endblock %}
+<!-- nzaa/Sitelists.html -->
+
+

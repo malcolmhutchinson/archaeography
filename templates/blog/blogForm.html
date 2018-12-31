@@ -1,0 +1,91 @@
+<!-- blog/blogForm.html -->
+{{ blogForm.non_field_errors }}
+
+<table class='form'>
+{% if create %}
+    <tr>
+	<th>id</th>
+	<td>{{ blogForm.id }}</td>
+
+	<th></th>
+	<td>{{ blogForm.a }}</td>
+    </tr>{% endif %}
+
+    <tr>
+	<th>author</th>
+	<td>{{ blogForm.author.errors }}{{ blogForm.author }}</td>
+
+	<th>byline</th>
+	<td>{{ blogForm.byline.errors }}{{ blogForm.byline }}</td>
+    </tr>
+
+    <tr>
+	<th>title</th>
+	<td>{{ blogForm.title.errors }}{{ blogForm.title }}</td>
+
+	<th>subject</th>
+	<td>{{ blogForm.subject.errors }}{{ blogForm.subject }}</td>
+    </tr>
+
+    <tr>
+
+	<th>subtitle</th>
+	<td colspan='3'>{{ blogForm.subtitle.errors }}
+	  {{ blogForm.subtitle }}</td>
+
+    </tr>
+
+    <tr>
+	<th>status</th>
+	<td>{{ blogForm.status.errors }}{{ blogForm.status }}</td>
+
+	<th>coverage</th>
+	<td>{{ blogForm.status.errors }}{{ blogForm.coverage }}</td>
+    </tr>
+
+    <tr>
+	<th>series</th>
+	<td>{{ blogForm.series.errors }}{{ blogForm.series }}</td>
+
+	<th>thumbnail</th>
+	<td>{{ blogForm.thumbnail.errors }}{{ blogForm.thumbnail }}</td>
+    </tr>
+
+    <tr>
+	<th>embargo</th>
+	<td>{{ blogForm.embargo.errors }}{{ blogForm.embargo }}</td>
+
+	<th>headline</th>
+	<td>{{ blogForm.headline.errors }}{{ blogForm.headline }}</td>
+    </tr>
+
+    <tr>
+	<th>Upload file</th>
+	<td colspan='3'>{{ UploadFile.non_field_errors }}{{ UploadFile.filename.errors }}{{ UploadFile.filename }}</td>
+
+    </tr>
+
+    <tr>
+	<th>intro</th>
+	<td colspan='3'>{{ blogForm.intro.errors }}{{ blogForm.intro }}</td>
+
+    </tr>
+
+    <tr>
+	<th>copy</th>
+	<td colspan='3'>{{ blogForm.copy.errors }}{{ blogForm.copy }}</td>
+
+    </tr>
+
+    <tr>
+	<th>notes</th>
+	<td colspan='3'>{{ blogForm.notes.errors }}{{ blogForm.notes }}</td>
+
+    </tr>
+
+</table>
+
+
+<!-- end blog/blogForm.html -->
+
+

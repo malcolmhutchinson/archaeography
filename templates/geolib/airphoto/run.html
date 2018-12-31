@@ -1,0 +1,76 @@
+<!-- geolib/airphoto/run.html -->
+<div class='two-col'><!-- open the left column -->
+
+    <h2>Historic aerial photo run {{ run }}</h2>
+
+    <table style='font-size:80%;'>
+
+        <tr>
+
+	    <th>Survey</th>
+	    <td>{{ run.survey.id }}</td>
+
+	</tr>
+
+        <tr>
+
+	    <th>Survey name</th>
+	    <td>{{ run.survey.name }}</td>
+
+	</tr>
+
+        <tr>
+
+	    <th>Ordinal</th>
+	    <td>{{ run.ordinal }}</td>
+
+	</tr>
+
+    </table>
+
+
+    <h2>Georeferenced frames from this run ({{ run.georef_frames.count }})</h2>
+
+    <ol style='font-size: 80%; font-family: sans-serif'>
+{% for frame in run.georef_frames %}    
+        <li><a href='{{ frame.url }}'><b>{{ frame.identifier }}</b></a>
+        {{ frame.coverage }}, {{ frame.date_flown }}</li>
+{% endfor %}
+    </ol>
+
+    
+  
+</div>
+
+<div class='two-col'><!-- open the right column -->
+
+
+{% if edit %}
+    <h3>Change the values in the record</h3>
+
+    <table style='font-size: 80%;'>
+
+{{ form }}
+
+    </table>
+    
+{% endif %}
+
+    <p style='font-family: sans-serif;'>
+    From Survey <a href='{{ run.survey.url }}'>{{ run.survey.id }}
+    {{ run.survey.name }}</a>.</p>
+
+    <h3>Photo frames belonging to this run</h3>
+
+    <ul style='font-size: 80%; font-family: sans-serif'>
+{% for frame in run.frames.all %}
+        <li><a href='{{ frame.url }}'>{{ frame }}</a>
+          {% if frame.coverage %}{{ frame.coverage }}.{% endif %}
+          {% if frame.date_flown %}{{ frame.date_flown }}
+	  {% if frame.time_flown %} at {{ frame.time_flown }}{% endif %}
+	  {% endif %}
+	</li>
+{% endfor %}  
+    </ul>
+</div>
+<!-- close geolib/airphoto/run.html -->

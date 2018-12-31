@@ -1,0 +1,9 @@
+<!-- home/panel.html -->
+<div id='panel'>
+
+  {% if page.metadata.metarecord %}{% include 'webnote/metadataTable.html' %}{% endif %}
+
+{% if command = "edit" %}{% include 'webnote/pageForm.html' %}{% endif %}
+
+  </div><!-- close panel -->
+<!-- close home/panel.html -->

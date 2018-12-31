@@ -1,0 +1,131 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- geolib/historicplans/plan.html -->
+<div id='headline'
+      style="background-image: 
+          url('/static/img/geolib/HistoricPlansBanner.png')">
+
+  <h1>{{ h1 }}</h1>
+
+  <p>{{ subhead }}</p>
+
+</div>
+
+{% if doesnotexist %}
+
+<div class='block-page' style='margin-top: 3em;'>
+  
+    <h2>Record not found for {{ doesnotexist }}</h2>
+
+
+    <p>Sorry, we can't find an historic plan with that identifier in our
+    records.</p>
+
+</div>
+{% else %}
+
+<div class='two-col'>
+
+  <h2>{{ plan.id }} {{ plan.title }} ({{ plan.pub_year }})</h2>
+
+  {% for img in plan.img512 %}
+
+  <div class='figure' style=' float: left;'>
+    
+    <img src='{{ img.0 }}' alt='{{ img.1 }}' />
+    
+  </div>
+  {% endfor %}
+
+
+  <h3 style='clear: both;'>Description</h3>
+
+  <p>{{ plan.description }}</p>
+  
+  <h3>Archaeological notes</h3>
+
+  <p>{{ plan.notes }}</p>
+  
+
+</div>
+
+<div class='two-col'>
+  
+    <table class='data'>
+
+        <tr>
+            <th>title</th>
+            <td>{{ plan.title }}</td>
+        <tr>
+
+        <tr>
+            <th>plan type</th>
+            <td>{{ plan.plan_type }}</td>
+        <tr>
+
+        <tr>
+            <th>status</th>
+            <td>{{ plan.status }}</td>
+        <tr>
+
+        <tr>
+            <th>plan version</th>
+            <td>{{ plan.plan_version }}</td>
+        <tr>
+
+        <tr>
+            <th>ordinal</th>
+            <td>{{ plan.ordinal }}</td>
+        <tr>
+
+        <tr>
+            <th>region</th>
+            <td>{{ plan.region }}</td>
+        <tr>
+
+        <tr>
+            <th>year</th>
+            <td>{{ plan.pub_year }}</td>
+        <tr>
+
+        <tr>
+            <th>author</th>
+            <td>{{ plan.author }}</td>
+        <tr>
+
+        <tr>
+            <th>citation</th>
+            <td>{{ plan.citaion }}</td>
+        <tr>
+
+        <tr>
+            <th>subject</th>
+            <td>{{ plan.subject }}</td>
+        <tr>
+
+
+        <tr>
+            <th>coverage</th>
+            <td>{{ plan.coverage }}</td>
+        <tr>
+
+    </table>
+
+
+    {% if librarian %}
+    <div class='endnote' style='clear:both;'>
+    
+        <h2>Change the record</h2>
+
+        <table class='recordForm'>
+        {{ planForm }}
+        </table>
+
+        <p>You see this panel because you are a librarian.</p>
+
+    </div>{% endif %}    
+
+</div>
+
+{% endif %}
+<!-- end geolib/historicplans/plan.html -->
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/NewSites.html -->
+<div class='block-page'>
+
+  <h1>New site records</h1>
+
+<p class='note'><a href='/manuals/nzaa/new_site_record'>/manuals/nzaa/new_site_record</a></p>
+
+  <p>Records for previously unrecorded archaeological sites which are
+  in preparation, and have not been accessioned into the main site
+    record collection.</p>
+
+  <p>You can <a href='/nzaa/create/'>create a new site record here</a>.
+
+  {% if allrecords %}
+  <h3>All new site records</h3>
+
+  <table class='sortable' style='font-size: 90%;'>
+    <tr>
+      <th>id</th>
+      <th>status</th>
+      <th>title</th>
+      <th>type</th>
+      <th>period</th>
+      <th>ethnicity</th>
+      <th>owner</th>
+    </tr>
+    {% for record in allrecords %}
+    <tr>
+      <td><a href='{{ record.url }}'>{{ record.newsite_id }}</a></td>
+      <td>{{ record.opstatus }}</td>
+      <td>{{ record.title }}</td>
+      <td>{{ record.site_type }}</td>
+      <td>{{ record.period }}</td>
+      <td>{{ record.ethnicity }}</td>
+      <td>{{ record.owner }}</td>
+    </tr>{% endfor %}
+
+  </table>
+  {% endif %}
+</div>
+<!-- end nzaa/NewSites.html -->
+{% endblock %}

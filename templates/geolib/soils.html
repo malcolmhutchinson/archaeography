@@ -1,0 +1,83 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- geolib/soils.html -->
+<div id='headline'
+     style="background-image: url('/static/img/geolib/SoilBanner.png')">
+
+  <h1>
+    {{ h1 }}</h1>
+
+  <p>{{ subhead }}</p>
+
+</div>
+
+<div class='two-col'>
+
+    <h2>Soil science data</h2>
+
+    <p>Starting in the 1930s, The Department of Scientific and
+    Industrial Research (DSIR) conducted a series of soil surveys in
+    the Waikato basin and surrounding hill country. It was these soil
+    scientists who first recognised the Maori-made soils along the
+    Waikato and Waipa rivers.</p>
+
+    <p>The surveys were mapped, and eventually converted into polygon
+    geometries and are now available as GIS vector files from
+    <a href='http://www.landcareresearch.co.nz/'>Landcare Research
+    Manaaki Whenua</a>, through their
+    <a href='http://www.landcareresearch.co.nz/resources/data/lris'>Land Resource
+      Information Systems (LRIS) Portal</a>.</p>
+
+    <p>We are most interested in these soil type datasets because they
+    describe anthropic, or human-made, soils. That is, the class of
+    soil called Tamahere loam is recognised as being made by Maori,
+    and that makes the soil deposits archaeological.</p>
+
+    <p>We've taken a copy of some of the soil type data and identified
+    Maori-made soils in them as a special subset. We use this modified
+      dataset to analyse archaeological records.</p>
+
+    <p>A current research project is to estimate the area of land
+    under cultivation by Maori. The soil scientists mapped
+    2,799.7&nbsp;ha of anthropic soils across the four Waikato valley
+    surveys.</p>
+
+
+</div><!-- close the left column -->
+
+<div class='two-col'>
+
+    <div class='figure'>
+
+      <img src='/static/img/geolib/soils/SoilSurveyMap.png'
+           alt='Soil type data' />
+
+        <p>Part of the Waikato area showing the four main soil surveys
+        we deal with. The Matamata survey is not shown. Dark blue
+        areas are Maori-made soils identified by the DSIR soil
+        scientists.</p>
+        
+    </div>
+
+    <h2>Soil type datasets</h2>
+
+    <p>We currently model {{ datasets.count }} soil datasets.</p>
+
+    <div style='font-family: sans-serif; font-size: 80%;'>
+
+{% for dataset in datasets %}
+    <p><a href='{{ dataset.url }}'><b>{{ dataset }}</b></a><br />
+    {{ dataset.short_description }}</p>
+{% endfor %}
+    </div>
+
+</div>
+
+<div style='clear:both'></div>
+
+<!-- geolib/soils.html -->
+{% endblock %}
+
+
+
+

@@ -1,0 +1,23 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Regions.html -->
+<div class='block-page'>
+
+  <h1>Regions</h1>
+
+
+  <table class='sortable'>
+    <tr>
+      <th>Region</th>
+      <th>count</th>
+    </tr>    
+    {% for region in regions %}
+    <tr>
+      <td><a href='{{ region.url }}'>{{ region }}</a></td>
+      <td>{{ region.sites_count|intcomma }}</td>
+  {% endfor %}
+    </tr>
+  </table>
+</div>
+<!-- end nzaa/Regions.html -->
+{% endblock %}

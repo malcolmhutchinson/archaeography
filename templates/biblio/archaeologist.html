@@ -1,0 +1,76 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- templates/archlib/archaeologist.html -->
+<div id='headline'
+     style="background-image: url('/static/img/biblio/banner.jpg')">
+
+  
+    <h1>NZ archaeological bibliography</h1>
+
+    <p>a searchable index of literature grey and white</p>
+
+</div>
+
+<div class='two-col'><!-- open the left column -->
+  
+
+    <h2>{{ archaeologist }}</h2>
+
+
+    <p>{{ papers|length }} papers.</p>
+
+</div>
+
+<div class='two-col'><!-- open the right column -->
+</div>
+
+<div class='block-page'>
+{% if archaeologist.articles.count %}
+    <div class='citation-list'>
+
+        <h2>Published articles ({{ archaeologist.articles.count }})</h2>
+      
+{% for paper in archaeologist.articles %}
+        <div class='biblio-citation'>
+            
+            <h3><a href='{{ paper.url }}'>{{ paper.title }}</a></h3>
+
+            <p>by {{ paper.authors|safe }}<br />
+              In <a href='{{ paper.issue.url }}'>{{ paper.issue|safe }}</a></p>
+
+
+        </div>
+{% endfor %}
+
+    </div>
+{% endif %}
+    
+{% if archaeologist.reports.count %}
+    <div class='citation-list'>
+
+        <h2>Unpublished reports ({{ archaeologist.reports.count }})</h2>
+      
+{% for paper in archaeologist.reports %}
+        <div class='biblio-citation'>
+            
+            <h3><a href='{{ paper.url }}'>{{ paper.title }}</a></h3>
+
+            <p>by {{ paper.authors|safe }}<p>
+            {% if paper.description %}<p>{{ paper.description }}</p>
+            {% endif %}
+            <p>Report to {{ paper.issue }},
+              {{ paper.issue.pub_date|date:"Y" }}</p>
+
+            <p>HNZ id: {{ paper.source_id }}</p>
+
+        </div>
+{% endfor %}
+
+    </div>
+{% endif %}
+    
+
+</div>
+
+
+<!-- end templates/archlib/archaeologist.html -->
+{% endblock %}

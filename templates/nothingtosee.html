@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>a r c h a e o g r a p h y . n z</title>
+
+<style>
+
+  .block {
+
+  margin-top: 80px;
+      text-align: center;
+      font-size: small;
+      font-family: serif;
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 40em;
+  }
+
+  .block h1 {
+      margin-left: auto;
+      margin-right: auto;
+      font-weight:normal;
+  }
+</style
+</head>
+
+
+
+<div class='block'>
+
+  <h1> a r c h a e o g r a p h y . n z</h1>
+
+
+</div>
+<div class='block'>
+
+  <p>You have found the archaeography.nz research project. This is an
+  experimental archaeological database project, intended to
+  model the Site Recording Scheme (SRS) owned by the NZ Archaeological
+  Association.</p>
+
+  <p>The aim of the project is to see what we can learn by subjecting
+  the national archaeologal dataset to modern relational database
+    techniques.</p>
+
+  <p>Want to know more? Read
+  the <a href='/manuals/00_INTRODUCTION'>introduction</a>.</p>
+
+  
+
+{% if user.is_authenticated %}
+
+  <p><a href='/nzaa/'>NZAA SRS application</a> |
+    <a href='/geolib/'>geographic library</a> |
+    <a href='/member/{{ user.username }}'>your homepage {{ user.username }}</a>
+   </p>
+  {% else %}
+
+
+
+
+  
+  
+  {% endif %}
+
+<div>
+
+
+</html>

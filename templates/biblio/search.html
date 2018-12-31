@@ -1,0 +1,42 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- archlib/search.thml -->
+<div id='headline'
+     style="background-image: url('/static/img/biblio/banner.jpg')">
+
+    <h1>{{ h1 }}</h1>
+  
+
+
+    <p>Search results</p>
+
+</div>
+
+<div class='block-page'>
+{% if error %}
+<p class='notice'>{{ error }}</p>
+{% else %}
+
+<p>Searching for "{{ terms }}" on {{ column}} found {{ papers|length }} papers.</p>
+
+<table class='article-list' style='max-width: 100%;'>
+  <tr>
+    <th>Citation</th>
+    <th>Ref</th>
+    <th></th>
+  </tr>
+  {% for paper in papers %}
+    <tr>
+        <td><a href='{{ paper.url }}'>{{ paper.cite_full|safe }}</a></td>
+      
+        <td>{% if paper.source_id %}{{ paper.source_id }}<br />{% endif %}</td>
+
+        <td>{% if librarian %}{% if paper.local_url %}<a href='{{ paper.local_url }}'>Local copy</a><br />{% endif %}{% endif %}</td>
+
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+</div>
+<!-- end archlib/search.thml -->
+{% endblock %}

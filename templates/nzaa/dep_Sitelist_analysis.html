@@ -1,0 +1,126 @@
+<h2>Analysis</h2>
+
+
+
+  
+<div class='datapanel'>
+
+    <table>
+
+        <tr>    
+
+            <th>List name</th>
+
+            <td>{{ sitelist.name }}</td>
+
+        </tr>
+
+        <tr>    
+
+            <th>Owner</th>
+
+            <td>{{ sitelist.owner }}</td>
+
+        </tr>
+
+        <tr>    
+
+            <th>Long name</th>
+
+            <td></td>
+
+        </tr>
+
+        <tr>    
+
+            <th>Subject</th>
+
+            <td></td>
+
+        </tr>
+
+        <tr>    
+
+            <th>List-type</th>
+
+            <td></td>
+
+        </tr>
+
+    </table>
+
+</div>
+
+
+{% if sitesByType %}
+    <div class='datapanel'>
+
+     <h3>Sites by type</h3>
+       
+     <table class='sortable'>
+
+        <tr>
+
+            <th>type</th>
+            <th style='text-align: right'>count</th>
+
+        </tr>
+{% for item in sitesByType %}
+        <tr>
+
+            <td>{{ item.site_type }}</td>
+            <td style='text-align: right'>{{ item.cnt }}</td>
+
+        </tr>{% endfor %}
+    </table>
+</div>
+{% endif %}    
+
+{% if sitesByEthnicity %}
+     <div class='datapanel'>
+
+     <h3>Sites by Ethnicity</h3>
+       
+     <table class='sortable'>
+
+        <tr>
+
+            <th>ethnicity</th>
+            <th style='text-align: right'>count</th>
+
+        </tr>
+{% for item in sitesByEthnicity %}
+        <tr>
+
+            <td>{{ item.ethnicity }}</td>
+            <td style='text-align: right'>{{ item.cnt }}</td>
+
+        </tr>{% endfor %}
+    </table>
+    </div>
+{% endif %}
+   
+
+{% if sitesByPeriod %}
+     <div class='datapanel'>
+
+     <h3>Sites by Period</h3>
+       
+     <table class='sortable'>
+
+        <tr>
+
+            <th>period</th>
+            <th style='text-align: right'>count</th>
+
+        </tr>
+{% for item in sitesByPeriod %}
+        <tr>
+
+            <td>{{ item.period }}</td>
+            <td style='text-align: right'>{{ item.cnt }}</td>
+
+        </tr>{% endfor %}
+    </table>
+    </div>
+{% endif %}

@@ -1,0 +1,32 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/CreateSiteList.html -->
+
+<div class='block-page'>
+
+  <p class='note'><a href='/manuals/nzaa/sitelists/create_list'>
+      /manual: create a site list</a></p>
+
+    <h1>Create a new site list</h1>
+
+    <table>
+{{ CreateSiteListForm }}
+
+        <tr>
+            <th>add sites</th>  
+            <td>
+              <textarea name="addsites" id="id_addsites"
+			rows="5" cols="40">{{ addsites }}</textarea>
+            </td>
+       </tr>
+
+    </table>
+
+    <p>Site records can be added by typing identifiers (e.g. S14/22,
+    R18/223) into the "add sites" field. Multiple records can be entered,
+    with each separated by a comma.</p>
+    
+</div>
+{% endblock %}
+<!-- nzaa/CreateSiteList.html -->
+

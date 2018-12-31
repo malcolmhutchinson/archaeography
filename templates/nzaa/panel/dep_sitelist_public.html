@@ -1,0 +1,24 @@
+{% load humanize %}
+<!-- nzaa/panel/sitelist_public.html -->
+<h3>All site records in this list ({{ sites.count|intcomma }})</h3>
+
+ <div class='longtable'>
+    <table style='font-size: 80%; width: 100%;' class='sortable'>
+
+        <tr>
+            <th>nzaa id</th>
+            <th>title</th>
+            <th>site type</th>
+        </tr>
+
+	{% for site in sites %}
+        <tr>
+            <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+            <td>{{ site.title }}</td>
+            <td>{{ site.lgcy_type }}</td>
+        </tr>{% endfor %}
+
+    </table>
+</div>
+<!-- end nzaa/panel/sitelist_public.html -->
+ 

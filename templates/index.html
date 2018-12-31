@@ -1,0 +1,9 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %} 
+
+
+    {% autoescape off %}
+    {{ page.content }}
+  {% endautoescape %}
+
+
+{% endblock %}

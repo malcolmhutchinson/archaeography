@@ -1,0 +1,68 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Sitelist.html -->
+
+<div class='site-left'>
+
+  <h1>{% if sitelist.long_name %}
+  {{ sitelist.long_name }} ({{ sitelist.name }})
+  {% else %}
+  {{ sitelist.name }}
+  {% endif %} ({{ sitelist.sites.count|intcomma }})</h1>
+
+  <p class='note'>Sitelist owned by {{ sitelist.owner }}<br />
+    {{ sitelist.sites.count|intcomma }} site records in this list. </p>
+
+  {{ sitelist.long_fields|safe }}
+
+  <h3>List of identifiers</h3>
+
+  <textarea style='width: 100%;'>{{ sitelist.identifiers_str }}</textarea>  
+
+</div>
+<div class='site-right'>
+
+{% if user.username == sitelist.owner %}
+    <div class='form'>
+      {{ SiteListForm.as_p }}
+      
+        <p>Add these sites:<br />
+    
+          <textarea name="addsites" id="id_addsites"
+		    rows="2" cols="40"></textarea></p>
+    </div>
+{% endif %}
+ </div>
+
+<div class='block-whole' style='padding-top: 1em;'>
+
+  <h2>Sites in this list ({{ sitelist.sites.count|intcomma }})</h2>
+
+    <table class='sortable' style='font-size: 80%;' >
+      <tr>
+        <th>select</th>
+        <th>id</th>
+        <th>title</th>
+        <th>type</th>
+        <th>ethnicity</th>
+        <th>period</th>
+        <th>features</th>
+      </tr>
+      
+    {% for site in sitelist.sites.all %}
+      <tr>
+        <td><input type="checkbox" name='{{ site.nzaa_id }}'
+                      value='{{ site.nzaa_id'> </td>
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+        <td>{{ site.lgcy_ethnicity }}</td>
+        <td>{{ site.lgcy_period }}</td>
+        <td>{{ site.features }}</td>
+      </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}
+<!-- nzaa/Sitelist.html -->
+

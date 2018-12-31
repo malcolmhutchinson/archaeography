@@ -1,0 +1,91 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- templates/archlib/issue.html -->
+<div id='headline'
+     style="background-image: url('/static/img/biblio/banner.jpg')">
+
+  
+    <h1>{{ h1 }}</h1>
+
+    <p>{{ subhead }}</p>
+
+</div>
+
+<div class='two-col'><!-- open the left column -->
+  
+    <h2><a href='{{ issue.publication.url }}'>
+      {{ issue.publication|safe }}</a></h2>
+
+    <h3>{{ issue.cite|safe }} ({{ issue.articles.count }})</h3>
+
+</div>
+
+<div class='two-col'><!-- open the right column -->
+
+    {% if issue.description %}<h3>Description</h3>
+
+    <p>{{ issue.description }}</p>{% endif %}
+
+</div>
+
+<div class='block-page'><!-- open the page block -->
+  
+{% if articles.0.category == 'article' %}
+    <table class='article-list' style='max-width:100%;'>
+        <tr>
+            {% if articles.0.pages %}<th>pages</th>{% endif %}
+            <th>author(s)</th>
+            <th>title</th>
+            <th>links</th>
+        </tr>
+        <tr>
+            <td style='border-bottom: 1px black solid;'
+                colspan='4'>
+        </tr>
+        {% for article in articles %}
+        <tr>
+            {% if articles.0.pages %}<td>{{ article.pages }}</td>{% endif %}
+            <td>{{ article.authors|safe }}</td>
+
+            <td><a href='{{ article.url }}'>{{ article.title }}</a></td>
+
+            <td style='width: 10em;'>
+
+            {% if librarian %}{% if article.local_url %}
+                <a href='{{ article.local_url }}'>local pdf</a><br />
+            {% endif %}{% endif %}
+
+            {% if article.source %}
+                <a href='{{ article.source }}'>{{ article.sourceorg }}</a><br />
+            {% endif %}
+            
+            </td>
+            
+        </tr>
+      {% endfor %}
+    </table>
+
+{% elif articles.0.category == 'report' %}
+
+    <table class='article-list'>
+        <tr>
+            <th>authors</th>
+            <th>title</th>
+            <th>reference</th>
+        </tr>
+        <tr>
+            <td style='border-bottom: 1px black solid;'
+                colspan='3'>
+        </tr>
+        {% for article in articles %}
+        <tr>
+            <td>{{ article.authors|safe }}</td>
+            <td><a href=''>{{ article.title }}</a></td>
+            <td>{{ article.source_id }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+{% endif %}
+    
+<!-- end templates/archlib/issue.html -->
+{% endblock %}

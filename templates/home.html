@@ -1,0 +1,131 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- home.html -->
+<div id='headline'
+     style="background-image: url('/static/img/homepage_banner.jpg')">
+
+  <h1>{{ h1 }}</h1>
+
+  <p>experiments in computational archaeology by Malcolm Hutchinson
+  and friends</p>
+
+</div>
+
+<div class='two-col'>
+  
+{% for blog in headliners %}
+    <div class='indextile'>
+
+        <h2><a href='{{ blog.url }}'>{{ blog.title }}</a></h2>
+
+        <h3>{{ blog.subhead }}</h3>
+
+        <a href='{{ blog.url }}'>
+	<img src='{{ blog.thumb.0 }}'
+	     alt='{{ blog.thumb.1 }}' /></a>
+
+	<p>{{ blog.intro }}</p>
+	
+    </div>
+{% endfor %}  
+</div><!-- Close the left column -->
+
+<div class='two-col'>
+
+    <div class='indextile'>
+
+        <h2><a href='/blog/'>archaeography weblog</a></h2>
+
+    
+        <a href='/blog/'>
+	<img src='/static/img/livery/tile_blog.jpg'
+	     alt='archaeography' /></a>
+
+        <p>Occasional articles relating to computing and archaeology in
+        NZ. Explanations of the various projects we are involved in here
+        at archaeograpy.nz, thoughts on how we can use information
+        technology to further the study of archaeology.</p>
+    
+    </div>
+
+    <div class='indextile'>
+
+        <h2><a href='/biblio/'>NZ archaeological bibliography</a></h2>
+
+    
+        <h3></h3>
+
+        <a href='/biblio/'>
+	<img src='/static/img/livery/tile_biblio.jpg'
+	     alt='archaeography' /></a>
+
+        <p>A searchable electronic index of archaeological literature
+        relating to New Zealand. We index <em>Archaeology in NZ</em>,
+        the <em>NZJA</em>, the <em>JPA</em> and the consultant's reports
+        from Heritage NZ.</p>
+    
+    </div>
+
+    <div class='indextile'>
+
+        <h2><a href='/geolib/'>Geographic data library</a></h2>
+
+        <a href='/geolib/'>
+	<img src='/static/img/livery/tile_geolib.png'
+	     alt='geolibrary' /></a>
+
+        <p>This is our library of maps, plans, and historic aerial
+        photography. These things contain an enormous amount of
+        valuable information about archaeological sites, and we are
+        gradually trying to extract as much of it as we can.</p>
+	
+    </div>
+
+    <div class='indextile'>
+
+        <h2><a href='/archaeology/'>Archaeology in New Zealand</a></h2>
+
+    
+        <h3>What can we learn from a national dataset?</h3>
+
+        <a href='/archaeology/'>
+	<img src='/static/img/livery/tile_sites2.png'
+	     alt='archaeography' /></a>
+
+        <p>The NZ Archaeological Association has been recording
+        archaeological sites in New Zealand since 1957. There are nearly
+        70,000 records now held in the Site Recording System (SRS).  We
+        present some statistical analysis of this national collection.</p>
+
+    </div>
+
+<hr />
+    
+    <div class='indextile'>
+
+        <h2><a href=''></a></h2>
+
+        <a href='/'>
+	<img src=''
+	     alt='' /></a>
+
+        <p></p>
+	
+    </div>
+
+
+
+
+
+
+
+    
+</div><!-- Close the right column -->
+
+<div style='clear:both'></div>
+
+<!-- home.html -->
+{% endblock %}
+
+
+
+

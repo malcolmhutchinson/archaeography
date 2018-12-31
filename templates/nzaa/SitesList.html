@@ -1,0 +1,58 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/SitesList.html -->
+<!-- Lists of site records. Not the content of SiteList objects-->
+{% if sites %}
+<div class='site-left'>
+  <p class='note'>NZAA archaeological site records in the </p>
+  <h1>{{ h1 }}</h1>
+
+    {% if sitecount == 1 %}
+      <p>There is a single record in the set.</p>
+    {% else %}
+      <p>There are {{ sitecount|intcomma }} archaeolgical site records here.</p>
+      {% endif %}
+
+      {% if group_name %}
+      <h3>Group subset</h3>
+
+      <p><span style='font-family: sans-serif'>{{ group_name }}</span><br />
+      containing {{ sites.count|intcomma }} site records.</p>
+
+      {% else %}
+      {% if missing_records %}{% if count_missing == 1 %}
+      <p>{{ count_missing|intcomma }} identifier on this sheet
+      does not have a record:</p>{% else %}
+      <p>{{ count_missing|intcomma }} identifiers on this sheet
+      do not have records:</p>{% endif %}
+
+      <p class='note'>{{ missing_records }}</p>
+      <br /><br />
+      {% endif %}
+      {% endif %}
+
+</div>
+
+<div class='site-right'>
+
+  <div class='data'>
+{% include 'nzaa/panel/sites_by_lgcy_type.html' %}
+  </div>
+
+</div>
+
+<div class='block-whole'>
+{% include 'nzaa/panel/sitelist.html'  %}
+</div>
+{% else %}<!-- No sites -->
+<div class='block-page'>
+
+  <h1>No site records found</h1>
+  
+  <p>There are no records in the current database matching this query.</p>
+
+</div>
+{% endif %}
+
+<!-- end nzaa/SitesList.html -->
+{% endblock %}

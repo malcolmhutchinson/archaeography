@@ -1,0 +1,59 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/UpdateEdit.html -->
+<div id='block-whole'>
+  
+    <h1>{{ h1 }}</h1>
+
+    <p>Status {{ update.opstatus }}</p>
+
+
+</div>
+
+<div class='two-col'><!-- Open the left column -->
+
+    <h2>{{ update.update_id }}</h2>
+
+<div style='font-family: sans-serif;'>
+  {{ updateMainForm.as_p }}
+
+</div>
+    
+</div>
+
+<div class='two-col'><!-- Open the right column -->
+
+  {{ fileUploadForm.as_p }}
+<table style='font-size: 80%'>
+  {{ updatePanelForm }}
+</table>
+
+</div>
+
+<div class='block-page'>
+
+  <h2>Unreferenced figures</h2>
+
+  <p class='note'><a href='/manuals/webnote/reference_figs'>
+      /manuals: Reference figures</a></p> 
+  
+    <br />
+
+{% if update.unref_figs %}
+{% for fig in update.unref_figs %}
+<div class='figure'>
+
+    <img src='{{ fig.0 }}' />
+  
+    <p class='caption'>{{ fig.1 }}</p>
+
+</div>
+{% endfor %}
+{% endif %}
+
+</div>  
+
+<!-- nzaa/UpdateEdit.html -->
+{% endblock %}
+
+

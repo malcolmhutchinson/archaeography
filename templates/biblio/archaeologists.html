@@ -1,0 +1,48 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- biblio/archaeologists.html -->
+<div id='headline'
+     style="background-image: url('/static/img/biblio/banner.jpg')">
+
+  
+    <h1>NZ archaeological bibliography</h1>
+
+    <p>a searchable index of literature grey and white</p>
+
+</div>
+
+<div class='two-col'><!-- open the left column -->
+  
+<h2>{{ h1 }}</h2>
+
+<p>We currently have records for {{ count|intcomma }} archaeologists. These are
+people who have published an article in one of the journals we index,
+or are listed as an author of a report in the Heritage NZ digital
+library.</p>
+
+</div>
+
+<div class='two-col'><!-- open the right column -->
+</div>
+
+<div style='clear: both;'>
+
+{% regroup archaeologists by first_letter as letter_list %}
+
+
+{% for letter in letter_list %}
+<div class='listwrapper'>
+    <table class='archaeologistList'>
+        <tr>
+            <th colspan='3'>{{ letter.grouper }} ({{ letter.list|length }})</th>
+        </tr>
+    {% for arch in letter.list %}
+        <tr>
+            <td><a href='{{ arch.url }}'>{{ arch.name }}</a></td>
+        </tr>{% endfor %}
+    </table>
+</div>
+{% endfor %}
+</div>
+<!-- close biblio/archaeologists.html -->
+{% endblock %}

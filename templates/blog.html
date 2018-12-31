@@ -1,0 +1,72 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- blog.html -->
+
+
+<div id='headline'
+     style="background-image: url('/static/img/blog/banner.png')">
+  
+    <h1>{{ h1 }}</h1>
+
+    <p>occasional expositions on matters archaeological and
+    computational</p>
+
+</div>
+
+<div class='two-col'>
+
+{% for article in headliners %}
+    <div class='indextile'>
+
+        <h2><a href='{{ article.url }}'>{{ article.title }}</a></h2>
+
+    
+        <h3>{{ article.subtitle }}</h3>
+
+        <a href='{{ article.url }}'>
+	<img src='{{ article.thumb.0 }}'
+	     alt='{{ article.thumb.1 }}' /></a>
+
+        <p>{{ article.intro }}</p>
+    
+    </div>{% endfor %}
+  
+    
+</div><!-- Close the left column -->
+
+<div class='two-col'>
+
+    <div class='figure'>
+        <img src='/static/img/blog/headline.jpg' alt='headline banner' />
+    </div>
+    
+    <h2>All articles by date</h2>
+
+    <table style='font-size: 80%;'>
+
+        <tr>
+
+            <th>date</th>
+            <th>title</th>
+
+	</tr>
+	
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 2px solid;'> </td>
+	</tr>
+
+{% for article in allarticles %}
+        <tr>
+            <td>{{ article.pub_date|date:"Y-m-d" }}</td>
+            <td><b><a href='{{ article.url }}'>{{ article.title }}</a></b><br />
+	    {{ article.intro }}
+	    </td>
+        </tr> {% endfor %}
+
+    </table>
+
+</div><!-- Close the right column -->
+
+
+<!-- end blog.html -->
+{% endblock %}

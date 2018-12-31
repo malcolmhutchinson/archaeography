@@ -1,0 +1,33 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- blog/article.html -->
+<div id='headline'
+     style="background-image: url('/static/img/blog/banner.png')">
+  
+    <h2>{{ h1 }}</h2>
+
+    <p>{{ subhead }}</p>
+
+</div>
+
+<div class='block-page'>
+{% if article %}
+{% if viewable %}  
+{{ article.pagecopy|safe }}
+{% else %}
+<h2>Oops! this article isn't ready yet</h2>
+{% endif%}
+{% else %}
+<h2>No article found</h2>
+
+<pre>{{ command }}</pre>
+
+<p>We're sorry, there is no article matching this URL in our blog archive.</p>
+{% endif %}
+</div>
+
+
+
+
+<!-- end blog/article.html -->
+{% endblock %}
+

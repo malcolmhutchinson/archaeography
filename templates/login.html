@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>a r c h a e o g r a p h y . n z</title>
+
+
+
+
+<style>
+
+  .block {
+
+  margin-top: 80px;
+      text-align: center;
+      font-size: small;
+      font-family: serif;
+      max-width: 45em;
+      margin-left: auto;
+      margin-right: auto;
+  }
+
+  .block h1 {
+      margin-left: auto;
+      margin-right: auto;
+      font-weight:normal;
+  }
+
+  .listinline {
+      display: inline
+  }
+  
+</style>
+</head>
+
+
+
+<div class='block'>
+
+  <h1> a r c h a e o g r a p h y . n z</h1>
+
+  <p>the antechamber - member's login</p>
+
+</div>
+
+<div class='block' >
+
+  <p>Welcome to the archaeography.nz research project. This is an
+  experimental archaeological database project, intended to model the
+  Site Recording Scheme (SRS) owned by the
+  <a href='https://nzarchaeology.org/'>NZ Archaeological
+  Association</a>.</p>
+
+  <p>The aim of the project is to see what we can learn by subjecting
+  the national archaeologal dataset to modern relational database
+  techniques.</p>
+
+  <p>A good place to start understanding the project is the
+    <a href='/manuals/00_INTRODUCTION'>Introduction</a>. Having read
+    this, you may want to look at the <a href='/manuals/'>manuals</a>.
+
+  <p>We keep <a href='/geolib'>libraries of geographic data</a> to aid
+  our archaeological analysis. Many of these came from Land
+    Information NZ. </p>
+
+  <p>We also have a <a href='/geolib/airphoto/'>library of historic
+  aerial photographs</a> which we are georeferencing, to reveal
+  archaeological information. These are sourced from Retrolens.</p>
+  
+{% if nzaa_member %}
+  <p><a href='/nzaa'>NZAA archaeological records</a></p>
+{% endif %}
+
+  {% if user.is_authenticated %}
+  
+  <p>You are logged in as user {{ user }}</p>
+
+  <p><a href='/logoff'>logoff</a></p>
+  {% endif %}
+</div>
+
+{% if not user.is_authenticated %}
+<div class='block' >
+
+  <form method='POST'>
+    {% csrf_token %}
+  <p><input name='username' /></p>
+
+  <p><input type='password' name='password' /></p>
+
+  <p><input type='submit' name='command' value='login' /></p>
+  </form>
+  
+</div>
+{% endif %}
+
+
+</html>

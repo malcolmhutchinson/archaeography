@@ -1,0 +1,16 @@
+<!-- archaeology/nav.html -->
+    <h2><a href='/archaeology/'>nz archaeology</a></h2>
+
+    <ol id='navlist_archlib'>
+      {% for command in commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}
+    </ol>
+{% if pages %}
+    <h2><a href='/archaeology/{{ index.0 }}'>{{ index.1 }}</a></h2>
+
+    <ol id='navlist_archlib'>
+      {% for page in pages %}<li><a href='{{ page.0 }}'>{{ page.1 }}</a></li>
+    {% endfor %}
+    </ol>
+{% endif %}
+<!-- end archaeology/nav.html -->

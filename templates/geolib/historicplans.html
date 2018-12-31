@@ -1,0 +1,67 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- geolib/historicplans/home.html -->
+<div id='headline'
+      style="background-image: 
+          url('/static/img/geolib/HistoricPlansBanner.png')">
+
+  <h1>{{ h1 }}</h1>
+
+  <p>{{ subhead }}</p>
+
+</div>
+
+<div class='two-col'>
+
+    <p>Historic plans are an archaeological resource. They often
+    feature buildings and other objects likely to leave archaeological
+    remains (post holes, litter, rubbish-pots), and they can sometimes
+    indicate the presence of pre-historic archaeology, and provide
+    place names. </p>
+
+
+
+</div><!-- close left column -->
+
+<div class='two-col'>
+
+    <p>Total plans in system: {{ plans.count }}.<br />
+    Total original files: {{ orig_files_count }}. <br />
+    No georef'd plans: {{ plans_georef.count }}.</p>
+
+</div><!-- close right column -->
+
+
+
+<div class='block-whole'>
+
+    <h2>Georeferenced historic plans</h2>
+
+    <table style='max-height: 300px; font-size: 80%' class='sortable'>
+        <tr>
+            <th>Plan</th>
+            <th>Year</th>
+            <th>Town</th>
+            <th>Reg</th>
+            <th>status</th>
+            <th>Notes</th>
+        </tr>
+    {% for plan in plans_georef %}
+        <tr>
+            <td><a href='{{ plan.url }}'>{{ plan }}</a></td>
+            <td>{{ plan.pub_year }}</td>
+            <td>{{ plan.location }}</td>
+            <td>{{ plan.region }}</td>
+            <td>{{ plan.status }}</td>
+            <td>{{ plan.listnotes }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    
+</div>
+
+<!-- end geolib/historicplans/home.html -->
+{% endblock %}
+
+
+
+

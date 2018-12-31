@@ -1,0 +1,15 @@
+<!-- geolib/nav.html -->
+    <h2>geodata library</h2>
+
+    <ol id='commands_geolib'>
+      {% for command in commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}
+    </ol>
+
+    {% if librarian %}
+  <h2>librarian commands</h2>
+  <ol id='commands_librarian'>
+    {% for command in librarian_commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}</ol>
+    {% endif %}
+<!-- end geolib/nav.html -->

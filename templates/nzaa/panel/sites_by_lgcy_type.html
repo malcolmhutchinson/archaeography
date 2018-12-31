@@ -1,0 +1,17 @@
+<!-- end nzaa/panel/sites_by_lgcy_type -->
+<table class='sortable'>
+    <tr>
+        <th>site type</th>
+        <th style='text-align: right'>count</th>
+    </tr>
+     {% for item in sites_by_lgcy_type %}
+    <tr>
+        <td><a href='?lgcy_type={{ item.lgcy_type }}'>
+            {% if not item.lgcy_type %}None{% endif %}
+            {{ item.lgcy_type }}
+        </a></td>
+        <td style='text-align: right'>{{ item.cnt }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<!-- end nzaa/panel/sites_by_lgcy_type -->

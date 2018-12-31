@@ -1,0 +1,26 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/TLAs.html -->
+<div class='block-page'>
+
+  <h1>Territorial Authorities</h1>
+
+  
+
+  <table class='sortable'>
+    <tr>
+      <th>Authority</th>
+      <th>sites</th>
+    </tr>       
+    {% for ta in tas %}
+    <tr>
+      <td><a href='/nzaa/{{ region.0 }}'>{{ region.1 }}</td>
+      <td>{{ region.2|intcomma }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+
+
+</div>
+<!-- end nzaa/regions.html -->
+{% endblock %}

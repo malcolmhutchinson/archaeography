@@ -1,0 +1,62 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Search.html -->
+
+{% if sites %}
+<div class='block-page'>
+
+  <h1>Your search returned these site records</h1>
+
+
+  <p>Searching on "{{ terms }}" returns {{ sites.count }} possible site
+  records.</p>
+
+  <table>
+    <tr>
+      <th>nzaa id</th>
+      <th>nzms id</th>
+      <th>title</th>
+      <th>site type</th>
+    </tr>
+  {% for site in sites %}
+    <tr>
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.nzms_id }}</td>
+        <td><a href='{{ site.url }}'>{{ site.title }}</a></td>
+        <td>{{ site.site_type }}</td>
+        
+    </tr>
+  {% endfor %}
+  </table>
+</div>
+{% else %}
+
+
+<div class='block-whole'>
+
+  <h1>Search the NZAA site record collection</h1>
+
+  <p>Searches work by narrowing the selction down in stages, from the
+  whole set, to a smaller set in which records have desired
+  attributes.</p>
+
+  <h2>Search on archaeological fields</h2>
+
+  <table>
+    {{ SearchForm }}
+  </table>
+
+
+
+<h2>Search on location</h2>
+
+
+
+  
+</div>
+
+{% endif %}
+
+
+<!-- end nzaa/Search.html -->
+{% endblock %}

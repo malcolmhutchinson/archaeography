@@ -1,0 +1,59 @@
+{% extends 'framework.html' %}{% block main %}
+{% load staticfiles %}{% load humanize %}
+<!-- archaeology.html -->
+<div id='headline'
+     style="background-image: url('/static/img/archaeology/banner_archaeology.png')">
+
+  
+    <h1>Archaeology in New Zealand</h1>
+
+    <p>calculations and computations using the NZAA SRS and other datasets</p>
+
+</div>
+
+<div class='two-col'>
+  
+    <p class='dateline'>Updated 2016-08-04.</p>
+
+    <p>This section of the archaeography.nz website looks at archaeology
+    in New Zealand by combining a number of datasets and doing a little
+    computational analysis.</p>
+
+
+    <p>The New Zealand Archaeological Association maintains the national
+    database of archaeological sites, called the Site Recording Scheme
+    (SRS). This scheme started operation as a paper files system in 1957,
+    and has been continually expanded and updated by archaeologists since
+    then.</p>
+
+    <p>We've taken a copy of the records in the SRS, put them into a
+    spatial database, and hooked that database up to this website. We
+    can now do some useful and interesting things with the location
+    data held in the SRS.</p>
+
+    
+
+
+</div><!-- close the left column -->
+
+<div class='two-col'>
+
+    <div class='figure'>
+
+        <img src='/static/img/archaeology/NZbySites.png'
+             alt='NZ by archaeological sites' />
+
+        <p class='caption'>New Zealand mapped as archaeological sites from
+        the NZ Archaeological Associations's Site Recording Scheme.</p>
+
+    </div>
+
+
+
+</div><!-- close the right column -->
+
+
+
+
+<!-- end archaeology.html -->
+{% endblock %}

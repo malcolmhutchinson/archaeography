@@ -1,0 +1,63 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/NewSiteEdit.html -->
+<div class='site-left'>
+<p class='note'>{{ subhead }}</p>
+
+<h1>{{ h1 }}</h1>
+{% if site %}
+
+<table>
+
+{{ NewSiteForm }}
+
+</table>
+
+{{ UploadFile.as_p }}
+
+<!-- closing the site code -->{% endif %}
+</div><!-- close the left column -->
+
+<div class='site-right'>
+  {% if site %}
+
+  <div class='data'>    
+    {% include 'nzaa/panel/archaeological.html' %}
+    {% include 'nzaa/panel/geographic.html' %}
+  </div>
+
+
+
+
+  
+{% endif %}
+</div><!-- close the right column -->
+
+
+
+<div class='block-page'>
+
+  <h2>Unreferenced figures</h2>
+
+  <p class='note'><a href='/manuals/webnote/reference_figs'>
+      /manuals: Reference figures</a></p> 
+  
+    <br />
+
+{% if site.unref_figs %}
+{% for fig in site.unref_figs %}
+<div class='figure'>
+
+    <img src='{{ fig.0 }}' />
+  
+    <p class='caption'>{{ fig.1 }}</p>
+
+</div>
+{% endfor %}
+{% endif %}
+
+</div>  
+
+
+<!-- end nzaa/NewSiteEdit.html -->
+{% endblock %}

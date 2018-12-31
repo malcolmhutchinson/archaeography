@@ -1,0 +1,32 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/UserUpdates.html -->
+
+<div class='block-page'>
+
+  <p class='note'><a href='/manuals/nzaa/update'>/manuals/nzaa/update</a></p>
+
+  <h1>NZAA site update records for user <code>{{ user.username }}</code></h1>
+
+  <p>There are {{ updates.count }} active update records.</p>
+
+   <table class='sortable' style='font-size: 80%'>
+     <tr>
+       <th>id</th>
+       <th>status</th>
+       <th>Site</th>
+   {% for update in updates %}
+     <tr>
+       <td><a href='{{ update.url }}'>{{ update }}</a></td>
+       <td>{{ update.opstatus }}</td>
+       <td><a href='{{ update.site.url }}'>{{ update.site.title }}</a></td>
+     </tr>
+   {% endfor %}
+   </table>
+   
+</div>
+
+<!-- nzaa/UserUpdates.html -->
+{% endblock %}
+
+

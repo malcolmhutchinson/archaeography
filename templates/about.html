@@ -1,0 +1,98 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}{% load leaflet_tags %}
+<!-- nzaa.html -->
+
+
+<div id='headline'>
+  
+    <h1>{{ h1 }}</h1>
+
+    <p>{{ subhead }}</p>
+
+</div>
+
+<div class='block-page'>
+
+    <h2 style='margin-top: 3em;'>Welcome to archaeography.nz</h2>
+
+    <div class='figure-right'>
+
+        <img src='/static/img/livery/portrait_Malcolm.jpg'
+             alt='Malcolm Hutchinson' />
+
+	<p class='caption'>Malcolm Hutchinson, April 2017.</p>
+
+    </div>
+
+    <p>My name is Malcolm Hutchinson. I'm an archaeologist, and a
+    Geographic Information Scientist. I live and work in Hamilton, New
+    Zealand. </p>
+
+    <p>This website is a test bed for a bunch of experiments in
+    applying computational theory to archaeological data.
+    I build relational databases and web interfaces, and I
+    experiment with analytical methods, using archaeological records
+    as my test subject.  The main sections of the website introduce
+    the research I do here.</p>
+    
+    <p>The website is built using the Django web framework, and I
+    write code in Python to collect and present archaeological records,
+    and to perform statistical and geometric analysis on them. You
+    can see an example of this
+    analysis <a href='/archaeology/waikato-horticulture'>here</a>.</p>
+
+    <div class='endnote'>
+
+	<h2>Contact</h2>
+
+	<p>email: malcolm [at] archaeography.co.nz</p>
+
+	<p>Telephone: 022-047-0750</p>
+
+    </div>
+
+
+
+    <h2>Qualifications</h2>
+
+    <p>Graduate Diploma of Geographic Information Science<br />
+    University of New England at Armidale, NSW<br />
+    Awarded 2012.</p>
+      
+    <p>Master of Arts (Archaeology) with distinction<br />
+    University of New England at Armidale, NSW<br />
+    Awarded 2010.</p>
+
+    <p>Bachelor of Social Science (Political Science)<br />
+    University of Waikato<br />
+    Awarded 1998.</p>
+
+
+    <h2>Information technology skills</h2>
+
+    <p>I write code in Python. Building this website has given me a
+    pretty good understanding of the Django web framework.</p>
+
+    <p>I design normalised relational databases using PostgreSQL and
+    the PostGIS spatial extensions. I do all my own database
+    administration in SQL. </p>
+
+    <p>I am most comfortable in the Debian GNU-Linux operating
+    environment. I write shell scripts and configuration files to
+    operate file servers, the Apache webserver, SSH servers, and cron
+    scripts. I do all my own systems analysis and unix systems
+    operations.</p>
+
+    <p>I build websites. I write well-formed, valid HTML and CSS. I'm
+    not so hot with JavaScript.</p>
+      
+</div><!-- close the block page -->
+
+<div class='block-whole'>
+
+
+
+</div>
+
+<!-- end about.html -->
+{% endblock %}

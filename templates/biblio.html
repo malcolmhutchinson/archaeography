@@ -1,0 +1,194 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- biblio/home.html -->
+<div id='headline'
+     style="background-image: url('/static/img/biblio/banner.jpg')">
+
+  
+    <h1>Bibliography of NZ archaeology</h1>
+
+    <p>a searchable index of literature grey and white</p>
+
+</div>
+
+
+<div class='two-col'>
+
+    <p>This is an experimental bibliographic machine for New Zealand
+    archaeology. It's an electronic index of certain academic
+    journals, institutional series, and unpublished reports on
+    archaeology.</p>
+
+    <p>This part of our website is about connecting published and
+    unpublished works on archaeology with the site records in the NZAA
+    Site Recording Scheme. It is a very early prototype, and we are
+    still building the software that does all the connecting. </p>
+
+    <p>In the mean time, we have collected indexes for the NZ
+    Archaeological Association's quarterly newsletter <em>Archaeology
+    in New Zealand</em>. This venerable series has been published for
+    sixty years, and most of the articles are available as PDF files
+      from the Association's website.</p>
+
+    <p>We also index the <em>NZ Journal of Archaeology</em> and
+    its successor, the <em>Journal of Pacific Archaeology</em>, as
+    well as keeping a copy of the Heritage NZ Digital Library
+      index.</p>
+
+    <p>Here is the list of formal sources we keep;</p>
+
+    <ul>
+
+        <li><p><a href='/biblio/publication/AINZ/'><em>Archaeology in New
+        Zealand</em></a>; the newsletter of the NZ Archaeological
+            Association.</p></li>
+
+        <li><p><a href='/biblio/publication/NZJA/'><em>The New Zealand
+        Journal of Archaeology</em></a>,</p></li>
+    
+        <li><p><a href='/biblio/publication/JPA'><em>The Journal of Pacific
+        Archaeology</em></a>,</p></li>
+
+	<li><p><a href='/biblio/publication/NZHPT/'>Heritage New Zealand
+	Pouhere Taonga Digital Library</a>.</p></li>
+
+    </ul>
+
+    <p>In addition to these, we also try to provide links to other
+    peer-reviwed archaeological publications, from institutions like
+    the Department of Conservation and various museums.</p>
+
+
+
+    <h2>Under development</h2>
+
+    <p>This bibliographic machine is still running a bit rough. We're
+    working on a rebuild of the fuel delivery system, and power
+    transmission is still a little unstable. But our engineers are up
+    to their elbows in hydraulic fluid and are working through the
+    night to get the next prototype on the track as soon as
+    possible.</p>
+
+    <p>Translating the automotive metaphor; what we mean is this
+    machine is in the early stages of development, and we don't have
+    many of the features we hope to include in a production model.</p>
+
+    <p>We are working on ways of scanning through the electronic
+    documents to identify NZAA site numbers, for example. This will
+    enable us to link records to reports without having to read ten
+    thousand documents and record the links by hand. We are aware of
+    relevant sources which haven't make it into our index yet. And we
+    would like to have the ability to include records for preprints,
+    and individual papers published in journals we don't follow.</p>
+
+
+    <h2>What's the idea?</h2>
+
+    <p>This is part of the greater project of experiments in
+    computational archaeology. We want to find out what we can achieve
+    by applying information science to the field of New Zealand
+      archaeology. This is the publications division.</p>
+
+    <p>There is a history of academic, amateur and professional
+    archaeology in New Zealand. The NZ Archaeological Association is
+    the centre of efforts in the field. Three of the main outlets for
+    the publication of serious research are sponsored by the
+    Association, and they index the contents of their publications on
+    their website.</p>
+
+    <p>This experiment starts with finding ways of collecting that
+    information from the public internet, and putting it with other
+    information from elsewhere on the public internet (the Heritage NZ
+    digital library), and collecting it all into a grand index of
+    archaeological papers.</p>
+
+    <p>The next step is to extract information out of the disparate
+    indices, and separate things out -- into titles and authors, for
+    example. Doing this enables us to tap into the real power of
+    relational database systems. That is, the ability to search and
+    sort through uncounted numbers of records for the single thing you
+    are interested in right now.</p>
+
+    <p>Once we have a list of authors separated out from the list of
+    titles, we can then go looking for them in other records... like
+    the Site Recording Scheme. We should be able to bring up a record
+    for an author and see not only have they published this many
+    papers in these esteemed journals, but we also see they have
+    recorded these sites and contibruted this many updates to the site
+    records in these different regions.</p>
+
+    <p>Clicking on an article, report or paper will show you a list of
+    the archaeological sites mentioned in the report. Clicking on a
+    site record gives you a list of other papers mentioning that site,
+    and a list of the people who contributed updates to the
+    record. You can click on either to see related articles,
+    authors and records. </p>
+
+    <p>Building such a machine immediately opens up research
+    possibilities. The biographical data made available by connecting
+    publications to site records, as shown above, may be of some
+    interest to historians. Certainly the ability to follow links from
+    one set of records through to another, being able to read the site
+    record as you read the article, would be of use to casual and
+    professional scholars alike.</p>
+
+    <p>So that's the plan. We haven't got there, yet.</p>
+
+
+
+
+
+
+
+
+
+    
+
+</div>
+
+<div class='two-col'><!-- open the right column -->
+
+    <div class='figure'>
+    <img src='/static/img/biblio/headline.jpg' alt='headline banner' />
+    </div>
+
+    
+    <h2>Collections</h2>
+
+    <p>We try to provide complete indexes to these journals, and
+    institutional publication series.</p>
+    
+    {% for publication in publications  %}
+    <h3><a href='{{ publication.link }}'>
+	  {{ publication.title|safe }}</a></h3>
+
+    <p>{{ publication.description|safe }}</p>
+    {% endfor %}
+
+    <p>We are holding records for {{ countpapers }} articles,
+    unpublished reports and preprints. These are produced by a
+    community of {{ countarch }} archaeologists.</p>
+
+    <p>The records have been compiled from index files published by the
+    <a href='http://nzheritage.org/'>New Zealand Archaeological
+    Association</a> (NZAA)
+    and <a href='http://heritage.org.nz/'>Heritage New Zealand Pouhere
+    Taonga</a> (formerly the NZ Historic Places Trust).</p>
+
+    <p>We index <em>papers</em>. A paper is defined as a written work
+    pertaining to archaeology, published or unpublished. If a paper is
+    published in a journal, or is a chapter in a book or monograph or
+    other refereed source, it is known as an <em>article</em>. If the work
+    has been commissioned by some person or agency and is not published,
+    then it is called a <em>report</em>. A paper may also be
+    a <em>preprint</em>, which is a prepared work which may (or may not)
+    be submitted to a journal for publication.</p>
+
+    <p>Where possible, we provide links to PDF copies of the original
+    papers. These link to the source organisation -- the NZ Archaeological
+    Association or Heritage NZ -- not to files held on our own servers.</p>
+
+</div>
+
+
+
+{% endblock %}

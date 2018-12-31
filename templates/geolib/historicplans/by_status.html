@@ -1,0 +1,78 @@
+<!-- geolib/historicplans/by_status -->
+<h2>Interesting plans ({{ plans_interesting.count }})</h2>
+
+<table style='font-size: 80%'>
+    <tr>
+        <th>Plan</th>
+	<th>Year</th>
+        <th>Town</th>
+        <th>Reg</th>
+        <th>status</th>
+	<th>Notes</th>
+    </tr>
+{% for plan in plans_interesting %}
+    <tr>
+        <td><a href='{{ plan.url }}'>{{ plan }}</a></td>
+        <td>{{ plan.pub_year }}</td>
+        <td>{{ plan.location }}</td>
+        <td>{{ plan.region }}</td>
+        <td>{{ plan.status }}</td>
+        <td>{{ plan.listnotes }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+<h2>Insufficient to reference ({{ plans_insufficient.count }})</h2>
+
+<table style='font-size: 80%'>
+    <tr>
+        <th>Plan</th>
+	<th>Year</th>
+        <th>Town</th>
+        <th>Reg</th>
+        <th>status</th>
+	<th>Notes</th>
+    </tr>
+{% for plan in plans_insufficient %}
+    <tr>
+        <td><a href='{{ plan.url }}'>{{ plan }}</a></td>
+        <td>{{ plan.pub_year }}</td>
+        <td>{{ plan.location }}</td>
+        <td>{{ plan.region }}</td>
+        <td>{{ plan.status }}</td>
+        <td>{{ plan.listnotes }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+<h2>Plans referenced ({{ plans_georef.count }})</h2>
+
+<table style='font-size: 80%'>
+    <tr>
+        <th>Plan</th>
+	<th>Year</th>
+        <th>Town</th>
+        <th>Reg</th>
+        <th>status</th>
+	<th>Notes</th>
+    </tr>
+{% for plan in plans_georef %}
+    <tr>
+        <td><a href='{{ plan.url }}'>{{ plan }}</a></td>
+        <td>{{ plan.pub_year }}</td>
+        <td>{{ plan.location }}</td>
+        <td>{{ plan.region }}</td>
+        <td>{{ plan.status }}</td>
+        <td>{{ plan.listnotes }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+
+
+
+
+
+
+
+<!-- end geolib/historicplans/by_status -->

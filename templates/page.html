@@ -1,0 +1,54 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+
+{% if page.filename %}
+{% if command = 'edit' %}
+
+<div id='viewFilecontent'>
+    {% autoescape off %}
+    {{ page.content }}
+  {% endautoescape %}
+</div><!-- close viewFilecontent -->
+
+<div id='fileEditor'>
+<h2>Edit the contents of this file</h2>
+
+{{ pageEditForm.filecontent }}
+
+</div>
+{% else %}
+
+<div id='filecontent'>
+    {% autoescape off %}
+    {{ page.content }}
+  {% endautoescape %}
+</div><!-- close filecontent -->
+{% endif %}{% comment %}end the edit function test{% endcomment %}
+
+{% if page.unref_figs %}
+<hr />
+<h2>Unreferenced figures</h2>
+{% for fig in page.unref_figs %}<div class='figure'>
+  <img src='{{ fig.0 }}' alt='{{ fig.1 }}' />
+  <p class='caption'>{{ fig.1 }}</p>
+</div>
+{% endfor %}{% endif %}
+
+{% if page.children %}
+<div id='children'>
+<h2>Contents</h2>
+
+<ol>
+{% for child in page.children %}
+<li><a href='{{ child.0 }}'>{{ child.1 }}</a></li>{% endfor %}
+</ol>
+</div><!-- clase children -->{% endif %}
+{% else %}
+<h1>File not found</h1>
+
+<p>No file was found at <tt>{{ page.address }}</tt></p>
+{% endif %}
+{% endblock %}
+
+
+
+

@@ -1,0 +1,77 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- geolib/airphoto/newframe.html -->
+<div id='headline'>
+
+  <h1>{{ h1 }}</h1>
+
+  <p>{{ subhead }}</p>
+
+</div>
+
+<div class='two-col'>
+
+{% if newSurveyForm %}
+    <h2>New survey record</h2>
+    <table style='font-size:80%'>
+{{ newSurveyForm }}
+    </table>
+{% endif %}
+    <h2>New frame record</h2>
+    <table style='font-size:80%'>
+{{ newFrameForm }}
+    </table>
+    
+</div><!-- Close the left column -->
+
+<div class='two-col'>
+
+{% if responses %}
+
+    <h2>Responses</h2>
+  
+    <table style='font-size: 80%;'>
+{% for response in responses %}
+        <tr>
+
+            <th>{{ response.0 }}</th>
+
+            <td>{{ response.1 }}</td>
+
+        </tr>{% endfor %}
+
+
+    </table>
+{% endif %}
+
+
+
+    <div style='font-family: sans-serif; font-size: 80%;'>
+        <h2>Hints for recording photo frames</h2>
+
+	<p><b>identifier</b> is required. Full-form including survey
+	number eg "SN358/1068/13".</p>
+
+	<p><b>coverage</b> is not required. Comma-separated list of
+	place names visible in the frame.</p>
+
+	<p><b></b></p>
+
+	<p><b></b></p>	
+
+    </div>
+
+    {% if notifications %}
+    <ul class='notifications'>
+{% for note in notifications %}
+        <li>{{ note }}</li>{% endfor %}
+{% endif %}
+  
+
+</div><!-- Close the right column -->
+
+
+
+
+<!-- end geolib/airphoto/newframe.html -->
+{% endblock %}
+

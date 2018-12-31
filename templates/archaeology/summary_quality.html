@@ -1,0 +1,116 @@
+<!-- nzaa/summary_quality.html -->
+
+  <h2>Quality and age of records</h2>
+
+  <table class='data'>
+    <tr>
+      <th>Total records</th><td></td><td>{{ total }}</td>
+    </tr>
+    
+    <tr>
+      <td colspan='3' style='border-top: 1px padding-top: 0.5em;' >
+	Earliest and latest of those {{ by_date.dated }} records with
+	identified date values.</td>
+    </tr>
+    <tr>
+      <th>Earliest</th>
+      <td colspan='2'><a/href='{{ by_date.earliest.url }}'>
+	  {{ by_date.earliest }}</a>,
+      {{ by_date.earliest.display_recorded }}</td>
+    </tr>
+    <tr>
+      <th>Latest</th>
+      <td colspan='2'><a href='{{ by_date.latest.url }}'>
+	  {{ by_date.latest }}</a>,
+	{{ by_date.latest.display_recorded }}</td>
+    </tr>
+
+    <tr>
+      <td colspan='3' style='border-top: 1px black solid; padding-top: 0.5em;' >
+	Numbers missing data for the fields...</td>
+    </tr>
+    <tr>
+      <td></td><th class='r'>Name</th><th>Date</th>
+    </tr>
+
+    
+    <tr>
+      <th>Recorded </th>
+      <td>{{ by_date.no_recorded_by }}</td>
+      <td>{{ by_date.no_recorded }}</td>
+    </tr>
+
+    <tr>
+      <th>Updated </th>
+      <td>{{ by_date.no_updated_by }}</td>
+      <td>{{ by_date.no_updated }}</td>
+    </tr>
+
+    <tr>
+      <th>Visited </th>
+      <td>{{ by_date.no_visited_by }}</td>
+      <td>{{ by_date.no_visited }}</td>
+    </tr>
+
+    <tr>
+      <th>Quality </th>
+      <td>{{ by_date.no_quality }}</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td colspan='3' style='border-top: 1px black solid; padding-top: 0.5em;' >
+      Summary quality assessment for the {{assessment.assessed }}
+      records which have been assessed for quality.
+      This is {{ assessment.pc_assd }} percent of the set.</td>
+    </tr>
+    <tr>
+      <td></td>
+      <th>Number</td>
+      <th>Percent</th>
+    </tr>
+    <tr>
+      <th>Comprehensive</th>
+      <td>{{ assessment.comp }}</td>
+      <td>{{ assessment.pc_comp }}</td>
+    </tr>
+    <tr>
+      <th>Full</th>
+      <td>{{ assessment.full }}</td>
+      <td>{{ assessment.pc_full }}</td>
+    </tr>
+    <tr>
+      <th>Adequate</th>
+      <td>{{ assessment.adequate }}</td>
+      <td>{{ assessment.pc_adequate }}</td>
+    </tr>
+    <tr>
+      <th>Sparse</th>
+      <td>{{ assessment.sparse }}</td>
+      <td>{{ assessment.pc_sparse }}</td>
+    </tr>
+    <tr>
+      <th>Trivial</th>
+      <td>{{ assessment.trivial }}</td>
+      <td>{{ assessment.pc_trivial }}</td>
+    </tr>
+
+    <tr>
+      <td colspan='3' style='border-top: 1px black solid; padding-top: 0.5em;' >
+      Sites not updated or visited</td>
+    </tr>
+    <tr>
+      <th>Not updated </th>
+      <td>{{ by_date.not_updated }}</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th>Not visited </th>
+      <td>{{ by_date.not_visited }}</td>
+      <td></td>
+    </tr>
+
+  </table>
+
+<!-- close nzaa/summary_quality.html -->

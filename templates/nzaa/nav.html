@@ -1,0 +1,29 @@
+<!-- nzaa/nav.html -->
+    <h2>nzaa site records</h2>
+
+    {% if simpleSearch %}
+    <div id='simpleSearch'>
+    <h3>Simple search</h3>
+
+    <form action='/nzaa/search/' method='get'>
+      {{ simpleSearch.as_p }}
+      <input type='submit' value='search' />
+    </form>
+    </div>{% endif %}
+    
+    {% if authorised %}
+    <h3>SRS commands</h3>
+
+    <ol id='commands_nzaa'>
+      {% for command in commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}
+    </ol>
+{% endif %}
+
+{% if filekeeper %}
+  <h2>filekeeper commands</h2>
+  <ol id='commands_filekeeper'>
+    {% for command in filekeeper_commands %}<li><a href='{{ command.0 }}'>{{ command.1 }}</a></li>
+    {% endfor %}</ol>
+{% endif %}
+<!-- end nzaa/nav.html -->

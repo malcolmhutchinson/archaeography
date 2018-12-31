@@ -1,0 +1,30 @@
+<pre>
+------------------------------------------------------------------------
+                                          NZAA SRS Site record {{ site.nzaa_id }}
+
+
+    Site title             {{ site.title }}
+    NZTM coordinates       {{ site.nztm_coords }}
+    Site type              {{ site.lgcy_type }}
+    Ethnicity              {{ site.lgcy_ethnicity }}
+    Period                 {{ site.lgcy_period }}
+    Features               {{ site.lgcy_features }}
+    Associated sites       {{ site.associated_sites }}
+    Threats                {{ site.lgcy_threats }}
+{% for update in site.display_updates %}{% if update.updated %}({{ update.updated|date:"M Y" }}){% endif %}{{ update.long_fields_text }}{% endfor %}### Site record metadata
+
+Recording history
+
+    Recorded               {{ site.display_recorded }}
+    Updated                {{ site.display_updated }}
+    Visited                {{ site.display_visited }}
+    Reviewed               {{ site.review.all.0.reviewed|date:"Y-m-d H:i:s" }} by {{ site.review.all.0.assessed_by }}
+    Inspected              {{ site.lgcy_inspected }}
+
+    Created                {{ site.created|date:"Y-m-d H:i:s" }}
+    Last checked           {{ site.extracted|date:"Y-m-d H:i:s" }}
+
+This record is a copy of that held by the New Zealand Archaeological
+Society (NZAA). Copyright rests with NZAA.
+
+</pre>

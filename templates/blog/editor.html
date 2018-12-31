@@ -1,0 +1,230 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- blog/editor.html -->
+
+
+<div id='headline'>
+  
+    <h1>{{ h1 }}</h1>
+
+    <p>list all blog entries in the system, not just the public ones</p>
+
+</div>
+
+<div class='two-col'>
+
+  <h2>Headline articles</h2>
+{% for article in headliners %}
+    <div class='indextile'>
+
+        <h2><a href='{{ article.url }}'>{{ article.title }}</a></h2>
+
+    
+        <h3>{{ article.subtitle }}</h3>
+
+        <a href='{{ article.url }}'>
+	<img src='{{ article.thumb.0 }}'
+	     alt='{{ article.thumb.1 }}' /></a>
+
+        <p>{{ article.intro }}</p>
+    
+    </div>{% endfor %}
+
+{% if completed %}    
+    <h2>Completed</h2>
+
+    <table style='font-size: 80%;'>
+
+        <tr>
+
+            <th>date</th>
+            <th>title</th>
+
+	</tr>
+	
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 2px solid;'> </td>
+	</tr>
+
+{% for article in completed %}
+        <tr>
+            <td>{{ article.modified|date:"Y-m-d" }}</td>
+            <td><b><a href='{{ article.url }}/edit/'>{{ article.title }}</a></b><br />
+	    {{ article.intro }}
+	    </td>
+        </tr> {% endfor %}
+
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 1px solid;'> </td>
+	</tr>
+    </table>{% endif %}
+
+{% if published %}
+    <h2>All published articles ({{ published.count }})</h2>
+
+    <table style='font-size: 80%;'>
+
+        <tr>
+
+            <th>date</th>
+            <th>title</th>
+
+	</tr>
+	
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 2px solid;'> </td>
+	</tr>
+
+{% for article in published %}
+        <tr>
+            <td>{{ article.pub_date|date:"Y-m-d" }}</td>
+            <td><b><a href='{{ article.url }}/edit/'>{{ article.title }}</a></b><br />
+	    {{ article.intro }}
+	    </td>
+        </tr> {% endfor %}
+
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 1px solid;'> </td>
+	</tr>
+
+    </table>{% endif %}
+    
+{% if cancelled %}
+    <h2>Cancelled articles</h2>
+
+    <table style='font-size: 80%;'>
+
+        <tr>
+
+            <th>date</th>
+            <th>title</th>
+
+	</tr>
+	
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 2px solid;'> </td>
+	</tr>
+
+{% for article in cancelled %}
+        <tr>
+            <td>{{ article.modified|date:"Y-m-d" }}</td>
+            <td><b><a href='{{ article.url }}/edit/'>{{ article.title }}</a></b><br />
+	    {{ article.intro }}
+	    </td>
+        </tr> {% endfor %}
+
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 1px solid;'> </td>
+	</tr>
+
+    </table>{% endif %}
+
+    
+</div><!-- Close the left column -->
+
+<div class='two-col'>
+  
+  
+    <h2>Working on ({{ working.count }})</h2>
+
+    <table style='font-size: 80%;'>
+
+        <tr>
+
+            <th>date</th>
+            <th>title</th>
+
+	</tr>
+	
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 1px solid;'> </td>
+	</tr>
+
+{% for article in working %}
+        <tr>
+            <td>{{ article.modified|date:"Y-m-d" }}</td>
+            <td><b><a href='{{ article.url }}/edit/'>{{ article.title }}</a></b><br />
+	    {{ article.intro }}
+	    </td>
+        </tr> {% endfor %}
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 2px solid;'> </td>
+	</tr>
+
+    </table>
+
+    <h2>Ideas and things not yet formed ({{ idea.count }})</h2>
+
+    <table style='font-size: 80%;'>
+
+        <tr>
+
+            <th>date</th>
+            <th>title</th>
+
+	</tr>
+	
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 1px solid;'> </td>
+	</tr>
+
+{% for article in idea %}
+        <tr>
+            <td>{{ article.modified|date:"Y-m-d" }}</td>
+            <td><b><a href='{{ article.url }}/edit/'>{{ article.title }}</a></b><br />
+	    {{ article.intro }}
+	    </td>
+        </tr> {% endfor %}
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 2px solid;'> </td>
+	</tr>
+
+    </table>
+
+    <h2>All articles by date ({{ all.count }})</h2>
+
+    <table style='font-size: 80%;'>
+
+        <tr>
+
+            <th>date</th>
+            <th>title</th>
+
+	</tr>
+	
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 1px solid;'> </td>
+	</tr>
+
+{% for article in all %}
+        <tr>
+            <td>{{ article.modified|date:"Y-m-d" }}</td>
+            <td><b><a href='{{ article.url }}/edit/'>{{ article.title }}</a></b><br />
+	    {{ article.intro }}
+	    </td>
+        </tr> {% endfor %}
+	<tr>
+          <td colspan='2'
+	      style='border-top: black 2px solid;'> </td>
+	</tr>
+
+    </table>
+
+
+      
+
+</div><!-- Close the right column -->
+
+
+<!-- end blog/editor.html -->
+{% endblock %}

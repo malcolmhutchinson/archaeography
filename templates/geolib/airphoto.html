@@ -1,0 +1,13 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- geolib/airphoto.html -->
+{% if frame %}{% include 'geolib/airphoto/frame.html' %}
+{% elif run %}{% include 'geolib/airphoto/run.html' %}
+{% elif survey %}{% include 'geolib/airphoto/survey.html' %}
+{% else %}{% include 'geolib/airphoto/essay.html' %}
+{% endif %}
+  
+<div style='clear:both'></div>
+
+<!-- end geolib/airphoto.html -->
+{% endblock %}
+

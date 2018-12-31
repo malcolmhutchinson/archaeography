@@ -1,0 +1,133 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- home/user.html -->
+<div id='block-whole'>
+<h1>{{ h1 }}</h1>
+</div>
+
+{% if notifications %}<ol class='notifications'>
+  {% for note in notifications %}    <li>{{ note }}</li>
+  {% endfor %}
+</ol>{% endif %}
+
+<div class='two-col'>
+
+  {% if lists %}<div class='indextile'>
+
+    <h2>You own the following site lists ({{ lists.count }})</h2>
+    
+    <table class='sortable'>
+        <tr>
+            <th>name</th>
+            <th>description</th>
+	    <th>sites</th>
+        </tr>
+
+
+    {% for list in lists %}
+        <tr>
+            <td><a href='{{ list.url }}'>{{ list.name }}</a></td>
+            <td>{{ list.description }}</td>
+	    <td style='text-align: right;'>{{ list.sites.count }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+  </div>{% endif %}
+
+  {% if updates %}<div class='indextile'>
+
+    <h2>Your active site record updates ({{ updates.count|intcomma }})</h2>
+
+    <table class='sortable'>
+        <tr>
+            <th>id</th>
+            <th>status</th>
+            <th>site</th>
+
+        </tr>
+
+{% for update in updates %}
+        <tr>
+            <td><a href='{{ update.url }}'>{{ update.update_id }}</a></td>
+            <td>{{ update.opstatus }}</td>
+            <td>{{ update.site.title }}</td>
+        </tr>
+
+{% endfor %}
+        </tr>
+    </table>
+  </div>{% endif %}
+
+
+  
+</div>
+
+<div class='two-col'>
+
+    <h2>Your profile and personal data</h2>
+
+    <table style=
+           "border: 1px black solid; 
+            font-size: 90%; 
+            padding: 0.5em"
+           >
+      <tr>
+        <th>Username</th>
+        <td style='text-align: right;'>{{ user.username }}</td>
+      </tr>
+      <tr>
+        <th>Member number</th>
+        <td style='text-align: right;'>{{ user.member.number }}</td>
+      </tr>
+      <tr>
+        <th>Initials</th>
+        <td style='text-align: right;'>{{ user.member.initial }}</td>
+      </tr>
+      <tr>
+        <th>Nickname</th>
+        <td style='text-align: right;'>{{ user.member.nickname }}</td>
+      </tr>
+      <tr>
+        <th>Member since</th>
+        <td style='text-align: right;'>
+          {{ user.member.created|date:"Y-m-d" }}</td>
+      </tr>
+
+    </table>
+
+    <p>Your nickname and initials can be used to identify
+    you on parts of the website that others might see.</p>
+
+    <p>Your name, email address and phone number are
+    for our records, so we can identify and communicate with you, and
+    are not released to any other person or organisation.</p>
+
+
+    <h2>Change your member information</h2>
+
+    <form target='' method='POST' >{% csrf_token %}
+    <table class='form'>      
+{{ memberForm }}
+      <tr>
+	<td colspan='2'
+	    style='text-align: right;'>
+	  <input type='submit' name='command' value='update' /></td>
+      </tr>
+     </table>
+    </form>
+
+    
+  </div>
+  
+
+</div>
+
+
+
+
+
+<!-- end home/user.html -->
+{% endblock %}
+
+
+

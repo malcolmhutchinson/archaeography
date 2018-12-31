@@ -1,0 +1,67 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Actors.html -->
+<div class='block-page'>
+
+  <p class='note'><a href='/manuals/nzaa/actor'>/manuals/nzaa/actor</a></p>
+  {% if actor %}
+
+  <h1>{{ actor.get_sourcename }}</h1>
+
+  <p>This is a list of sites this actor has been associated with. That
+    is, this name appears in either of the <tt>recorded_by</tt>,
+    <tt>updated_by</tt> or <tt>visited_by</tt> fields
+    ({{ actor.sites.all.count }}).</p>
+
+<p><textarea style='width: 100%;'>{{ identifiers }}</textarea>  </p>
+
+  <table style='font-size: 80%;'>
+
+    <tr>
+
+        <th>NZAA id</th>
+
+        <th>Title</th>
+
+        <th>type (legacy)</th>
+
+    </tr>
+{% for site in actor.sites.all %}
+    <tr>
+
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+
+        <td>{{ site.title }}</td>
+
+        <td>{{ site.lgcy_type }}</td>
+
+    </tr>
+{% endfor %}
+</table>
+
+{% else %}
+
+  <h1>Actors</h1>
+
+  <p>An <a href='/manuals/nzaa/actor'><em>actor</em></a> is a name
+  found in the site recods. This is a raw list, extracted from the
+  incoming ArchSite records. You will notice several names have
+    alternate or incorrect spellings. </p>
+
+
+  <table class='sortable'>
+    <tr>
+      <th>Name</th>
+      <th>count</th>
+    </tr>
+  {% for actor in actors %}
+    <tr>
+      <td><a href='{{ actor.url }}'>{{ actor }}</a></td>
+      <td>{{ actor.sites.all.count }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+</div>
+<!-- end nzaa/Actors.html -->
+{% endblock %}

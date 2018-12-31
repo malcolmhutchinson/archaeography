@@ -1,0 +1,28 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- templates/archlib/create.html -->
+<div id='panel'>
+
+  <h2>Publication information</h2>
+
+    {{ pubEdit.as_p }}
+
+
+</div>
+
+<h1>Create a new record</h1>
+
+{% if error %}<p>{{ error }}</p>
+{% else %}
+
+<h2>Bibliographic data</h2>
+
+{{ paperEdit.as_p }}
+
+<h2>... in (issue data)</h2>
+
+{{ issueEdit.as_p }}
+
+{% endif %}
+<pre>templates/archlib/create.html</pre>
+<!-- end templates/archlib/create.html -->
+{% endblock %}

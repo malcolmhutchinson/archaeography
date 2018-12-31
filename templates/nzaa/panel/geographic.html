@@ -1,0 +1,132 @@
+{% load humanize %}
+<!-- nzaa/panel/geographic.html -->    
+<h3>Geographic data</h3>
+
+    <table>
+      
+        <tr>
+
+            <th>NZTM</th>
+            <td colspan='2'>{{ site.nztm_coords }}</td>
+
+	</tr>
+        <tr>
+
+            <th>Archsite</th>
+            <td colspan='2'>{{ site.legacy_coords }}</td>
+
+	</tr>
+        <tr>
+
+            <th>NZMG</th>
+            <td colspan='2'>{{ site.nzmg_coords }}</td>
+
+	</tr>
+        <tr>
+
+            <th>WGS 84 (lon/lat)</th>
+            <td colspan='2'>{{ site.longitude|floatformat:4 }}
+	    {{ site.latitude|floatformat:4 }}</td>
+
+	</tr>
+        <tr>
+            <th>Island</th>
+            <td colspan='2'>{{ site.island }}</td>
+        </tr>
+        <tr>
+            <th>Region</th>
+            <td colspan='2'>{{ site.region }}</td>
+        </tr>
+        <tr>
+            <th>TLA</th>
+            <td colspan='2'>{{ site.tla }}</td>
+        </tr>
+        <tr>
+            <th>Topo50 sheet</th>
+            <td colspan='2'><a href='{{ site.get_topo50_sheet.url }}'>
+		{{ site.get_topo50_sheet }}</a>
+	    </td>
+        </tr>
+        <tr>
+            <th>NZMS sheet</th>
+            <td colspan='2'><a href='{{ site.get_nzms_sheet.url }}'>{{ site.get_nzms_sheet }}</a></td>
+        </tr>
+        <tr>
+            <th colspan='3' style='border-top: 1px bold solid;'></th>
+        </tr>
+        <tr>
+            <th colspan='3'>Closest other archaeological sites</th>
+        </tr>
+        <tr>
+            <th>NZAA id</th><th style='text-align: right;'>distance (m)</th>
+        {% for site in site.closest_sites %}<tr>
+            <td><a href='/nzaa/{{ site.0 }}'>{{ site.0 }}</a> 
+            </td>
+            <td style='text-align: right;'>{{ site.1|floatformat:0|intcomma }}
+            </td>
+        </tr>{% endfor %}
+        <tr>
+            <th colspan='3'>Closest places</th>
+        </tr>
+        <tr>
+            <td colspan='3'>{% for place in site.closest_placenames %}
+              {{ place.0 }} ({{ place.1|floatformat:0|intcomma }}&nbsp;m)<br />
+              {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Closest road</th>
+            <td colspan='2'>{% if site.closest_road.0 %}{{ site.closest_road.0 }}
+	    {% else %}Unnamed{% endif %}
+            ({{ site.closest_road.1|floatformat:0|intcomma }}&nbsp;m)</td>
+        </tr>
+
+        <tr>
+            <th>
+              Land parcel</th>
+            <td colspan='2'><a href='{{ site.parcels.0.url }}'>
+                {{ site.parcels.0.appellation }}</a></td>
+        </tr>  
+        <tr>
+            <th colspan='3' style='border-top: 1px solid black;'>
+              Topographic map sheets</th>
+        </tr>  
+{% for sheet in site.mapsheets %}
+        <tr>
+            <td><a href='{{ sheet.url }}'>{{ sheet }}</a></td>
+            <td colspan='2'>{{ sheet.series }}</td>
+        </tr>  {% endfor %}
+          
+
+        <tr>
+          <th colspan='3' style='border-top: 1px solid black;'>
+            Aerial photo frames</th>
+        </tr>  
+{% for frame in site.airphotos %}
+        <tr>
+            <td colspan='3'><a href='{{ frame.url }}'>{{ frame }}</a></td>
+        </tr>  {% endfor %}
+
+        <tr>
+          <th colspan='3' style='border-top: 1px solid black;'>
+            Lidar sets</th>
+        </tr>  
+
+        <tr>
+          <td colspan='3'><a href='{{ site.lidar_set.imagelayer_uri }}'>
+              {{ site.lidar_set }}</a></td>
+        </tr> 
+        <tr>
+          <th colspan='3' style='border-top: 1px solid black;'>
+            Orthophoto tiles</th>
+        </tr>  
+{% for frame in site.ortho_tiles %}
+        <tr>
+            <td colspan='3'><a href='{{ frame.url }}'>{{ frame }}</a></td>
+        </tr>  {% endfor %}
+    </table>
+
+
+
+    
+<!-- end nzaa/panel/geographic.html -->    

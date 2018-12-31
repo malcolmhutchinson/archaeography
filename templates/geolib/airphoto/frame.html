@@ -1,0 +1,189 @@
+{% load humanize %}
+<!-- geolib/airphoto/frame.html -->
+<div class='two-col'><!-- open the left column -->
+
+    <h1>{{ frame.identifier }} {{ frame.coverage }}</h1>
+
+  <p style='font-family: sans-serif;'>From survey 
+    <a href='{{ frame.run.survey.url }}'>{{ frame.run.survey.id }}</a>
+    {{ frame.run.survey.name }}, <a href='{{ frame.run.url }}'>run 
+    {{ frame.run.rn }}</a>.</p>
+
+    <div class='figure' style='width: auto; float: left;'>
+
+      <img src='{{ frame.thumbnail.0 }}' alt='{{ frame.thumbnail.1 }}'
+	   style='' />
+
+    </div>
+
+<!-- thumbnails would display here -->
+    
+
+    <div class='data'>
+    <h3 style='clear:both;'>Original files from retrolens.nz</h3>
+
+    <div style='font-size: 80%; font-family: sans-serif;'>
+{% for link in frame.retrolens %}
+        <p style='max-width: 100%;'>{{ link.1 }}<a href='{{ link.0 }}'>
+        <br /> {{ link.0 }}</a></p>
+{% endfor %}
+    </div>
+    </div>
+
+
+    {% if frame.sites %}
+
+    <h3>Site identifiers</h3>
+<textarea style='width: 100%;'>{{ identifiers }}</textarea>
+    
+{% endif %}    
+</div>
+
+<div class='two-col'><!-- open the right column -->
+
+    <p class='note'>Flown {{ frame.date_flown }}
+      {% if frame.time_flown %} at {{ frame.time_flown|date:"H:i:s" }}
+      {% endif %}</p>
+
+    <div class='data'>
+    <h3>Frame information</h3>
+
+    <table style='font-size: 100%;'>
+
+        <tr>
+
+	    <th>Identifier</th>
+            <td>{{ frame.identifier }}</td>
+
+        </tr>
+
+        <tr>
+
+	    <th>Survey/run</th>
+            <td><a href='{{ frame.run.survey.url }}'>
+		{{ frame.run.survey.id }}</a>/
+	      <a href='{{ frame.run.url }}'>{{ frame.run.rn }}</a></td>
+
+        </tr>
+
+        <tr>
+
+	    <th>Date/time flown</th>
+            <td>{% if frame.date_flown %}{{ frame.date_flown }} /
+	      {{ frame.time_flown }}{% else %}Unknown{% endif %}</td>
+
+        </tr>
+
+        <tr>
+
+	    <th>Altitude</th>
+            <td>{% if frame.alt_ft %}{{ frame.alt_ft }} (ft)
+	      {% elif frame.alt_m %}{{ frame.alt_m }} (m)
+	    {% else %}Unknown{% endif %}</td>
+
+        </tr>
+
+        <tr>
+
+	    <th>Focal length</th>
+            <td>{{ frame.focal_length }}</td>
+
+        </tr>
+
+        <tr>
+
+	    <th>Aperture</th>
+            <td>{{ frame.aperture }}</td>
+
+        </tr>
+
+        <tr>
+
+	    <th>Status</th>
+            <td>{{ frame.status }}</td>
+
+        </tr>
+
+    </table>
+    </div>
+
+
+{% if frame.geom %}
+    <div class='data'>
+    <h2>Ephemera</h2>
+
+    <table>
+
+        <tr>
+            <th>Date</th><td>{{ frame.date_flown }}</td>
+            <th>Time</th><td>{{ frame.time_flown }}</td>
+        </tr>
+        <tr>
+            <th>lat</th><td>{{ frame.lat }}</td>
+            <th>lon</th><td>{{ frame.lon }}</td>
+        </tr>
+        <tr>
+            <th>az</th><td>{{ frame.az_dd|floatformat:3 }}&deg;
+	    ({{ frame.az }})</td>
+            <th>alt</th><td>{{ frame.alt_dd|floatformat:3 }}&deg;
+	    ({{ frame.alt }})</td>
+        </tr>
+    </table>
+    </div>
+
+    <div class='data'>
+      
+        <h2>Lidar set ({{ frame.lidar_tiles.count }} tiles)</h2>
+
+        <p>{{ frame.lidar_set }}<br />
+          LINZ: <a href='{{ frame.lidar_set.imagelayer_uri }}'>
+        {{ frame.lidar_set.imagelayer_uri }}</a></p>
+
+
+    </div>
+
+    <div class='data'>
+      
+        <h2>Orthophoto tiles ({{ frame.ortho.count }})</h2>
+
+        <p>These orthophotos overlap with this aerial photo.</p>
+
+	<ol>
+	    {% for frame in frame.ortho %}
+	    <li><a href='{{ frame.url }}'>{{ frame.series }}
+		{{ frame.tile }}</a></li>
+	    {% endfor %}
+	</ol>
+
+    </div>
+
+    <div class='data'>
+      <h2>Archaeological sites by type</h2>
+{% include 'nzaa/panel/sites_by_lgcy_type.html' %}
+    </div>
+
+{% else %}
+
+    <p>This frame has not been georeferenced.</p>
+{% endif %}   
+
+</div>
+
+{% if frame.sites %}
+{% if nzaa_member %}
+<div class='block-whole'>
+
+<h2>Archaeological sites which may be visible on this frame</h2>
+{% include 'nzaa/panel/sitelist.html' %}
+
+</div>
+{% else %}
+<div class='block-whole' style="padding-top: 1em;">
+
+<h2>Archaeological sites which may be visible on this frame</h2>
+{% include 'nzaa/panel/sitelist_public.html' %}
+</div>
+{% endif %}
+{% endif %}
+<div style='clear:both'></div>
+<!-- close geolib/airphoto/frame.html -->

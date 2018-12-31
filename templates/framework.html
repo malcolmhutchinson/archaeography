@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>{{ title }}</title>
+
+{% if metadata %}{{ metadata }}{% endif %}
+{% load staticfiles %}
+
+<link rel='stylesheet'
+      href='{% static stylesheet_screen %}'
+      type='text/css' media='screen' />
+{% if stylesheet %}<link rel='stylesheet'
+      href='{% static stylesheet %}'
+      type='text/css'  />{% endif %}
+<link rel='stylesheet'
+      href='{% static stylesheet_printer %}'
+      type='text/css' media='print' />
+
+{% if jsortable %}<script src='/static/js/sorttable.js'></script>{% endif %}
+
+
+</head>
+
+<body>
+
+<div id='navigation'>
+    
+    <h2 class='top'><a href='/'>archaeography.nz</a></h2>
+  
+    <ol id='navlist_sections'>
+    {% for app in site_apps %}
+        <li><a href='{{ app.0 }}'>{{ app.1 }}</a></li>{% endfor %}
+    </ol>
+
+    <div id='login'>
+    {% if user.is_authenticated %}
+    <p id='login'>You are logged in as
+      <a href='/member/{{ user.username }}'>{{ user.username }}</a> | 
+        <a href='/logoff/'>logout</a></p>
+
+    {% else %}{% if loginform %}<h2>Login</h2>
+        <form id='loginform'
+	      action='/login/'
+	      method='post'>{% csrf_token %}
+        {{ loginform }}
+        <input type='submit' name='command' value='login' />
+        </form>{% endif %}{% endif %}
+    </div>
+    
+    {% if apps %}<h2>applications</h2>
+    <ol id='navlist_apps'>{% for app in apps %}
+        <li><a href='{{ app.0 }}'>{{ app.1 }}</a></li>{% endfor %}
+    </ol>{% endif %}    
+    {% if nav %}{% include nav %}{% endif %}    
+</div><!-- close navigation -->
+
+
+{% if main_form %}<!-- Turn the main form on -->
+<form id='{{ main_form.id }}' enctype='multipart/form-data' action='{{ main_form.action }}' method='{{ main_form.method }}' class='{{ main_form.class }}'>
+<div>{% csrf_token %}</div>{% endif %}
+  
+<!-- Page header -->
+<div id='pagehead'>
+    {% if header_right %}<span class='right'>
+    {{ header_right }}
+    </span>{% endif %}
+      
+    {% if breadcrumbs %}<ol class='breadcrumbs'>{% for crumb in breadcrumbs %}
+    
+    <li>{% if crumb.0 %}<a href='{{ crumb.0 }}'>{{ crumb.1 }}</a>
+        {% else %}{{ crumb.1 }}{% endif %}
+    </li>
+
+    {% endfor %}
+    </ol>{% endif %}
+
+    <div style='clear: both;'></div>
+</div><!-- close pagehead -->
+  
+
+
+<!-- Main content block-->
+<div id='main'>
+{% block main %}{% endblock %}
+<div style='clear: both;'></div>
+</div><!-- close main -->
+
+
+
+<!-- Page footer -->
+<div id='pagefoot'>
+    {% if buttons %}<span class='right' id='buttons'>{% for button in buttons %}
+      <input type='submit' name='command' value='{{ button }}' />{% endfor %}
+    </span>{% endif %}
+    {% if breadcrumbs %}<ol class='breadcrumbs'>{% for crumb in breadcrumbs %}
+        <li>{% if crumb.0 %}<a href='{{ crumb.0 }}'>{{ crumb.1 }}</a>{% else %}{{ crumb.1 }}{% endif %}</li>{% endfor %}
+    </ol>{% endif %}
+</div><!-- close pagefoot -->
+
+{% if main_form %}</form><!-- Turn the main form off -->{% endif %}
+</body>
+</html> 

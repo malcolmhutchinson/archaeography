@@ -1,0 +1,66 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Periods.html -->
+{% if period %}
+<div class='block-whole'>
+
+<h1>Period: {{ period.name }}</h1>
+
+<p>List of site records with this period ({{ period.sites.all.count|intcomma }})</p>
+
+<p><textarea style='width: 100%;'>{{ identifiers }}</textarea>  </p>
+
+<table style='font-size: 80%;'>
+
+    <tr>
+
+        <th>NZAA id</th>
+
+        <th>Title</th>
+
+        <th>type (legacy)</th>
+
+        <th>features</th>
+
+    </tr>
+{% for site in period.sites.all %}
+    <tr>
+
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+
+        <td>{{ site.title }}</td>
+
+        <td>{{ site.lgcy_type }}</td>
+
+        <td>{{ site.features }}</td>
+
+    </tr>
+{% endfor %}
+</table>
+
+{% else %}
+  
+<div class='block-page'>
+
+  <p class='note'><a href='/manuals/nzaa/period'>/manuals/nzaa/period</a></p>
+  
+  <h1>Periods</h1>
+
+  <table class='sortable'>
+    <tr>
+      <th>Period</th>
+      <th>count</th>
+    </tr>
+    {% for period in periods %}
+    <tr>{% if not period.name %}
+      <td><a href='{{ period.url }}'>None</a></td>{% else %}
+      <td><a href='{{ period.url }}'>{{ period.name }}</a></td>{% endif %}
+      <td>{{ period.sites.all.count|intcomma }}</td>
+    </tr>
+    {% endfor %}  
+  </table>
+  
+{% endif %}
+</div>
+<!-- end nzaa/Periods.html -->
+{% endblock %}

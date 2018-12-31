@@ -1,0 +1,101 @@
+{% load humanize %}
+<!-- nzaa/Sitelist_list.html -->
+
+    <h2>All site records in this list</h2>
+
+    <table style='font-size: 80%'>
+
+        <tr>
+
+	    <td style='background: #ccc;'></td>
+
+	    <td>Archsite values</td>
+
+        </tr>
+
+        <tr>
+
+	    <td style='background: #999;'></td>
+
+	    <td>Adjusted values</td>
+
+        </tr>
+
+    </table>
+
+      
+    <div style='max-height:25em; overflow-y: auto;
+	 border-bottom: 1px black solid;'>
+
+      <input type='submit' name='command' value='remove' />
+      <input type='submit' name='command' value='new list' />
+
+      
+    <table class='sortable' style='font-size: 80%; width: 100%;'>
+
+        <tr>
+            <th>select</th>
+
+            <th>id</th>
+
+            <th style='background: #ccc;'>site type</th>
+
+            <th style='background: #ccc;'>ethnicity</th>
+
+            <th style='background: #ccc;'>period</th>
+
+            <th style='background: #999;'>site type (subtype)</th>
+
+            <th style='background: #999;'>ethnicity</th>
+
+            <th style='background: #999;'>period</th>
+
+	    <th>No. updates</th>
+
+	    <th>No. docs</th>
+
+            <th>features</th>
+
+
+        </tr>
+
+	<tr>
+            <td colspan='11' style='border-bottom: black 2px solid;'></td>
+	</tr>  
+	{% for site in sitelist.sites.all %}
+	<tr>
+
+          <td> <input type="checkbox" name='{{ site.nzaa_id }}'
+                      value='{{ site.nzaa_id }}'> </td>
+          
+            <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+
+            <td>{{ site.lgcy_type }}</td>
+
+            <td>{{ site.lgcy_ethnicity }}</td>
+
+            <td>{{ site.lgcy_period }}</td>
+
+            <td>{{ site.site_type }}
+	    {% if site.site_subtype %}({{ site.site_subtype }}){% endif %}
+	    </td>
+
+            <td>{{ site.ethnicity }}</td>
+
+            <td>{{ site.period }}</td>
+
+	    <td>{{ site.updates_count }}</td>
+
+  	    <td>{{ site.all_documents.count }}</td>
+
+            <td>{{ site.features }}</td>
+
+            <td style='text-align: right;'>
+	    {{ site.geom_poly.area|floatformat:0|intcomma }}</td>
+	    
+        </tr>{% endfor %}
+
+    </table>
+    </div>
+
+<!-- end nzaa/Sitelist_list.html -->

@@ -1,0 +1,17 @@
+<!-- home/navigation.html -->
+<h2>Document neighourhood</h2>
+    <h3>Parent: <a href='{{ page.parent.0 }}'>{{ page.parent.1 }}</a></h3>
+    <h3>Sibling pages </h3>
+      <ol id='navlist_siblings'>
+      {% for sibling in page.siblings %}<li><a href='{{ sibling.0 }}'>{{ sibling.1 }}</a></li>
+{% endfor %}
+      </ol>
+
+    <h3>Local links</h3>
+
+    <ol id='navlist_local'>
+	<li>This: <a href='{{ page.link.0 }}'>{{ page.link.1 }}</a></li>
+        <li>Prev: <a href='{{ page.previous.link.0 }}'>{{ page.previous.link.1 }}</a></li>
+        <li>Next: <a href='{{ page.nextpage.link.0 }}'>{{ page.nextpage.link.1 }}</a></li>
+    </ol>
+<!-- close home/navigation.html -->

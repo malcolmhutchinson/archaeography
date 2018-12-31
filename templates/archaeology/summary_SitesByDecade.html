@@ -1,0 +1,19 @@
+<!-- nzaa/summary_SitesByDecade,html -->
+
+  <h2>Sites recorded by decade</h2>
+
+  <p>Number of sites in this set recorded in each decade</p>
+
+  <table class='data'>
+
+    <tr>
+      <th>Number</th>
+      {% for thing in by_decade %}<td>{{ thing.1 }}</td>{% endfor %}
+    </tr>
+    <tr>
+      <th>Decade</th>
+      {% for thing in by_decade %}<td>{{ thing.0 }}</td>{% endfor %}
+    </tr>
+  </table>
+  
+<!-- nzaa/summary_SitesByDecade.html -->

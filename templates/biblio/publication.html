@@ -1,0 +1,44 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+<!-- templates/archlib/publications.html -->
+<div id='headline'
+     style="background-image: url('/static/img/biblio/banner.jpg')">
+
+    <h1><i>{{ publication.title|safe }}</i></h1>
+
+    <p>Bibliography of NZ archaeology</p>
+  
+</div>
+
+
+<div class='two-col'><!-- open the left column -->
+
+    <h2><i>{{ publication.title|safe }}</i></h2>
+
+        <p class='note'>There are {{ issues|length }} issues of this
+        publication on file.</p>
+
+        <p class='note'> These contain {{ papers|length }} individual articles
+        in all issues.</p>
+
+        <p class='note'>
+        <a href='{{ publication.source }}'>{{ publication.source }}</a></p>
+
+</div>
+<div class='two-col'><!-- open the right column -->
+
+        <p>{{ publication.description|safe }}</p>
+
+</div>
+
+<div class='block-page'>
+
+    <ol class='issueList'>
+        {% for issue in issues %}
+        <li><p><a href='{{ issue.url }}'>{{ issue.cite|safe }}</a>
+        ({{ issue.articles.count }})</p></li>
+        {% endfor %}
+    </ol>
+
+</div>
+<!-- close templates/archlib/publications.html -->
+{% endblock %}

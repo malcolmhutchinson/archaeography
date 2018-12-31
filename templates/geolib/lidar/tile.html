@@ -1,0 +1,65 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- geolib/lidar/tile.html -->
+
+<div class='site-left'><!-- Open the left column -->
+
+    <h1>{{ tile.series }} tile {{ tile.tile_id }}</h1>
+
+
+    <div class='figure'>
+
+        <img src='{{ tile.display512.0 }}' alt='{{ tile.display512.1 }}' />
+
+        <p class='caption'>{{ tile.caption }}</p>
+
+    </div>  
+  
+</div>
+
+<div class='site-right'><!-- Open the right column -->
+    <div class='data'>
+      
+        <h2>Historic aerial photos ({{ tile.airphoto.count }})</h2>
+
+	<ol>
+	    {% for frame in tile.airphoto %}
+	    <li><a href='{{ frame.url }}'>{{ frame.identifier }}
+		{{ frame.coverage }}</a></li>
+	    {% endfor %}
+	</ol>
+
+        <h2>Orthophoto tiles ({{ tile.ortho.count }})</h2>
+
+	<ol>
+	    {% for frame in tile.ortho %}
+	    <li><a href='{{ frame.url }}'>{{ frame.tile }}</a></li>
+	    {% endfor %}
+	</ol>
+
+    </div>
+    <div class='data'>
+      <h2>Archaeological sites by type</h2>
+{% include 'nzaa/panel/sites_by_lgcy_type.html' %}
+    </div>
+
+</div>
+
+{% if nzaa_member %}
+<div class='block-whole'>
+
+<h2>Archaeological sites which may be visible on this tile</h2>
+{% include 'nzaa/panel/sitelist.html' %}
+
+</div>
+{% else %}
+<div class='block-page'>
+
+<h2>Archaeological sites which may be visible on this tile</h2>
+{% include 'nzaa/panel/sitelist_public.html' %}
+</div>
+{% endif %}
+
+<div style='clear:both'></div>
+<!-- geolib/lidar/tile.html -->
+{% endblock %}
