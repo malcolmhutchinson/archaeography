@@ -7,11 +7,27 @@ import home.views
 import models
 import nzaa.models
 
+
+def boundaries(request, command):
+    """List the member's boundary files."""
+
+    context = build_context(request)
+    template = 'member/boundaries.html'
+    context['h1'] = "List of your boundary files, "
+    context['h1'] += request.user.username
+    context['title'] = context['h1'] + " | archaeography.nz"
+    context['jsortable'] = True
+
+    return render(request, template, context)
+
+
+
 # Copied from home.views. Needs rewriting.
 @login_required
 def homepage(request, command=None):
     """Display updates and sitelists belonging to the authenticated user. """
 
+    print "VIEW homepage"
     context = build_context(request)
     context['h1'] = "This is your archaeography home page, "
     context['h1'] += request.user.username

@@ -4,6 +4,7 @@ from nzaa.models import Site
 
 urlpatterns = [
     #   The home pages
-    url(r'$([\w/-]*)', views.homepage),
+    url(r'^([\w-]*)/boundaries/$', views.boundaries),
+    url(r'^([\w-]*)/$', views.homepage),
 
 ]

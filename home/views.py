@@ -179,7 +179,7 @@ def build_context(request):
         ],
         'nav': None,
         'commands': None,
-        'yourstuff': authority.your_stuff(),
+        'yourstuff': authority.your_stuff(request),
         'loginform': forms.LoginForm,
         'notifications': [],
         'user': request.user,

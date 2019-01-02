@@ -48,10 +48,11 @@
         <input type='submit' name='command' value='login' />
         </form>{% endif %}{% endif %}
     </div>
-    
-    {% if apps %}<h2>applications</h2>
-    <ol id='navlist_apps'>{% for app in apps %}
-        <li><a href='{{ app.0 }}'>{{ app.1 }}</a></li>{% endfor %}
+
+   
+    {% if yourstuff %}<h2>your stuff</h2>
+    <ol id='navlist_apps'>{% for stuff in yourstuff %}
+        <li><a href='{{ stuff.0 }}'>{{ stuff.1 }}</a></li>{% endfor %}
     </ol>{% endif %}    
     {% if nav %}{% include nav %}{% endif %}    
 </div><!-- close navigation -->

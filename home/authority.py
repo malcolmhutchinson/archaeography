@@ -11,6 +11,8 @@
 
 """
 
+import nzaa.models
+
 
 def applications(request):
     """Build the list of apps the user can see.
@@ -37,5 +39,26 @@ def your_stuff(request):
     if not request.user.is_authenticated():
         return None
 
+    stuff = [('/member/' + request.user.username, 'your homepage'),]
     
+    if request.user.groups.filter(name='boundary'):
+        stuff.append(
+            ('/member/' + request.user.username + '/boundaries/',
+            'boundary files')
+        )
     
+    if request.user.groups.filter(name='nzaa'):
+        if nzaa.models.Update.objects.filter(
+                owner=request.user.username).exists():
+            stuff.append(
+                ('/nzaa/updates/' + request.user.username, 'your site updates')
+            )
+        if nzaa.models.NewSite.objects.filter(
+                owner=request.user.username).exists():
+            stuff.append(
+                ('/nzaa/updates/' + request.user.username, 'your site updates')
+            )
+
+
+
+    return stuff
