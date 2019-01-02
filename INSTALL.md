@@ -144,9 +144,6 @@ installation).
     MACHINE = ('machine', 'some pass phrase')
 
 
-Step 3.  Install the project database tables
---------------------------------------------
-
 Before you try to run any django management commands with
 `runserver.py`, you will probably run into the missing secrets
 file. You will see this error:
@@ -164,6 +161,10 @@ comment this line:
 Alternatively, follow the instructions in that settings file, and
 create a secrets file. This is listed in .githubignore, so git will
 ignore it. 
+
+
+Step 3.  Install the project database tables
+--------------------------------------------
 
 Run the Django migrations to set up the database. In shell:
 
