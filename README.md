@@ -14,6 +14,12 @@ The boundary report branch. Development on functions to provide lists
 of archaeological sites intersecting with and adjacent to arbitrary
 polygon geometries.
 
+The user can upload a polygon geometry, as a KML file. This is
+injected into a database table, where the model can be used to extract
+lists of site records by distance -- those inside the shape, those
+intersecting, and those adjacent. It will also collect cadastral
+parcels intersecting with the shape.
+
 
 
 More information
