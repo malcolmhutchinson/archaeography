@@ -119,6 +119,34 @@ def manuals(request, address=None):
     return render(request, 'manuals.html', context)
 
 
+@login_required
+def userhome(request, command=None):
+    """Display updates and sitelists belonging to the authenticated user. """
+
+    context = build_context(request)
+    context['h1'] = "This is your archaeography home page, "
+    context['h1'] += request.user.username
+    context['title'] = context['h1'] + " | archaeography.nz"
+    context['jsortable'] = True
+
+    # This causes trouble if the user has no associated member record.
+    context['memberForm'] = forms.MemberForm(instance=request.user.member)
+
+    context['lists'] = nzaa.models.SiteList.objects.filter(
+        owner=request.user.username)
+    context['updates'] = nzaa.models.Update.objects.filter(
+        owner=request.user.username)
+
+    if request.POST:
+        memberForm = forms.MemberForm(
+            request.POST, instance=request.user.member
+        )
+        if memberForm.is_valid():
+            memberForm.save()
+            context['memberForm'] = memberForm
+
+    return render(request, 'home/user.html', context)
+
 
 # ---------------------------------------------------------------
 # Ancilliary functions (not views).
@@ -153,7 +181,4 @@ def build_context(request):
     if request.user.groups.filter(name='nzaa').exists():
         CONTEXT['site_apps'].append(('/nzaa/', 'nzaa site records'))
 
-    if request.user.is_authenticated():
-        CONTEXT['your_stuff'] = authority.your_stuff()
-        
     return CONTEXT

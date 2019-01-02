@@ -766,7 +766,7 @@ class Record(models.Model):
         return p.x
 
     def mapfile(self):
-        """Return a dictionary structure containing variables for a mapfile.
+        """Return a dictionary structure cpntaining variables for a mapfile.
 
         """
 
