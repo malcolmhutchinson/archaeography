@@ -30,3 +30,12 @@ def applications(request):
         apps.append(('/nzaa/', 'nzaa site records'))
 
     return apps
+
+def your_stuff(request):
+    """List of navigation commands peculiar to the user."""
+
+    if not request.user.is_authenticated():
+        return None
+
+    
+    

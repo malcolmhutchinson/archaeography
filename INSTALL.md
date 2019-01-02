@@ -200,7 +200,10 @@ Follow the prompts. Then start the development server, and point a
 browser at `localhost:8000/admin`. Using the Django admin interface,
 create the following group:
 
+    boundary
     nzaa
+
+Add your own user to these groups.
 
 Using the django admin interface, create as many user records as
 required, adding membership to the appropriate groups.

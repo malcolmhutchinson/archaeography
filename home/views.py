@@ -16,6 +16,7 @@ import forms
 import geolib.analyse
 import geolib.models
 import members.forms
+import members.models as members
 import nzaa.analyse
 import nzaa.models
 import settings
@@ -129,9 +130,14 @@ def userhome(request, command=None):
     context['title'] = context['h1'] + " | archaeography.nz"
     context['jsortable'] = True
 
-    # This causes trouble if the user has no associated member record.
-    context['memberForm'] = forms.MemberForm(instance=request.user.member)
-
+    # This causes trouble if the user has no associated member record.    
+    try:
+        members.Member.objects.get(user=request.user).exists()
+        context['memberForm'] = forms.MemberForm(instance=request.user.member)
+        template = 'member.html'
+    except members.Member.DoesNotExist:
+        template = 'home/user.html'
+        pass
     context['lists'] = nzaa.models.SiteList.objects.filter(
         owner=request.user.username)
     context['updates'] = nzaa.models.Update.objects.filter(
@@ -145,7 +151,7 @@ def userhome(request, command=None):
             memberForm.save()
             context['memberForm'] = memberForm
 
-    return render(request, 'home/user.html', context)
+    return render(request, template, context)
 
 
 # ---------------------------------------------------------------
@@ -173,6 +179,7 @@ def build_context(request):
         ],
         'nav': None,
         'commands': None,
+        'yourstuff': authority.your_stuff(),
         'loginform': forms.LoginForm,
         'notifications': [],
         'user': request.user,

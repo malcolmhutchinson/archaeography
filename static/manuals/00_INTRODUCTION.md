@@ -4,8 +4,8 @@ Introduction to archaeography.nz
 
 The archaeography project is an experiment in archaeological records
 research. At it's heart is a model of the
-[NZ Archaeological Association's](/manuals/nzaa/nzaa/)
-[Site Recording Scheme (SRS)](/manuals/nzaa/site_recording_scheme/).
+[NZ Archaeological Association's](https://nzarchaeology.org/)
+[Site Recording Scheme (SRS)](/manuals/nzaa/site_recording_scheme).
 
 I started this project, because I wanted to see what insights into the
 national archaeological dataset could be gained by applying modern

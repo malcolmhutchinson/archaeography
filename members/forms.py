@@ -26,6 +26,17 @@ class MemberDetails(ModelForm):
         }
 
 
+class MemberForm(ModelForm):
+    """User's member values."""
+
+    class Meta:
+        model = models.Member
+        fields = [
+            'initial',
+            'nickname',
+            'email',
+            'phone',
+        ]
 class PersonDetails(ModelForm):
     class Meta:
         model = models.Person
@@ -33,3 +44,8 @@ class PersonDetails(ModelForm):
             'name_first',
             'name_last',
         ]
+
+
+class UploadFile(Form):
+    filename = FileField(required=False)
+
