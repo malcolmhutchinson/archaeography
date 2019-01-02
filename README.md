@@ -15,10 +15,11 @@ functions of an information system for handling the records in the SRS.
 NOTE: There are NO DATA BELONGING TO THE NZAA present in this
 codebase. 
 
-Boundary report
----------------
 
-This is the boundary report branch. For a full background to the
+The normalise branch
+--------------------
+
+This is thenormalise branch. For a full background to the
 archaeography project, checkout the master branch.
 
 
