@@ -161,12 +161,6 @@ class Member(models.Model):
             return unicode(self.nickname)
         return unicode(self.user.username)
 
-    def filespace(self):
-        """Return a webnote directory object of this user's webspace."""
-    
-    def filespace_path(self):
-        """Return a string to the filespace for this user."""
-    
     def lists(self):
         """Return a dictionary containing indications of site updates or lists.
         """
