@@ -18,15 +18,10 @@ addresses against an organisation or person as we like.
 """
 
 from __future__ import unicode_literals
-
-import os
-from django.contrib.gis.db import models
+from django.db import models
 from django.contrib.auth.models import User
-from django.contrib.gis.gdal import DataSource
 
-import nzaa.models as nzaa
-import settings
-import webnote
+from nzaa.models import Site, Update, SiteList
 
 
 class Address(models.Model):
@@ -131,8 +126,6 @@ class Member(models.Model):
     """A member has a login on the system.
     """
 
-    URL = 'member'
-
     number = models.AutoField(primary_key=True)
     user = models.OneToOneField(User)
     person = models.OneToOneField(
@@ -170,19 +163,9 @@ class Member(models.Model):
 
     def filespace(self):
         """Return a webnote directory object of this user's webspace."""
-
-        docroot = settings.STATICFILES_DIRS[0].replace('static', '')
-
-        return webnote.Directory(self.filespace_path(), docroot=docroot)
     
     def filespace_path(self):
         """Return a string to the filespace for this user."""
-
-        return os.path.join(
-            settings.STATICFILES_DIRS[0],
-            self.URL,
-            self.user.username,
-        )
     
     def lists(self):
         """Return a dictionary containing indications of site updates or lists.
@@ -203,97 +186,3 @@ class Member(models.Model):
 
     def list_updates(self):
         """List the update records belonging to the user. """
-
-
-class Boundary(models.Model):
-    """A boundary is a polygon geometry uploaded by a member.
-
-    A report of archaeological sites within and adjacent to each
-    boundary can be produced.
-
-    """
-
-    URL = os.path.join(settings.BASE_URL, 'boundary')
-  
-
-    member = models.ForeignKey(Member)
-    fname = models.CharField(max_length=255)
-    name = models.CharField(max_length=255)
-    client = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    notes = models.TextField(blank=True, null=True)
-
-    geom = models.MultiPolygonField(srid=2193)
-
-    created = models.DateTimeField(
-        auto_now_add=True, editable=False, verbose_name='Record created at')
-
-    created_by = models.CharField(
-        max_length=255, editable=False, verbose_name='Record created by')
-
-    modified = models.DateTimeField(
-        null=True, blank=True, auto_now=True,
-        editable=False, verbose_name='Record modified at')
-
-    modified_by = models.CharField(
-        max_length=255, null=True, blank=True,
-        editable=False, verbose_name='Record modified by')
-
-    def __unicode__(self):
-        if self.nickname:
-            return unicode(self.nickname)
-        return unicode(self.user.username)
-
-    def get_absolute_url(self):
-        return os.path.join(settings.BASE_URL, self.URL, str(self.id))
-
-    url = property(get_absolute_url)
-
-    def filespath(self):
-        return os.path.join(
-            settings.STATICFILES_DIRS[0],
-            self.URL,
-            member.user.username,
-            self.fname,
-        )
-
-    def receive_file(self, filepath):
-        """Register a geometry file with the database.
-
-        If a record exists with this filename, update it. Else, create
-        a record for this file. Convert the geometry to SRID=2193
-        NZTM2000.
-
-        https://docs.djangoproject.com/en/2.1/ref/contrib/gis/layermapping/
-
-        """
-
-        ds = DataSource(filepath)
-
-    def parcels_intersecting(self):
-        """Return a queryset of the parcels intersecting this boundary."""
-
-        return []
-
-
-    def sites_adjacent(self, distance=500):
-        """Queryset of sites falling within a distance. 
-
-        Sites within (distance = 0) should be excluded.
-
-        """
-
-        return []
-    
-    def sites_intersecting(self):
-        """Queryset of sites falling within this boundary."""
-
-        return []
-
-    def sites_within(self):
-        """Queryset of sites falling within this boundary."""
-
-        return []
-
-
-    

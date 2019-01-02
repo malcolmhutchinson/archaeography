@@ -39,7 +39,7 @@ urlpatterns = [
     url(r'^geolib/', include('geolib.urls')),
     url(r'^logoff/', views.logoff, name='logout'),
     url(r'^manuals/([\w/-]*)', views.manuals),
-    url(r'^member/', include('members.urls')),
+    url(r'^member/()', views.userhome, name='userhome'),
     url(r'^nzaa/', include('nzaa.urls')),
     url(r'^favicon\.ico$',
         RedirectView.as_view(url='/static/img/favicon.ico')),
