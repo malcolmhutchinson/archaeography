@@ -1517,9 +1517,9 @@ class NewSite(Record):
 
     def legacy_coords():
         """A placeholder, used with certain site templates."""
-        
+
         return None
-    
+
     def topo50_id(self):
         """Compute this new record's temporary id.
 
@@ -1860,9 +1860,6 @@ class Update(Record):
         text = self.replace_temp_ids(chop[0])
         return markdown(text)
 
-    def all_documents(self):
-        return self.documents.all()
-
     def buttons(self, user):
         """Return a tuple of button commands to be used in the view.
 
@@ -1905,94 +1902,6 @@ class Update(Record):
         result, unref_figs = self.filespace().reference_text(self.description)
 
         return markdown(result)
-
-    # Legacy code, not checked.
-    def document_records(self):
-        """Compile records for docs and files from the file catalogue.
-
-        This will create or update records in the document and files
-        tables.
-
-        """
-
-        DOCREC = {
-            'update': None,
-            'doctype': None,
-            'file_id': None,
-            'orig_format': None,
-            'title': None,
-            'creator': None,
-            'contributor': None,
-            'publisher': "NZ Archaeological Association",
-            'date_created': None,
-            'coverage': None,
-            'description': None,
-            'rights': None,
-            'subject': None,
-            'notes': None,
-        }
-        provenance = 'NZAA SRS First bulk download from ArchSite, early 2015.'
-        FILEREC = {
-            'document': None,
-            'filename': None,
-            'filespace': None,
-            'file_format': None,
-            'fsize': None,
-            'received': '2015-01-11',
-            'received_fname': None,
-            'uploaded': None,
-            'uploaded_by': None,
-            'description': None,
-            'provenance': provenance,
-            'rights': 'NZ Archaeological Association',
-            'quality': None,
-            'notes': None,
-        }
-
-        documents = []
-        files = []
-        basenames = self.doc_catalogue()
-
-        for basename in sorted(basenames.keys()):
-            doc = DOCREC
-            doc['update'] = self
-            doc['file_id'] = basename
-
-            try:
-                document = Document.objects.get(file_id=basename)
-                note = "Found document record " + basename
-            except Document.DoesNotExist:
-                document = Document(**doc)
-                note = "Creating document record " + basename
-
-            document.save()
-
-            self.notifications.append(note)
-            documents.append(doc)
-
-            for f in basenames[basename]:
-                (basen, ext) = os.path.splitext(f)
-                filerec = FILEREC
-                filerec['document'] = document
-                filerec['filename'] = f
-                filerec['filespace'] = self.update_id.replace('-', '/')
-                filerec['file_format'] = ext
-                filerec['received_fname'] = f
-
-                try:
-                    filerecord = File.objects.get(filename=f)
-                    note = "Found file record " + f
-                except File.DoesNotExist:
-                    filerecord = File(**filerec)
-                    note = "Creating file record " + f
-
-                filerecord.__dict__.update(**filerec)
-                filerecord.save()
-
-                self.notifications.append(note)
-                files.append(filerec)
-
-        return (documents, files)
 
 
 class SiteList(models.Model):
@@ -2327,3 +2236,216 @@ class SiteReview(models.Model):
         }
 
         return old_values
+
+
+# ###########################################################################
+
+
+
+class Document(models.Model):
+
+    """An original document.
+
+    Should be represented by at least one file record, and must be
+    linked to an Update record.
+
+    File_id is the basename identifier from the original file (pdf,
+    tiff or whatever), as computed by Update.catalogue_files.
+
+    """
+
+
+    DOCTYPE = (
+        ('photograph ground', 'Ground photo'),
+        ('photograph historical', 'Historic photograph'),
+        ('air photo oblique', 'Oblique air photo'),
+        ('air photo vertical', 'Vertical air photo'),
+        ('photo ref', 'Photo reference card'),
+        ('SRF', 'Site Recording Form (SRF)'),
+        ('SDF', 'Site Description Form (SDF)'),
+        ('map', 'General map (eg topo)'),
+        ('plan', 'Archaeological plan'),
+        ('drawing', 'Drawing (eg. profile)'),
+        ('sketch map', 'Sketch map'),
+        ('historical', 'Historical matter'),
+        ('report', 'Report or written document'),
+        ('spatial data', 'Spatial data (vector)'),
+        ('unknown', 'Unknown'),
+        ('irrelevant', 'Not relevant'),
+    )
+
+    update = models.ForeignKey(
+        Update, on_delete=models.CASCADE, related_name='documents')
+
+    doctype = models.CharField(
+        max_length=255, blank=True, null=True, choices=DOCTYPE)
+
+    file_id = models.CharField(max_length=1024)
+    ordinal = models.IntegerField(default=0)
+    orig_format = models.CharField(max_length=512, blank=True, null=True)
+    pages = models.IntegerField(default=1),
+    title = models.CharField(max_length=1024, blank=True, null=True)
+    creator = models.CharField(max_length=1024, blank=True, null=True)
+    contributor = models.CharField(max_length=1024, blank=True, null=True)
+    publisher = models.CharField(max_length=1024, blank=True, null=True)
+    date_created = models.DateField(blank=True, null=True)
+    coverage = models.CharField(max_length=1024, blank=True, null=True)
+    short_desc  = models.CharField(max_length=1024, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    rights = models.TextField(blank=True, null=True)
+    subject  = models.CharField(max_length=1024, blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
+
+    notifications = []
+
+    class Meta:
+        ordering = ['ordinal',]
+
+    def __unicode__(self):
+        if self.title:
+            return title
+        return self.file_id
+
+    def identifier(self):
+        if self.ordinal:
+            return 'DOC-' + str(self.ordinal)
+
+        return 'DOC-' + self.file_id
+
+    def get_absolute_url(self):
+        return os.path.join(self.update.site.url, self.identifier())
+
+    url = property(get_absolute_url)
+
+    def normalise(self, commit=False):
+
+        if not self.creator:
+            self.creator = self.update.updated_by
+
+        if not self.date_created:
+            self.date_created = self.update.updated
+
+        if commit:
+            self.save()
+
+        return self
+
+
+    def pages_count(self):
+        if self.files_count() == 1:
+            return 1
+        return self.files_count() -1
+
+    def primary_file(self):
+        """From the list of files, find the original one.
+
+        This will be the PDF, TIF or JPG which was originally
+        downloaded from Archsite.
+
+        """
+
+        if self.files.all().count() == 1:
+            return self.files.all()[0]
+
+
+        for f in self.files.all():
+            (basename, ext) = os.path.splitext(f.filename)
+            if (ext.lower() in webnote.settings.SUFFIX['documents'] or
+               ext.lower() in webnote.settings.SUFFIX['image']) :
+                return f
+
+        return None
+
+    def files_count(self):
+        return self.files.all().count()
+
+    def list_pages(self):
+        """List of (src, alt) tuples linking pages for this document.
+
+        These are for display, so they should omit the primary file.
+
+        """
+
+        pages = []
+
+        caption = self.file_id
+
+        for f in self.files.all():
+            (basename, ext) = os.path.splitext(f.filename)
+            if ext in webnote.settings.SUFFIX['figures']:
+                src = f.url
+                alt = f.filename
+                page = (src, alt)
+                pages.append(page)
+
+        return pages
+
+    def first_page(self):
+        return self.list_pages()[0]
+
+
+class File(models.Model):
+    """URIs for files linked to Document records.
+
+    The filename may have spaces (although I would prefer them not
+    to). The URI will be stored with HTML special characters (eg. %20
+    representing a space character).
+
+    """
+
+    QUALITY = (
+        ('very high', 'Very high'),
+        ('high', 'High'),
+        ('acceptable', 'Acceptable'),
+        ('unreadable', 'Unreadable'),
+    )
+
+
+    document = models.ForeignKey(
+        Document, on_delete=models.CASCADE, related_name='files')
+
+    filename = models.CharField(max_length=255)
+    filespace = models.CharField(max_length=1024, blank=True, null=True)
+    file_format = models.CharField(max_length=255, blank=True, null=True)
+    fsize = models.IntegerField(blank=True, null=True)
+    received = models.DateField()
+    received_fname = models.CharField(max_length=255)
+    uploaded = models.DateField(blank=True, null=True)
+    uploaded_by = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    provenance = models.TextField(blank=True, null=True)
+    rights = models.TextField(blank=True, null=True)
+    quality = models.CharField(
+        max_length=255, blank=True, null=True, choices=QUALITY
+    )
+    notes = models.TextField(blank=True, null=True)
+
+    notifications = []
+
+    class Meta:
+        ordering = ['filename',]
+
+    def __unicode__(self):
+        return self.filename
+
+    def file_not_found(self):
+        """Return True if file is missing """
+
+        return False
+
+    def file_exists(self):
+        return not self.file_not_found()
+
+    def get_absolute_url(self):
+
+        url = os.path.join(
+            settings.STATIC_URL[:-1] + settings.BASE_URL,
+            self.filespace,
+            self.filename,
+        )
+        return url
+
+    url = property(get_absolute_url)
+
+
+
