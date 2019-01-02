@@ -1860,9 +1860,6 @@ class Update(Record):
         text = self.replace_temp_ids(chop[0])
         return markdown(text)
 
-    def all_documents(self):
-        return self.documents.all()
-
     def buttons(self, user):
         """Return a tuple of button commands to be used in the view.
 
