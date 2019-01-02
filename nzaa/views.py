@@ -10,10 +10,7 @@ Infrastructure
 
             context['breadcrumbs'] = build_breadcrumbs(request)
 
-
-
 Session variables - site record lists
-
 
     The session variable is used to store lists of site identifiers,
     such that a list of records can be stepped through, via links in

@@ -1,4 +1,3 @@
-
 from django.conf.urls import url
 
 import nzaa.views as views
