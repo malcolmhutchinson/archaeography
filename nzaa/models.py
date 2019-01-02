@@ -1517,9 +1517,9 @@ class NewSite(Record):
 
     def legacy_coords():
         """A placeholder, used with certain site templates."""
-        
+
         return None
-    
+
     def topo50_id(self):
         """Compute this new record's temporary id.
 
@@ -1903,94 +1903,6 @@ class Update(Record):
 
         return markdown(result)
 
-    # Legacy code, not checked.
-    def document_records(self):
-        """Compile records for docs and files from the file catalogue.
-
-        This will create or update records in the document and files
-        tables.
-
-        """
-
-        DOCREC = {
-            'update': None,
-            'doctype': None,
-            'file_id': None,
-            'orig_format': None,
-            'title': None,
-            'creator': None,
-            'contributor': None,
-            'publisher': "NZ Archaeological Association",
-            'date_created': None,
-            'coverage': None,
-            'description': None,
-            'rights': None,
-            'subject': None,
-            'notes': None,
-        }
-        provenance = 'NZAA SRS First bulk download from ArchSite, early 2015.'
-        FILEREC = {
-            'document': None,
-            'filename': None,
-            'filespace': None,
-            'file_format': None,
-            'fsize': None,
-            'received': '2015-01-11',
-            'received_fname': None,
-            'uploaded': None,
-            'uploaded_by': None,
-            'description': None,
-            'provenance': provenance,
-            'rights': 'NZ Archaeological Association',
-            'quality': None,
-            'notes': None,
-        }
-
-        documents = []
-        files = []
-        basenames = self.doc_catalogue()
-
-        for basename in sorted(basenames.keys()):
-            doc = DOCREC
-            doc['update'] = self
-            doc['file_id'] = basename
-
-            try:
-                document = Document.objects.get(file_id=basename)
-                note = "Found document record " + basename
-            except Document.DoesNotExist:
-                document = Document(**doc)
-                note = "Creating document record " + basename
-
-            document.save()
-
-            self.notifications.append(note)
-            documents.append(doc)
-
-            for f in basenames[basename]:
-                (basen, ext) = os.path.splitext(f)
-                filerec = FILEREC
-                filerec['document'] = document
-                filerec['filename'] = f
-                filerec['filespace'] = self.update_id.replace('-', '/')
-                filerec['file_format'] = ext
-                filerec['received_fname'] = f
-
-                try:
-                    filerecord = File.objects.get(filename=f)
-                    note = "Found file record " + f
-                except File.DoesNotExist:
-                    filerecord = File(**filerec)
-                    note = "Creating file record " + f
-
-                filerecord.__dict__.update(**filerec)
-                filerecord.save()
-
-                self.notifications.append(note)
-                files.append(filerec)
-
-        return (documents, files)
-
 
 class SiteList(models.Model):
     """User-definable lists or groups of sites. """
@@ -2047,11 +1959,6 @@ class SiteList(models.Model):
         for item in ids:
             if utils.is_siteid(item):
                 self.sites.remove(item)
-
-    # This is a duplication and should be removed.
-    def get_queryset(self):
-        """Return Django queryset object containing records in this list."""
-        return self.sites.all()
 
     def identifiers_str(self):
         """List of nzaa_ids as a string, suitable for injection."""
