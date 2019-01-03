@@ -9,6 +9,15 @@ from django.forms import FileField
 import settings
 import models
 
+class BoundaryFileForm(ModelForm):
+    class Meta:
+        model = models.Boundary
+        fields =  [
+            'name',
+            'client',
+            'description',
+            'notes',
+        ]
 
 class MemberDetails(ModelForm):
     class Meta:

@@ -409,11 +409,7 @@ tables.
     DROP TABLE work.aerial_otago;
     DROP TABLE work.aerial_waikato;
     DROP TABLE work.aerial_wellington;
-    DROP TABLE work.cadastre1;
-    DROP TABLE work.cadastre2;
-    DROP TABLE work.cadastre3;
-    DROP TABLE work.cadastre4;
-    DROP TABLE work.cadastre5;
+    DROP TABLE work.cadastre;
     DROP TABLE work.contours;
     DROP TABLE work.islands;
     DROP TABLE work.lakes;

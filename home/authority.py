@@ -41,12 +41,6 @@ def your_stuff(request):
 
     stuff = [('/member/' + request.user.username, 'your homepage'),]
     
-    if request.user.groups.filter(name='boundary'):
-        stuff.append(
-            ('/member/' + request.user.username + '/boundaries/',
-            'boundary files')
-        )
-    
     if request.user.groups.filter(name='nzaa'):
         if nzaa.models.Update.objects.filter(
                 owner=request.user.username).exists():
@@ -56,9 +50,18 @@ def your_stuff(request):
         if nzaa.models.NewSite.objects.filter(
                 owner=request.user.username).exists():
             stuff.append(
-                ('/nzaa/updates/' + request.user.username, 'your site updates')
+                ('/nzaa/newsites/' + request.user.username, 'your new sites')
+            )
+        if nzaa.models.SiteList.objects.filter(
+                owner=request.user.username).exists():
+            stuff.append(
+                ('/nzaa/sitelists/' + request.user.username, 'your site lists')
             )
 
-
-
+    if request.user.groups.filter(name='boundary'):
+        stuff.append(
+            ('/member/' + request.user.username + '/boundaries/',
+            'your boundary files')
+        )
+    
     return stuff

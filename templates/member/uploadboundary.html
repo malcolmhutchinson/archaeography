@@ -1,0 +1,30 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- home/user.html -->
+<div class='block-page'>
+<h1>{{ h1 }}</h1>
+
+
+  {% if notifications %}<h3>Notifications</h3>
+  <ul>
+    {% for note in notifications %}<li>{{ note }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+
+  <p>This will be a KML file containing a single polygon geometry
+    enclosing an area somewhere within New Zealand.</p>
+
+  <table>
+    {{ boundaryFileForm }}
+    </table
+  
+  {{ uploadFile.as_p }}
+
+    <input type='submit' name='command' value='upload' />
+  
+</div>
+<!-- end home/user.html -->
+{% endblock %}
+
+
+

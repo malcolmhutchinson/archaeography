@@ -183,7 +183,15 @@ class Member(models.Model):
             self.URL,
             self.user.username,
         )
-    
+
+    def mkdir(self):
+        """Create a directory in the member filespace."""
+        
+        if not os.path.isdir(self.filespace_path()):
+            os.mkdir(self.filespace_path())
+
+        return None
+     
     def lists(self):
         """Return a dictionary containing indications of site updates or lists.
         """
