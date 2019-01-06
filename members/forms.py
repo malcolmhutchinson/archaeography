@@ -41,6 +41,7 @@ class MemberForm(ModelForm):
     class Meta:
         model = models.Member
         fields = [
+            'name',
             'initial',
             'nickname',
             'email',

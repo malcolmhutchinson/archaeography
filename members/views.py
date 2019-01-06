@@ -190,6 +190,8 @@ def homepage(request, command=None):
         owner=request.user.username)
     context['updates'] = nzaa.models.Update.objects.filter(
         owner=request.user.username)
+    context['newsites'] = nzaa.models.NewSite.objects.filter(
+        owner=request.user.username)
 
     if request.POST:
         memberForm = forms.MemberForm(
