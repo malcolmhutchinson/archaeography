@@ -122,5 +122,5 @@ Installing archaeography
 
 Detailed, step-by-step instructions for installing the archaeography
 project code into a Django development environment are included in the
-(INSTALL)[https://github.com/malcolmhutchinson/archaeography/blob/master/INSTALL.md]
+[INSTALL](https://github.com/malcolmhutchinson/archaeography/blob/master/INSTALL.md)
 document.
