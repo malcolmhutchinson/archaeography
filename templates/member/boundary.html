@@ -1,0 +1,26 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- member/boundaries.html -->
+<div class='block-page'>
+<h1>{{ h1 }}</h1>
+
+
+
+
+{% if notFound %}
+<p>There is no record for a boundary with this identifier.</p>
+{% elif notAuthorised %}
+<p>This boundary record does not belong to you.</p>
+{% endif %}
+
+{% if boundary %}
+<p>{{ boundary }}
+{% endif %}
+
+  <p><a href='/member/upload/boundary'>Upload a new boundary file</a></p>
+</div>
+<!-- end member/boundaries.html -->
+{% endblock %}
+
+
+

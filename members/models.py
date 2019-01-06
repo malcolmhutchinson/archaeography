@@ -248,9 +248,7 @@ class Boundary(models.Model):
         editable=False, verbose_name='Record modified by')
 
     def __unicode__(self):
-        if self.nickname:
-            return unicode(self.nickname)
-        return unicode(self.user.username)
+        return unicode(self.fname)
 
     def get_absolute_url(self):
         return os.path.join(settings.BASE_URL, self.URL, str(self.id))
@@ -293,10 +291,11 @@ class Boundary(models.Model):
 
         return []
     
-    def sites_intersecting(self):
+    def sites(self):
         """Queryset of sites falling within this boundary."""
 
-        return []
+        return nzaa.Site.objects.filter(geom__intersects=self.geom)
+
 
     def sites_within(self):
         """Queryset of sites falling within this boundary."""

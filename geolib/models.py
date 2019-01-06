@@ -245,7 +245,6 @@ class AerialRun(models.Model):
         return s.filter(status='polynomial')
 
 
-# Legacy code, not checked.
 class AerialFrame(models.Model):
     """Aerial photo frames. Not aerial imagery.
 

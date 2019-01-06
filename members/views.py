@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.gis.gdal import DataSource
+from django.contrib.gis.geos import MultiPolygon, WKBWriter, GEOSGeometry
 
 import os
 
@@ -22,6 +23,29 @@ BOUNDARY_EXT = (
     '.kml', '.KML',
 )
 
+def boundary_report(request, boundary_id):
+    """Display a report of sites within a boundary."""
+
+    context = build_context(request)
+    template = 'member/boundary.html'
+
+    try:
+        boundary = models.Boundary.objects.get(id=boundary_id)
+        context['boundary'] = boundary
+        context['h1'] = "Boundary report for " + str(boundary)
+    except models.Boundary.DoesNotExist:
+        context['notFound'] = True
+        context['h1'] = "Boundary record not found"
+
+    if not boundary.member == request.user.member:
+        context['notAuthorised'] = True
+        context['h1'] = "Boundary record not authorised"
+        context['boundary'] = None
+
+    context['title'] = context['h1'] + " | " + context['title']
+    return render(request, template, context)
+
+
 def boundaries(request, command):
     """List the member's boundary files."""
 
@@ -31,6 +55,26 @@ def boundaries(request, command):
     context['h1'] += request.user.username
     context['title'] = context['h1'] + " | archaeography.nz"
     context['jsortable'] = True
+
+    # Read the KML files in the boundary directory.
+    dirpath = os.path.join(
+        settings.STATICFILES_DIRS[0],
+        'member', request.user.username, 'boundary',
+    )
+    geom_files = []
+    if not os.path.isdir(dirpath):
+        geom_files = None
+    else:
+        allfiles = os.listdir(dirpath)
+        for f in allfiles:
+            base, ext = os.path.splitext(f)
+            if ext in BOUNDARY_EXT:
+                geom_files.append(f)
+    context['geom_files'] = geom_files
+
+    # Get the member's boundary records from the db.
+    context['records'] = models.Boundary.objects.filter(
+        member=request.user.member)
 
     return render(request, template, context)
 
@@ -49,8 +93,8 @@ def upload_boundary(request):
     context['notifications'] = []
 
     if request.POST:
-        boundaryFileForm = forms.BoundaryFileForm(request.POST)
-        boundary = boundaryFileForm.save(commit=False)
+        context['boundaryFileForm'] = forms.BoundaryFileForm(request.POST)
+        boundary = context['boundaryFileForm'].save(commit=False)
         fname = str(request.FILES['filename']).replace(' ', '_')
         base, ext = os.path.splitext(fname)
         if ext not in BOUNDARY_EXT:
@@ -74,13 +118,47 @@ def upload_boundary(request):
             for chunk in f.chunks():
                 destination.write(chunk)
 
+        context['notifications'].append("File " + fname + " submitted.")
+        
+        try:
+            ds = DataSource(pathname)
+            geoms = ds[0].get_geoms()
+
+            # extract polygons from the geometry.
+        except:
+            context['notifications'].append(
+                "This is not an OGR file. File not uploaded.")
+            os.remove(pathname)
+            return render(request, template, context)
+
+        polys = []
+        for g in geoms:
+            if 'Polygon' in g.geom_type.name:
+                polys.append(g)
+
+        if len(polys) < 1:
+            note = "No polygons in the file. "
+            note += "We can't use this as a boundary, and the "
+            note += "file has not been uploaded."
+            context['notifications'].append(note)
+            os.remove(pathname)
+            return render(request, template, context)
+
+        if len(polys) > 1:
+            note ="Multiple polygon geometries found. Only the first "
+            note += "will be used."
+            context['notifications'].append(note)
+
+        # If we get to here, we've got a polygon (or more than one),
+        # and we can try loading it into the model object.
+        wkb = WKBWriter()
+        tmp = wkb.write(MultiPolygon(polys[0].geos))
+        
+        boundary.geom = GEOSGeometry(tmp, srid=4326).transform(2193, clone=True)
+        boundary.member = request.user.member
         boundary.fname = fname
-        ds = DataSource(filepath)
-        layer = ds[0]
-
-        mapping = {'geom': 'POLYGON',}
-
-        context['notifications'].append('KML file uploaded successfully')
+        boundary.save()
+        context['notifications'].append('KML file uploaded successfully.')
                 
     return render(request, template, context)
 

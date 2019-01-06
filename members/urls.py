@@ -7,6 +7,7 @@ urlpatterns = [
 
     url(r'^upload/boundary/$', views.upload_boundary),
     url(r'^([\w-]*)/boundaries/$', views.boundaries),
+    url(r'^boundary/([0-9]*)/$', views.boundary_report),
     url(r'^([\w-]*)/$', views.homepage),
 
 ]

@@ -9,10 +9,10 @@
   <ul>
     {% for note in notifications %}<li>{{ note }}</li>{% endfor %}
   </ul>
-  {% endif %}
-
+  {% else %}
   <p>This will be a KML file containing a single polygon geometry
     enclosing an area somewhere within New Zealand.</p>
+  {% endif %}
 
   <table>
     {{ boundaryFileForm }}
