@@ -24,6 +24,7 @@ from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from django.contrib.gis.gdal import DataSource
 
+import geolib.models as geolib
 import nzaa.models as nzaa
 import settings
 import webnote
@@ -247,6 +248,10 @@ class Boundary(models.Model):
         max_length=255, null=True, blank=True,
         editable=False, verbose_name='Record modified by')
 
+    class Meta:
+        ordering = ['-created']
+        get_latest_by = 'created'
+
     def __unicode__(self):
         return unicode(self.fname)
 
@@ -279,8 +284,7 @@ class Boundary(models.Model):
     def parcels_intersecting(self):
         """Return a queryset of the parcels intersecting this boundary."""
 
-        return []
-
+        return geolib.Cadastre.objects.filter(geom__intersects=self.geom)
 
     def sites_adjacent(self, distance=500):
         """Queryset of sites falling within a distance. 
@@ -296,11 +300,6 @@ class Boundary(models.Model):
 
         return nzaa.Site.objects.filter(geom__intersects=self.geom)
 
-
-    def sites_within(self):
-        """Queryset of sites falling within this boundary."""
-
-        return []
 
 
     

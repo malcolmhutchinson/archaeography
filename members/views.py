@@ -7,6 +7,7 @@ from django.contrib.gis.geos import MultiPolygon, WKBWriter, GEOSGeometry
 import os
 
 import forms
+import geolib.models
 import home.views
 import models
 import nzaa.models
@@ -27,6 +28,7 @@ def boundary_report(request, boundary_id):
     """Display a report of sites within a boundary."""
 
     context = build_context(request)
+    context['jsortable'] = True
     template = 'member/boundary.html'
 
     try:
@@ -163,8 +165,6 @@ def upload_boundary(request):
     return render(request, template, context)
 
 
-
-# Copied from home.views. Needs rewriting.
 @login_required
 def homepage(request, command=None):
     """Display updates and sitelists belonging to the authenticated user. """
@@ -192,6 +192,8 @@ def homepage(request, command=None):
         owner=request.user.username)
     context['newsites'] = nzaa.models.NewSite.objects.filter(
         owner=request.user.username)
+    context['boundaries'] = models.Boundary.objects.filter(
+        member=request.user.member)
 
     if request.POST:
         memberForm = forms.MemberForm(

@@ -4,9 +4,6 @@
 <div class='block-page'>
 <h1>{{ h1 }}</h1>
 
-
-
-
 {% if notFound %}
 <p>There is no record for a boundary with this identifier.</p>
 {% elif notAuthorised %}
@@ -14,11 +11,76 @@
 {% endif %}
 
 {% if boundary %}
-<p>{{ boundary }}
+
+<h2>General information</h2>
+
+<table>
+  <tr>
+    <th>name</th>
+    <td>{{ boundary.name }}</td>
+  </tr>
+  <tr>
+    <th>filename</th>
+    <td>{{ boundary.fname }}</td>
+  </tr>
+  <tr>
+    <th>client</th>
+    <td>{{ boundary.client }}</td>
+  </tr>
+  <tr>
+    <th>description</th>
+    <td>{{ boundary.description }}</td>
+  </tr>
+</table>
+
+{% if boundary.sites %}
+<h2>Archaeological site records within this boundary
+({{ boundary.sites.count|intcomma }})</h2>
+
+<table class='sortable' style='font-size: 80%;'>
+    <tr>
+        <th>site</th>
+        <th>title</th>
+        <th>type</th>
+        <th>nztm coords</th>
+    </tr>
+    {% for site in boundary.sites %}
+    <tr>
+        <td><A href='{{ site.nzaa_id }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+        <td>{{ site.nztm_coords }}</td>
+    </tr>{% endfor %}
+</table>
+{% else %}
+<h2>There are no archaeological sites recorded within this boundary</h2>
 {% endif %}
 
-  <p><a href='/member/upload/boundary'>Upload a new boundary file</a></p>
-</div>
+
+<h2>Cadastral parcels intersecting with this boundary
+  ({{ boundary.parcels_intersecting.count|intcomma }})</h2>
+
+<table class='sortable' style='font-size: 80%;'>
+    <tr>
+        <th>appellation</th>
+        <th>parcel intent</th>
+        <th>survey area (m<sup><small>2</small></sup>)</th>
+        <th>sites</th>
+    </tr>
+    {% for parcel in boundary.parcels_intersecting %}<tr>
+        <td><a href='{{ parcel.url }}'>{{ parcel.appellation }}</a></td>
+        <td>{{ parcel.parcel_intent }}</td>
+        <td style='text-align: right;'>{{ parcel.survey_area|floatformat:0|intcomma }}</td>
+        <td style='text-align: right;'>{{ parcel.sites_intersecting.count }}</td>
+    </tr>{% endfor%}  
+</table>
+  
+
+
+
+
+{% endif %}
+
 <!-- end member/boundaries.html -->
 {% endblock %}
 

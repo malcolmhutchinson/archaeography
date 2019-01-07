@@ -3,10 +3,6 @@
 <!-- member.html -->
 <div class='block-page'>
 <h1>{{ h1 }}</h1>
-</div>
-
-<div class='block-page'>
-
 {% if memberForm %}
   <table style=
            "border: 1px black solid; 
@@ -62,7 +58,30 @@
         </tr>
     {% endfor %}
     </table>
-  </div>{% endif %}
+    </div>{% endif %}
+
+    {% if boundaries %}<div class='indextile'>
+
+    <h2>Your boundary files</h2>
+
+    <table class='sortable'>
+        <tr>
+            <th>name</th>
+            <th>file</th>
+            <th>client</th>
+            <th>description</th>
+            <th>sites</th>
+        </tr>
+        {% for boundary in boundaries %}<tr>
+            <td><a href='{{ boundary.url }}'>{{ boundary.name }}</a></td>
+            <td>{{ boundary.fname }}</td>
+            <td>{{ boundary.client }}</td>
+            <td>{{ boundary.description }}</td>
+            <td>{{ boundary.sites.count }}</td>
+        </tr>{% endfor %}
+    </table>
+    </div>
+    {% endif %}
 
   {% if updates %}<div class='indextile'>
 

@@ -746,8 +746,6 @@ class Record(models.Model):
             text += "### Rights\n\n"
             text += self.rights + '\n\n\n'
 
-        # text = self.replace_temp_ids(text)
-
         # This changes state, setting global attributes.
         if self.filespace():
             result, unref = self.filespace().reference_text(text)
@@ -798,7 +796,6 @@ class Record(models.Model):
             'ymin': ymin,
             'xmax': xmax,
             'ymax': ymax,
-            # 'imagepath': os.path.join(self.filespace.),
             'username': settings.MACHINE[0],
             'password': settings.MACHINE[1],
         }

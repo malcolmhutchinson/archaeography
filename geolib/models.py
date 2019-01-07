@@ -25,7 +25,7 @@ from django.contrib.gis.geos import fromstr
 import settings
 import nzaa.analyse
 import nzaa.settings
-from nzaa.models import Site
+import nzaa.models 
 
 
 class Files(models.Model):
@@ -375,7 +375,7 @@ class AerialFrame(models.Model):
         """NZAA sites within the footprint of this frame."""
         if not self.geom:
             return None
-        return Site.objects.filter(geom__intersects=self.geom)
+        return nzaa.models.Site.objects.filter(geom__intersects=self.geom)
 
     def ephemera(self):
         """Return solar azimuth and altitude.
@@ -650,7 +650,7 @@ class Cadastre(models.Model):
     def closest_sites(self, count=5):
         """Return the site record closest to this parcel."""
 
-        i1 = Site.objects.filter(
+        i1 = nzaa.models.Site.objects.filter(
             geom__distance_lte=(self.geom, D(m=10000)))
         i2 = i1.annotate(
             distance=Distance('geom', self.geom)).order_by('distance')
@@ -675,8 +675,7 @@ class Cadastre(models.Model):
 
     def parcels_intersecting(self):
         """Return a list of parcels touching this one."""
-
-        return Cadastre.objects.filter(geom__intersects=self.geom)
+        return Cadastre.objects.filter(geom__touches=self.geom)
 
     def region(self):
         """Return the district this cadastral parcel is in."""
@@ -694,7 +693,7 @@ class Cadastre(models.Model):
             else:
                 study_area = study_area.union(parcel.geom)
 
-        sites = Site.objects.filter(geom__intersects=study_area)
+        sites = nzaa.models.Site.objects.filter(geom__intersects=study_area)
         for site in sites:
             site.distance = self.geom.distance(site.geom)
 
@@ -704,14 +703,16 @@ class Cadastre(models.Model):
         """Archaeological sites whose footprint intersects this parcel.
         """
 
-        return Site.objects.filter(geom_poly__intersects=self.geom)
+        return nzaa.models.Site.objects.filter(
+            geom__intersects=self.geom)
 
     def sites_buffer(self, dist=500):
         """Sites within 500m (default) of this parcel.
         """
 
         study_area = self.geom.buffer(width=dist)
-        sites = Site.objects.filter(geom__intersects=study_area)
+        sites = nzaa.models.Site.objects.filter(
+            geom__intersects=study_area)
         sites = sites.exclude(geom__intersects=self.geom)
         site_ids = []
         for site in sites:
@@ -723,7 +724,7 @@ class Cadastre(models.Model):
         """Archaeological sites with point location within this parcel.
         """
 
-        return Site.objects.filter(geom__intersects=self.geom)
+        return nzaa.models.Site.objects.filter(geom__intersects=self.geom)
 
     def ta(self):
         """Return the district this cadastral parcel is in."""
@@ -841,7 +842,7 @@ class LidarTile(models.Model):
         """NZAA sites which may be visible on this tile."""
         if not self.geom:
             return None
-        return Site.objects.filter(
+        return nzaa.models.Site.objects.filter(
             geom__intersects=self.geom)
 
     def staticpath(self):
@@ -953,7 +954,7 @@ class OrthoTile(models.Model):
         """NZAA sites which may be visible on this frame."""
         if not self.geom:
             return None
-        return Site.objects.filter(
+        return nzaa.models.Site.objects.filter(
             geom__intersects=self.geom)
 
     def geoimage(self):
@@ -1168,10 +1169,10 @@ class TopoMap(models.Model):
 
     def sites(self):
         """A queryset of all nzaa.Site objects intersecting this."""
-        return Site.objects.filter(geom__intersects=self.geom)
+        return nzaa.models.Site.objects.filter(geom__intersects=self.geom)
 
     def sites_by_lgcy_type(self):
-        analysis = nzaa.analyse.Site(self.sites())
+        analysis = nzaa.analyse.nzaa.models.Site(self.sites())
         return analysis.count_by_lgcy_type()
 
     def xmin(self):
@@ -1288,7 +1289,7 @@ class Region(models.Model):
     url = property(get_absolute_url)
 
     def sites_count(self):
-        return Site.objects.filter(region=self.name).count()
+        return nzaa.models.Site.objects.filter(region=self.name).count()
 
 
 class TerritorialAuthority(models.Model):

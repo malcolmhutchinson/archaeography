@@ -273,7 +273,6 @@ def cadastre(request, command):
         context['terms'] = terms
 
     if parcel:
-        print "IF PARCEL"
         context['parcel'] = parcel
         setname = str(parcel.appellation)
         if len(setname) > 10:
