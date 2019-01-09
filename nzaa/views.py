@@ -817,6 +817,7 @@ def site(request, command, argument=None):
     try:
         site = models.Site.objects.get(nzaa_id=nzaa_id)
         context['site'] = site
+        context['map'] = analyse.MapSite(site)
 
     except models.Site.DoesNotExist:
 

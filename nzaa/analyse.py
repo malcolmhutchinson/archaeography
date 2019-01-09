@@ -29,11 +29,12 @@ class Cadastre():
 
         point_parcels
 
-    I do this by creating a MultiPoint object,then selecting cadastre
+    Done by creating a MultiPoint object,then selecting cadastre
     which intersect with that.
 
     """
 
+    print "CALLING analyse.Cadastre"
     sites = None
     point_parcels = None
     poly_parcels = None
@@ -57,7 +58,49 @@ class Cadastre():
             geom__intersects=polys)
 
 
+class MapSite():
+    """All the required variables for a MapFile.
+
+    Consume a Site object. Produce values for all the vairables
+    required to construct a map of the site.
+
+    """
+
+    def __init__(self, site):
+        self.site = site
+
+    def extent(self):
+
+        minx = self.site.easting - 5000
+        miny = self.site.northing - 5000
+        maxx = self.site.easting + 5000
+        maxy = self.site.northing + 5000
+        
+        return str(minx) + ' ' + str(miny) + ' ' + str(maxx)  + ' ' + str(maxy)
+    
+    def password(self):
+        return settings.MACHINE[1]
+
+    def projection(self):
+        proj = "        'proj=nztm\n"
+        proj += "        'ellips=GRS80'\n"
+        proj += "        'datum=NZGD2000'\n"
+        proj += "        'units=m'"
+
+        return proj
+        
+    def size_x(self):
+        return "1024"
+
+    def size_y(self):
+        return "768"
+
+    def username(self):
+        return settings.MACHINE[0]
+
+
 class Site():
+
     """Analyse lists of site records.
 
     Consumes a Django queryset of site records. Provides a set of

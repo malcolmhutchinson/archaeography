@@ -1,10 +1,11 @@
-#<pre>
+#
+
 # Mapfile output by archaeography.nz
 
 MAP
 
-  SIZE {{ map.size_x }} {{ map.size_y }}
-  EXTENT {{ map.extent }}
+  SIZE 1024 768
+  EXTENT 1675841 6087113 1685841 6097113
 
   WEB
     IMAGEPATH "/home/malcolm/tmp/"
@@ -24,14 +25,17 @@ MAP
   LAYER
     CONNECTION "dbname='archaeography' 
                 host=localhost port=5432 
-                user='{{ map.username }}' password='{{ map.password }}' 
+                user='machine' password='in veto varinium olitartai' 
                 sslmode=require"
     CONNECTIONTYPE POSTGIS
     DATA 'geom FROM "public"."nzaa_view" USING UNIQUE nzaa_id USING srid=2193'
-    EXTENT {{ map.extent }}
+    EXTENT 1675841 6087113 1685841 6097113
     NAME "nzaa_view"
     PROJECTION
-      {{ map.projection }}
+        'proj=nztm
+        'ellips=GRS80'
+        'datum=NZGD2000'
+        'units=m'
     END # PROJECTION
     STATUS ON
     TILEITEM "location"
@@ -48,4 +52,3 @@ MAP
   END # LAYER nzaa_sites
 
 END # MAP
-</pre>
