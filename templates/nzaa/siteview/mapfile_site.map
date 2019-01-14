@@ -1,11 +1,12 @@
-#
+<pre>
 
 # Mapfile output by archaeography.nz
 
 MAP
+  CONFIG "MS_ERRORFILE" "/home/malcolm/tmp/error.txt"
 
   SIZE 1024 768
-  EXTENT 1675841 6087113 1685841 6097113
+  EXTENT {{ map.extent }}
 
   WEB
     IMAGEPATH "/home/malcolm/tmp/"
@@ -32,10 +33,7 @@ MAP
     EXTENT 1675841 6087113 1685841 6097113
     NAME "nzaa_view"
     PROJECTION
-        'proj=nztm
-        'ellips=GRS80'
-        'datum=NZGD2000'
-        'units=m'
+        'init=epsg:2193'
     END # PROJECTION
     STATUS ON
     TILEITEM "location"
@@ -52,3 +50,4 @@ MAP
   END # LAYER nzaa_sites
 
 END # MAP
+</pre>

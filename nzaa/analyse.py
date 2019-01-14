@@ -34,7 +34,6 @@ class Cadastre():
 
     """
 
-    print "CALLING analyse.Cadastre"
     sites = None
     point_parcels = None
     poly_parcels = None
