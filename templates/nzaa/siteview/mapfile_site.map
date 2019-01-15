@@ -8,6 +8,15 @@ MAP
   SIZE 1024 768
   EXTENT {{ map.extent }}
 
+  OUTPUTFORMAT
+    NAME "png"
+    MIMETYPE "img/png"
+    DRIVER "AGG/PNG"
+    EXTENSION "png"
+    IMAGEMODE RGB
+    TRANSPARENT FALSE
+  END # OUTPUTFORMAT
+
   WEB
     IMAGEPATH "/home/malcolm/tmp/"
     IMAGEURL ...
@@ -22,16 +31,65 @@ MAP
     END
   END
 
-# NZAA sites
   LAYER
+    NAME "Topo50"
+    TYPE RASTER
+    UNITS METERS
+    STATUS ON
+    CONNECTION "https://data.linz.govt.nz/services;key={{ map.linz_key }}/wms?service=WMS&version=1.1.1&request=GetMap&layers=layer-50767&format=image/png&width=1024&height=768&bbox=166.315719,-47.534529,178.610868,-34.030252"
+    CONNECTIONTYPE WMS
+    METADATA
+      "wms_srs"            "EPSG:4326"
+      "wms_name"           "Topo50"
+      "wms_server_version" "1.1.1"
+      "wms_format"         "image/png"
+      "ows_extent"         "{{ map.extent }}"
+      "ows_srs"            "EPSG:2193"
+    END # Metadata
+    EXTENT {{ map.extent }}
+    PROJECTION
+      'init=epsg:4326'
+    END # PROJECTION
+  END # Layer Topo50
+
+  LAYER
+    NAME "parcels"
     CONNECTION "dbname='archaeography' 
                 host=localhost port=5432 
-                user='machine' password='in veto varinium olitartai' 
+                user='{{ map.username }}' password='{{ map.password }}' 
                 sslmode=require"
     CONNECTIONTYPE POSTGIS
-    DATA 'geom FROM "public"."nzaa_view" USING UNIQUE nzaa_id USING srid=2193'
-    EXTENT 1675841 6087113 1685841 6097113
-    NAME "nzaa_view"
+    DATA 'geom FROM "public"."geolib_cadastre" USING UNIQUE id USING srid=2193'
+    EXTENT {{ map.extent }}
+    PROJECTION
+      'init=epsg:2193'
+    END # PROJECTION
+    STATUS ON
+    TILEITEM "location"
+    TYPE POLYGON
+    UNITS PIXELS
+    CLASS
+      NAME "cadastre"
+      STYLE
+        OUTLINECOLOR 0 0 0
+        WIDTH .3
+      END # Style
+      STYLE
+        COLOR 255 0 0
+        OPACITY 0
+      END # Style
+    END # Class
+  END # LAYER nzaa_site
+
+  LAYER
+    NAME "nzaa_site_view"
+    CONNECTION "dbname='archaeography' 
+                host=localhost port=5432 
+                user='{{ map.username }}' password='{{ map.password }}' 
+                sslmode=require"
+    CONNECTIONTYPE POSTGIS
+    DATA 'geom FROM "public"."nzaa_site_view" USING UNIQUE nzaa_id USING srid=2193'
+    EXTENT {{ map.extent }}
     PROJECTION
         'init=epsg:2193'
     END # PROJECTION
@@ -40,14 +98,53 @@ MAP
     TYPE POINT
     UNITS PIXELS
     CLASS
-      NAME "nzaa_sites"
+      NAME "nzaa_site_view"
       STYLE
         COLOR 120 35 15
         SIZE 6
         SYMBOL "circle"
       END # STYLE
     END # CLASS
-  END # LAYER nzaa_sites
+  END # LAYER nzaa_site_view
+
+  LAYER
+    NAME "grid"
+    TYPE LINE
+    STATUS ON
+    CLASS
+      NAME "gridline"
+      COLOR 0 0 255
+      LABEL
+        COLOR 0 0 0
+        TYPE truetype
+        #FONT "sans"
+        SIZE 8
+        POSITION AUTO
+        PARTIALS FALSE
+        BUFFER 2
+        OUTLINECOLOR 255 255 255
+      END # LABEL
+    END # CLASS
+    PROJECTION
+      'init=epsg:2193'
+    END # PROJECTION
+    GRID
+      LABELFORMAT '%.0fm'
+      MININTERVAL 1000
+    END
+  END # LAYER grid
+
+  SCALEBAR
+    STATUS EMBED
+    POSITION lr
+    INTERVALS 2
+    OUTLINECOLOR 0 0 0
+    BACKGROUNDCOLOR 255 255 255
+    IMAGECOLOR 255 255 255
+    UNITS kilometers
+  END # SCALEBAR
 
 END # MAP
 </pre>
+
+

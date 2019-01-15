@@ -70,12 +70,17 @@ class MapSite():
 
     def extent(self):
 
-        minx = self.site.easting - 5000
-        miny = self.site.northing - 5000
-        maxx = self.site.easting + 5000
-        maxy = self.site.northing + 5000
+        scale = 3000
+
+        minx = self.site.easting - scale
+        miny = self.site.northing - scale
+        maxx = self.site.easting + scale
+        maxy = self.site.northing + scale
         
         return str(minx) + ' ' + str(miny) + ' ' + str(maxx)  + ' ' + str(maxy)
+
+    def linz_key(self):
+        return settings.LINZ_KEY
     
     def password(self):
         return settings.MACHINE[1]
