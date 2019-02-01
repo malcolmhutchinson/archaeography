@@ -350,6 +350,30 @@ table.sortable thead {
     margin-right: auto;
 }
 
+.block-page-edit {
+    clear: both;
+    padding-left: 1em;
+    padding-right: 0.5em;
+    padding-top: 3em;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: 300px;
+}
+
+#editPanel {
+    border-left: black 1px solid;
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    bottom:0;
+    right: 0;
+    background: #6bb;
+    padding-top: 3em;
+    padding-left: 0.3em;
+    font-size: 80%;
+    font-family: sans-serif;
+}
+
 .block-page .figure, .two-col .figure {
     max-width: 640px;
     float: left;

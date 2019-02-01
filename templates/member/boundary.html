@@ -1,7 +1,21 @@
 {% extends 'framework.html' %}{% block main %}{% load staticfiles %}
 {% load humanize %}
 <!-- member/boundaries.html -->
-<div class='block-page'>
+
+<div id='editPanel'>
+
+
+  <h2 style='margin-top: 2em;'>This is the edit panel</h2>
+
+     {{ editForm.as_p }}
+
+</div>
+
+<div class='block-page-edit'>
+
+  <p>Archaeological site records report</p>
+
+  
 <h1>{{ h1 }}</h1>
 
 {% if notFound %}
@@ -12,8 +26,12 @@
 
 {% if boundary %}
 
-<h2>General information</h2>
-
+<table width='100%'>
+  <tr>
+    <td width='50%'>
+      
+<h2>Boundary metadta</h2>
+      
 <table>
   <tr>
     <th>name</th>
@@ -33,9 +51,71 @@
   </tr>
 </table>
 
-{% if boundary.sites %}
+    </td>
+    <td>
+
+<h2>Archaeological site summary</h2>     
+
+<table>
+  <tr>
+    <th>sites within this boundary</th>
+    <td>{{ boundary.sites_within.count|intcomma }}</td>
+  </tr>
+  <tr>
+    <th>sites adjacent to 500 m</th>
+    <td>{{ boundary.sites_adjacent.count|intcomma }}</td>
+  </tr>
+  <tr>
+    <th>Closest site</th>
+    <td><a href='{{ boundary.closest_site.url}}'>
+        {{ boundary.closest_site.title }}</a> ({{ boundary.closest_site.distance|floatformat:0|intcomma }} m)</td>
+  </tr>
+  <tr>
+    <th></th>
+    <td></td>
+  </tr>
+</table>
+
+
+
+    </td>
+  </tr>
+</table>
+
+
+<div class='map-50k'>
+
+  <img src='{% static boundary.static_url %}/map_topo50.png'
+       alt='Boundary map with Topo50 background'
+       style='width:100%;'
+  />
+
+</div>
+
+<h2>Ten closest archaeological sites to this boundary</h2>
+
+
+<table class='sortable' style='font-size: 80%;'>
+    <tr>
+        <th>site</th>
+        <th>title</th>
+        <th>type</th>
+        <th style='width:12em;'>nztm coords</th>
+        <th style='text-align:right;'>distance (m)</th>
+    </tr>
+    {% for site in boundary.closest_sites %}
+    <tr>
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+        <td style='text-align:right'>{{ site.nztm_coords }}</td>
+        <td style='text-align:right'>{{ site.distance|floatformat:0|intcomma }}</td>
+    </tr>{% endfor %}
+</table>
+
+{% if boundary.sites_within.count > 0 %}
 <h2>Archaeological site records within this boundary
-({{ boundary.sites.count|intcomma }})</h2>
+({{ boundary.sites_within.count|intcomma }})</h2>
 
 <table class='sortable' style='font-size: 80%;'>
     <tr>
@@ -44,19 +124,66 @@
         <th>type</th>
         <th>nztm coords</th>
     </tr>
-    {% for site in boundary.sites %}
+    {% for site in boundary.sites_within %}
     <tr>
-        <td><A href='{{ site.nzaa_id }}'>{{ site.nzaa_id }}</a></td>
+        <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
         <td>{{ site.title }}</td>
         <td>{{ site.lgcy_type }}</td>
         <td>{{ site.nztm_coords }}</td>
     </tr>{% endfor %}
 </table>
 {% else %}
-<h2>There are no archaeological sites recorded within this boundary</h2>
+<p>No archaeological sites recorded within this boundary.</p>
 {% endif %}
 
 
+
+
+
+
+
+
+
+{% if boundary.sites_adjacent.count %}
+<h2>Archaeological site records within 500 m of this boundary
+({{ boundary.sites_adjacent.count|intcomma }})</h2>
+
+<table class='sortable' style='font-size: 80%;'>
+    <tr>
+        <th>site</th>
+        <th>title</th>
+        <th>type</th>
+        <th>nztm coords</th>
+        <th style='text-align:right;'>distance m</th>
+    </tr>
+    {% for site in boundary.sites_adjacent %}
+    <tr>
+        <td><A href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+        <td>{{ site.title }}</td>
+        <td>{{ site.lgcy_type }}</td>
+        <td>{{ site.nztm_coords }}</td>
+        <td style='text-align:right;'>{{ site.distance|floatformat:0|intcomma }}</td>
+    </tr>{% endfor %}
+</table>
+{% else %}
+<p>No archaeological sites recorded within 500 m of this boundary.</p>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% if cadastral_report %}
+<hr />
 <h2>Cadastral parcels intersecting with this boundary
   ({{ boundary.parcels_intersecting.count|intcomma }})</h2>
 
@@ -74,7 +201,7 @@
         <td style='text-align: right;'>{{ parcel.sites_intersecting.count }}</td>
     </tr>{% endfor%}  
 </table>
-  
+{% endif %}
 
 
 

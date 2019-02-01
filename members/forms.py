@@ -18,6 +18,10 @@ class BoundaryFileForm(ModelForm):
             'description',
             'notes',
         ]
+        widgets = {
+            'description': forms.Textarea(attrs={'rows':2,'cols':40,}),
+            'notes': forms.Textarea(attrs={'rows':2,'cols':40,}),
+        }
 
 class MemberDetails(ModelForm):
     class Meta:

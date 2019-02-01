@@ -23,6 +23,8 @@ import os
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 from django.contrib.gis.gdal import DataSource
+from django.contrib.gis.measure import D
+from django.contrib.gis.db.models.functions import Distance
 
 import geolib.models as geolib
 import nzaa.models as nzaa
@@ -220,17 +222,39 @@ class Boundary(models.Model):
     A report of archaeological sites within and adjacent to each
     boundary can be produced.
 
+    The purpose of a boundary is to produce a report, listing
+    archaeological sites within or adjacent to it. This class has
+    methods selecting lists of site records, and performing analysis
+    on them.
+
+    The description is short, a single paragraph.
+
+    Notes will display on the boundary record. 
+
+    Comments will display on the screen version, but not on the
+    printed version.
+
     """
 
     URL = os.path.join(settings.BASE_URL, 'boundary')
-  
+
+    STATUS = [
+        ('received', 'received'),
+        ('in work', 'in work'),
+        ('complte', 'complete'),
+        ('submitted', 'submitted'),
+        ('hold', 'hold'),
+    ]
 
     member = models.ForeignKey(Member)
     fname = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     client = models.CharField(max_length=255)
+    #title = models.CharField(max_length=1024)
     description = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
+    #comments = models.TextField(blank=True, null=True)
+    #status = models.CharField(max_length=64, choices=STATUS)
 
     geom = models.MultiPolygonField(srid=2193)
 
@@ -255,36 +279,81 @@ class Boundary(models.Model):
     def __unicode__(self):
         return unicode(self.fname)
 
+    def closest_site(self):
+        site = self.closest_sites(n=1)[0]
+        site.distance = self.geom.distance(site.geom)
+        return site
+        
+    def closest_sites(self, n=10):
+        """Return a list containing the n closest sites, and distances.
+
+        This excludes sites falling within the boundary.
+
+        """
+
+        i1 = nzaa.Site.objects.filter(
+            geom__distance_lte=(self.geom, D(m=10000))).exclude(
+                geom__intersects=self.geom)        
+        
+        i2 = i1.annotate(
+            distance=Distance('geom', self.geom)).order_by('distance')
+
+        sites = []
+
+        for i in range(0, n):
+            site = i2[i]
+            site.distance = self.geom.distance(i2[i].geom)
+            sites.append(site)
+
+        return sites
+
+   
+        
+
     def get_absolute_url(self):
         return os.path.join(settings.BASE_URL, self.URL, str(self.id))
 
     url = property(get_absolute_url)
 
-    def filespath(self):
-        return os.path.join(
+    def filepath(self):
+        """Return full filepath to a directory for this boundary file.
+        """
+
+        fname = self.fname
+        basename, ext = os.path.splitext(fname)
+        filepath = os.path.join(
             settings.STATICFILES_DIRS[0],
-            self.URL,
-            member.user.username,
-            self.fname,
+            'member',
+            self.member.user.username,
+            'boundary',
+            basename,
         )
+        return filepath
+
+    def map(self):
+        return None
+
+    def parcels_intersecting(self):
+        """Return a queryset of the parcels intersecting this boundary."""
+
+        return geolib.Cadastre.objects.filter(geom__intersects=self.geom)
 
     def receive_file(self, filepath):
         """Register a geometry file with the database.
 
         If a record exists with this filename, update it. Else, create
         a record for this file. Convert the geometry to SRID=2193
-        NZTM2000.
+        NZTM2000, and save it in the geom field.
+
+        Step through all the geometries found in the KML file,
+        discarding points and lines. Collect all polygons into a
+        single multipolygon.
 
         https://docs.djangoproject.com/en/2.1/ref/contrib/gis/layermapping/
 
         """
 
         ds = DataSource(filepath)
-
-    def parcels_intersecting(self):
-        """Return a queryset of the parcels intersecting this boundary."""
-
-        return geolib.Cadastre.objects.filter(geom__intersects=self.geom)
 
     def sites_adjacent(self, distance=500):
         """Queryset of sites falling within a distance. 
@@ -293,13 +362,37 @@ class Boundary(models.Model):
 
         """
 
-        return []
-    
-    def sites(self):
+        sites = []
+        for site in self.sites_within():
+            sites.append(site.nzaa_id)         
+
+        
+        buffer = self.geom.buffer(width=distance)
+        sites_adjacent = nzaa.Site.objects.filter(
+            geom__intersects=buffer).exclude(nzaa_id__in=sites)
+
+        for site in sites_adjacent:
+            site.distance = site.geom.distance(self.geom)
+
+
+        return sites_adjacent
+        
+    def sites_within(self):
         """Queryset of sites falling within this boundary."""
 
         return nzaa.Site.objects.filter(geom__intersects=self.geom)
 
 
+    def static_url(self):
+        """Return the url to files for this boundary object."""
+
+        return self.filepath().replace(
+            settings.STATICFILES_DIRS[0], ''
+        )
+        
+        return os.path.join(
+            'member', self.member.user.username,
+            'boundary',
+        )
 
     

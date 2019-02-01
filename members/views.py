@@ -34,7 +34,8 @@ def boundary_report(request, boundary_id):
     try:
         boundary = models.Boundary.objects.get(id=boundary_id)
         context['boundary'] = boundary
-        context['h1'] = "Boundary report for " + str(boundary)
+        context['h1'] = boundary.name  # Should change to boundary.title.
+        context['editForm'] = forms.BoundaryFileForm(instance=boundary)
     except models.Boundary.DoesNotExist:
         context['notFound'] = True
         context['h1'] = "Boundary record not found"
