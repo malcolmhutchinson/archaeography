@@ -256,6 +256,7 @@ class Boundary(models.Model):
     description = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     #comments = models.TextField(blank=True, null=True)
+    #rights = models.TextField(blank=True, null=True)
     #status = models.CharField(max_length=64, choices=STATUS)
 
     geom = models.MultiPolygonField(srid=2193)
