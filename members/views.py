@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import MultiPolygon, WKBWriter, GEOSGeometry
 
+import datetime
 import os
 
 import forms
@@ -30,22 +31,36 @@ def boundary_report(request, boundary_id):
     context = build_context(request)
     context['jsortable'] = True
     template = 'member/boundary.html'
+    context['main_form'] = MAIN_FORM
+    notifications = []
 
     try:
         boundary = models.Boundary.objects.get(id=boundary_id)
         context['boundary'] = boundary
         context['h1'] = boundary.name  # Should change to boundary.title.
-        context['editForm'] = forms.BoundaryFileForm(instance=boundary)
+        context['editForm'] = forms.BoundaryForm(instance=boundary)
     except models.Boundary.DoesNotExist:
         context['notFound'] = True
         context['h1'] = "Boundary record not found"
+        return render(request, template, context)
 
     if not boundary.member == request.user.member:
         context['notAuthorised'] = True
         context['h1'] = "Boundary record not authorised"
         context['boundary'] = None
+        return render(request, template, context)
 
+    if request.POST:
+        editForm = forms.BoundaryForm(request.POST, instance=boundary)
+        if editForm.is_valid():
+            editForm.save()
+            notifications.append('Saving boundary record.')
+            context['editForm'] = editForm
+            context['h1'] = boundary.name  # Should change to boundary.title.
+        
+    context['notifications'] = notifications
     context['title'] = context['h1'] + " | " + context['title']
+    
     return render(request, template, context)
 
 

@@ -23,7 +23,7 @@ table {
 
 
 #navigation, #pagehead, #panel, #pagefoot, .notifications,
-.noprint, .sidebarnoprint {
+.noprint, .sidebarnoprint, #editPanel {
     display: None;
 }
 
@@ -34,7 +34,7 @@ table {
 }
 
 
-.block-page, .two-col {
+.block-page, .block-page-edit, .two-col {
     width: 100%;
     max-width: 100%;
     float: none;

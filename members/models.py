@@ -26,6 +26,8 @@ from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
 
+from markdown2 import markdown
+
 import geolib.models as geolib
 import nzaa.models as nzaa
 import settings
@@ -307,8 +309,11 @@ class Boundary(models.Model):
 
         return sites
 
-   
-        
+    def display_description(self):
+        return markdown(self.description)        
+
+    def display_notes(self):
+        return markdown(self.notes)
 
     def get_absolute_url(self):
         return os.path.join(settings.BASE_URL, self.URL, str(self.id))

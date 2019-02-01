@@ -5,15 +5,22 @@
 <div id='editPanel'>
 
 
-  <h2 style='margin-top: 2em;'>This is the edit panel</h2>
+  <h2 style='margin-top: 2em;'>edit panel</h2>
 
-     {{ editForm.as_p }}
+  {% if notifications %}<ol>
+    {% for note in notifications %}<li>{{ note }}</li>{% endfor %}
+  </ol>{% endif %}
 
+  {{ editForm.as_p }}
+
+  <p><b>filepath</b> {{ boundary.filepath }}</p>
+
+<input type='submit' name='command' value='save' />
+
+  
 </div>
 
 <div class='block-page-edit'>
-
-  <p>Archaeological site records report</p>
 
   
 <h1>{{ h1 }}</h1>
@@ -26,7 +33,13 @@
 
 {% if boundary %}
 
+{% if boundary.description %}{{ boundary.display_description|safe }}
+{% endif %}
+
 <table width='100%'>
+  <tr>
+    <td colspan='2' style='border-top:black 1px solid;'></td>
+  </tr>
   <tr>
     <td width='50%'>
       
@@ -38,16 +51,18 @@
     <td>{{ boundary.name }}</td>
   </tr>
   <tr>
-    <th>filename</th>
-    <td>{{ boundary.fname }}</td>
+    <td colspan='2' style='border-top:black 1px solid;'></td>
   </tr>
   <tr>
     <th>client</th>
     <td>{{ boundary.client }}</td>
   </tr>
   <tr>
-    <th>description</th>
-    <td>{{ boundary.description }}</td>
+    <td colspan='2' style='border-top:black 1px solid;'></td>
+  </tr>
+  <tr>
+    <th>this report output</th>
+    <td>{% now "Y-m-d H:i:s" %}</td>
   </tr>
 </table>
 
@@ -58,17 +73,23 @@
 
 <table>
   <tr>
-    <th>sites within this boundary</th>
+    <th>No. sites within this boundary</th>
     <td>{{ boundary.sites_within.count|intcomma }}</td>
   </tr>
   <tr>
-    <th>sites adjacent to 500 m</th>
+    <td colspan='2' style='border-top:black 1px solid;'></td>
+  </tr>
+  <tr>
+    <th>No. sites adjacent <br />to 500 m</th>
     <td>{{ boundary.sites_adjacent.count|intcomma }}</td>
+  </tr>
+  <tr>
+    <td colspan='2' style='border-top:black 1px solid;'></td>
   </tr>
   <tr>
     <th>Closest site</th>
     <td><a href='{{ boundary.closest_site.url}}'>
-        {{ boundary.closest_site.title }}</a> ({{ boundary.closest_site.distance|floatformat:0|intcomma }} m)</td>
+        {{ boundary.closest_site.title }}</a> ({{ boundary.closest_site.distance|floatformat:0|intcomma }}&nbsp;m)</td>
   </tr>
   <tr>
     <th></th>
@@ -92,7 +113,8 @@
 
 </div>
 
-<h2>Ten closest archaeological sites to this boundary</h2>
+<div style='page-break-inside: avoid;'>
+<h2 style='page-break-after:avoid'>Ten closest archaeological sites to this boundary</h2>
 
 
 <table class='sortable' style='font-size: 80%;'>
@@ -100,7 +122,7 @@
         <th>site</th>
         <th>title</th>
         <th>type</th>
-        <th style='width:12em;'>nztm coords</th>
+        <th style='text-align:right; width:15em;'>nztm coords</th>
         <th style='text-align:right;'>distance (m)</th>
     </tr>
     {% for site in boundary.closest_sites %}
@@ -112,6 +134,7 @@
         <td style='text-align:right'>{{ site.distance|floatformat:0|intcomma }}</td>
     </tr>{% endfor %}
 </table>
+</div>
 
 {% if boundary.sites_within.count > 0 %}
 <h2>Archaeological site records within this boundary
@@ -203,8 +226,12 @@
 </table>
 {% endif %}
 
+{% if boundary.notes %}
+<h2>Notes</h2>
 
+{{ boundary.display_notes|safe }}
 
+{% endif %}
 
 {% endif %}
 

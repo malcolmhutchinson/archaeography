@@ -9,7 +9,7 @@ from django.forms import FileField
 import settings
 import models
 
-class BoundaryFileForm(ModelForm):
+class BoundaryForm(ModelForm):
     class Meta:
         model = models.Boundary
         fields =  [
