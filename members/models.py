@@ -259,6 +259,8 @@ class Boundary(models.Model):
     #rights = models.TextField(blank=True, null=True)
     #status = models.CharField(max_length=64, choices=STATUS)
 
+    #visible_to = models.ManyToManyField(User, blank=True, null=True)
+
     geom = models.MultiPolygonField(srid=2193)
 
     created = models.DateTimeField(
@@ -283,33 +285,10 @@ class Boundary(models.Model):
         return unicode(self.fname)
 
     def closest_site(self):
-        site = self.closest_sites(n=1)[0]
+        site = self.sites_closest(n=1)[0]
         site.distance = self.geom.distance(site.geom)
         return site
         
-    def closest_sites(self, n=10):
-        """Return a list containing the n closest sites, and distances.
-
-        This excludes sites falling within the boundary.
-
-        """
-
-        i1 = nzaa.Site.objects.filter(
-            geom__distance_lte=(self.geom, D(m=10000))).exclude(
-                geom__intersects=self.geom)        
-        
-        i2 = i1.annotate(
-            distance=Distance('geom', self.geom)).order_by('distance')
-
-        sites = []
-
-        for i in range(0, n):
-            site = i2[i]
-            site.distance = self.geom.distance(i2[i].geom)
-            sites.append(site)
-
-        return sites
-
     def display_description(self):
         return markdown(self.description)        
 
@@ -335,6 +314,38 @@ class Boundary(models.Model):
             basename,
         )
         return filepath
+
+    def is_editable(self, request):
+        """True or false, can the user edit this?
+
+        A user can edit it if they own it, and they are a member of
+        the boundary group..
+
+        """
+
+        if not request.user.is_authenticated:
+            return False
+
+        if not request.user.groups.filter(name='boundary'):
+            return False
+
+        if request.user == self.member.user:
+            return True
+        
+        return False
+
+    def is_viewable(self, request):
+        """True or false, can the user edit this?
+
+        A user can view it if they own it, or if their user record is
+        linked in the visible_by field.
+
+        """
+
+        if not request.user.is_authenticated:
+            return False
+
+        
 
     def map(self):
         return None
@@ -382,6 +393,51 @@ class Boundary(models.Model):
 
 
         return sites_adjacent
+
+    def sites_closest(self, n=10):
+        """Return a list containing the n closest sites, and distances.
+
+        This excludes sites falling within the boundary.
+
+        """
+
+        i1 = nzaa.Site.objects.filter(
+            geom__distance_lte=(self.geom, D(m=10000))).exclude(
+                geom__intersects=self.geom)        
+        
+        i2 = i1.annotate(
+            distance=Distance('geom', self.geom)).order_by('distance')
+
+        sites = []
+
+        for i in range(0, n):
+            site = i2[i]
+            site.distance = self.geom.distance(i2[i].geom)
+            sites.append(site)
+
+        return sites
+
+    def sites_identified(self):
+        """A list of all sites mentioned in the report.
+
+        This is a union of sites_adjacent, sites_closest, sites_within.
+
+        """
+
+        sites = []
+
+        for site in self.sites_adjacent():
+            sites.append(site.nzaa_id)
+
+        for site in self.sites_closest():
+            sites.append(site.nzaa_id)
+
+        for site in self.sites_within():
+            sites.append(site.nzaa_id)
+
+        sites = set(sites)
+
+        return nzaa.Site.objects.filter(nzaa_id__in=sites)
         
     def sites_within(self):
         """Queryset of sites falling within this boundary."""
@@ -401,4 +457,7 @@ class Boundary(models.Model):
             'boundary',
         )
 
-    
+    def topomaps(self):
+        """Return a queryset of topographic maps this appears on."""
+
+        return geolib.TopoMap.objects.filter(geom__intersects=self.geom)

@@ -1,7 +1,7 @@
 {% extends 'framework.html' %}{% block main %}{% load staticfiles %}
 {% load humanize %}
 <!-- member/boundaries.html -->
-<div class='block-page'>
+<div class='block-whole'>
 <h1>{{ h1 }}</h1>
 
   {% if records %}
@@ -14,7 +14,7 @@
       <th>client</th>
       <th>filename</th>
       <th>description</th>
-      <th>sites</th>
+      <th style='text-align:right;'>sites</th>
     </tr>
     {% for record in records %}<tr>
       <td><a href='{{ record.url }}'>{{ record.name }}</a></td>
@@ -22,21 +22,12 @@
       <td>{{ record.client }}</td>
       <td>{{ record.fname }}</td>
       <td>{{ record.description }}</td>
-      <td>{{ record.sites.count }}</td>
+      <td style='text-align:right;'>{{ record.sites_identified.count }}</td>
     </tr>{% endfor %}
 
   </table>{% endif %}
 
   
-  {% if geom_files %}
-  <h3>In filespace</h3>
-
-  <ol>
-  {% for fname in geom_files %}
-     <li>{{ fname }}</li>{% endfor %}
-  </ol>{% endif %}
-
-  <p><a href='/member/upload/boundary'>Upload a new boundary file</a></p>
 </div>
 <!-- end member/boundaries.html -->
 {% endblock %}

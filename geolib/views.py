@@ -263,6 +263,7 @@ def cadastre(request, command):
         parcels = None
         if request.GET['terms']:
             terms = request.GET['terms']
+            terms = terms.replace(',', ' ').replace('LOT', 'Lot')
             parcels = models.Cadastre.objects.filter(appellation=terms)
 
         if parcels:

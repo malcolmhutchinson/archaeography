@@ -1160,9 +1160,16 @@ class TopoMap(models.Model):
             return (src, alt)
         return None
 
+    def display_name(self):
+        """Return a string identifying the sheet, for simple display."""
+
+        name = str(self.series) + " " + self.sheet_id + " "
+        name += self.name
+
+        return name
+
     def source_url(self):
         """Points to the part of of the internet where you can get the geotiff.
-
         """
 
         return os.path.join(self.SOURCES[self.series], self.local_fname)

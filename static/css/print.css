@@ -20,7 +20,9 @@ p {
 table {
     max-width: 16cm;
 }    
-
+img {
+    max-width: 16cm;
+}
 
 #navigation, #pagehead, #panel, #pagefoot, .notifications,
 .noprint, .sidebarnoprint, #editPanel {

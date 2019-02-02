@@ -2,9 +2,9 @@
 {% load humanize %}
 <!-- member/boundaries.html -->
 
+{% if editable %}
 <div id='editPanel'>
-
-
+  
   <h2 style='margin-top: 2em;'>edit panel</h2>
 
   {% if notifications %}<ol>
@@ -12,12 +12,15 @@
   </ol>{% endif %}
 
   {{ editForm.as_p }}
-
-
+  
 <input type='submit' name='command' value='save' />
 
-  
-</div>
+<p><b>Client</b> {{ boundary.client }}<br />
+  <b>Filename</b> {{ boundary.fname }}<br />
+</p>
+
+</div><!-- close the editPanel -->
+{% endif %}
 
 <div class='block-page-edit'>
 
@@ -42,25 +45,27 @@
   <tr>
     <td width='50%'>
       
-<h2>Boundary metadta</h2>
+<h2>Boundary metadata</h2>
       
-<table>
+<table style='font-size: 80%;'>
   <tr>
-    <th>name</th>
-    <td>{{ boundary.name }}</td>
+    <td colspan='2'><b>maps</b><br />
+    {% for map in boundary.topomaps %}
+    <a href='{{ map.url }}'>{{ map.display_name }}</a><br />
+    {% endfor %}</td>
   </tr>
   <tr>
     <td colspan='2' style='border-top:black 1px solid;'></td>
   </tr>
   <tr>
-    <th>client</th>
-    <td>{{ boundary.client }}</td>
+    <th>No. parcels<br />intersecting</th>
+    <td>{{ boundary.parcels_intersecting.count|intcomma }}</td>
   </tr>
   <tr>
     <td colspan='2' style='border-top:black 1px solid;'></td>
   </tr>
   <tr>
-    <th>this report output</th>
+    <th>output on</th>
     <td>{% now "Y-m-d H:i:s" %}</td>
   </tr>
 </table>
@@ -70,7 +75,7 @@
 
 <h2>Archaeological site summary</h2>     
 
-<table>
+<table style='font-size: 80%;'>
   <tr>
     <th>No. sites within this boundary</th>
     <td>{{ boundary.sites_within.count|intcomma }}</td>
@@ -86,7 +91,14 @@
     <td colspan='2' style='border-top:black 1px solid;'></td>
   </tr>
   <tr>
-    <th>Closest site</th>
+    <th>No. sites identified</th>
+    <td>{{ boundary.sites_identified.count|intcomma }}</td>
+  </tr>
+  <tr>
+    <td colspan='2' style='border-top:black 1px solid;'></td>
+  </tr>
+  <tr>
+    <th>Closest site not within</th>
     <td><a href='{{ boundary.closest_site.url}}'>
         {{ boundary.closest_site.title }}</a> ({{ boundary.closest_site.distance|floatformat:0|intcomma }}&nbsp;m)</td>
   </tr>
@@ -124,7 +136,7 @@
         <th style='text-align:right; width:15em;'>nztm coords</th>
         <th style='text-align:right;'>distance (m)</th>
     </tr>
-    {% for site in boundary.closest_sites %}
+    {% for site in boundary.sites_closest %}
     <tr>
         <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
         <td>{{ site.title }}</td>
@@ -136,7 +148,9 @@
 </div>
 
 {% if boundary.sites_within.count > 0 %}
-<h2>Archaeological site records within this boundary
+<div style='page-break-inside: avoid;'>
+  <h2 style='page-break-after: avoid;'>
+    Archaeological site records within this boundary
 ({{ boundary.sites_within.count|intcomma }})</h2>
 
 <table class='sortable' style='font-size: 80%;'>
@@ -154,6 +168,7 @@
         <td>{{ site.nztm_coords }}</td>
     </tr>{% endfor %}
 </table>
+</div>
 {% else %}
 <p>No archaeological sites recorded within this boundary.</p>
 {% endif %}
@@ -167,7 +182,9 @@
 
 
 {% if boundary.sites_adjacent.count %}
-<h2>Archaeological site records within 500 m of this boundary
+<div style='page-break-inside: avoid;'>
+  <h2 style='page-break-after: avoid;'>
+    Archaeological site records within 500 m of this boundary
 ({{ boundary.sites_adjacent.count|intcomma }})</h2>
 
 <table class='sortable' style='font-size: 80%;'>
@@ -187,26 +204,15 @@
         <td style='text-align:right;'>{{ site.distance|floatformat:0|intcomma }}</td>
     </tr>{% endfor %}
 </table>
+</div>
 {% else %}
 <p>No archaeological sites recorded within 500 m of this boundary.</p>
 {% endif %}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 {% if cadastral_report %}
-<hr />
-<h2>Cadastral parcels intersecting with this boundary
+<div style='page-break-inside: avoid;'>
+  <h2 style='page-break-after: avoid;'>
+    Cadastral parcels intersecting with this boundary
   ({{ boundary.parcels_intersecting.count|intcomma }})</h2>
 
 <table class='sortable' style='font-size: 80%;'>
@@ -223,10 +229,12 @@
         <td style='text-align: right;'>{{ parcel.sites_intersecting.count }}</td>
     </tr>{% endfor%}  
 </table>
+</div>
 {% endif %}
 
 {% if boundary.notes %}
-<h2>Notes</h2>
+<div style='page-break-inside: avoid;'>
+<h2 style='page-break-after: avoid;'>Notes</h2>
 
 {{ boundary.display_notes|safe }}
 
@@ -234,12 +242,26 @@
 
 <div style='font-size: 80%;'>
 
-<h2 style='border-top: black solid 1px; buffer-top: 1em;'>Rights</h2>
+<h2 style='border-top: black solid 1px; padding-top: 1em;'>Rights</h2>
 
 <p>Compiled by archaeography.nz from data contained in the New Zealand
 Archaeological Association's Site Recording Scheme.</p>
 
-  </div>
+</div>
+
+<div class='noprint'>
+<h2>Here's the non-printing stuff</h2>
+
+<p>These fields don't appear in the printed copy. They are here to
+provide easy selections for site lists etc.</p>
+</div>
+
+<h3>All the site identifiers</h2>
+
+<textarea width='80' height='2'>somethinggoes here</textarea>
+
+</div>
+
 {% endif %}
 
 <!-- end member/boundaries.html -->

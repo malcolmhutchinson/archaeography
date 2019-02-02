@@ -7,11 +7,12 @@ from django.contrib.gis.geos import MultiPolygon, WKBWriter, GEOSGeometry
 import datetime
 import os
 
+import authority
 import forms
 import geolib.models
 import home.views
 import models
-import nzaa.models
+import nzaa.models as nzaa
 import settings
 
 MAIN_FORM = {
@@ -29,6 +30,8 @@ def boundary_report(request, boundary_id):
     """Display a report of sites within a boundary."""
 
     context = build_context(request)
+    context['commands'] = authority.boundary_commands(request)
+    context['nav'] = 'member/nav_boundary.html'
     context['jsortable'] = True
     template = 'member/boundary.html'
     context['main_form'] = MAIN_FORM
@@ -50,6 +53,9 @@ def boundary_report(request, boundary_id):
         context['boundary'] = None
         return render(request, template, context)
 
+    if boundary.parcels_intersecting().count() < 50:
+        context['cadastral_report'] = True
+
     if request.POST:
         editForm = forms.BoundaryForm(request.POST, instance=boundary)
         if editForm.is_valid():
@@ -57,7 +63,9 @@ def boundary_report(request, boundary_id):
             notifications.append('Saving boundary record.')
             context['editForm'] = editForm
             context['h1'] = boundary.name  # Should change to boundary.title.
-        
+
+    context['editable'] = boundary.is_editable(request)
+    context['viewable'] = boundary.is_viewable(request)
     context['notifications'] = notifications
     context['title'] = context['h1'] + " | " + context['title']
     
@@ -68,6 +76,8 @@ def boundaries(request, command):
     """List the member's boundary files."""
 
     context = build_context(request)
+    context['commands'] = authority.boundary_commands(request)
+    context['nav'] = 'member/nav_boundary.html'
     template = 'member/boundaries.html'
     context['h1'] = "List of your boundary files, "
     context['h1'] += request.user.username
@@ -101,20 +111,24 @@ def upload_boundary(request):
     """Form and handling for uploading KML boundary files."""
     
     context = build_context(request)
+    context['commands'] = authority.boundary_commands(request)
+    context['nav'] = 'member/nav_boundary.html'
     template = 'member/uploadboundary.html'
     context['h1'] = "Upload a new boundary file"
     context['title'] = context['h1'] + " | archaeography.nz"
     context['jsortable'] = True
     context['main_form'] = MAIN_FORM
-    context['boundaryFileForm'] = forms.BoundaryFileForm()
+    context['boundaryFileForm'] = forms.BoundaryForm()
     context['uploadFile'] = forms.UploadFile()
     context['notifications'] = []
 
     if request.POST:
-        context['boundaryFileForm'] = forms.BoundaryFileForm(request.POST)
+        context['boundaryFileForm'] = forms.BoundaryForm(request.POST)
         boundary = context['boundaryFileForm'].save(commit=False)
         fname = str(request.FILES['filename']).replace(' ', '_')
         base, ext = os.path.splitext(fname)
+
+        # Check that it's a KML file by looking at the extension.
         if ext not in BOUNDARY_EXT:
             context['notifications'].append(
                 "Not a KML file. File not processed, try another file.")
@@ -123,11 +137,13 @@ def upload_boundary(request):
 
         filepath = os.path.join(
             settings.STATICFILES_DIRS[0],
-            'member/', request.user.username, 'boundary')
+            'member/', request.user.username, 'boundary', base
+        )
 
+        # We have to save the file before we can analyse it.
         request.user.member.mkdir()
         if not os.path.isdir(filepath):
-            os.mkdir(filepath)
+            os.makedirs(filepath)
 
         pathname = os.path.join(filepath, fname)
 
@@ -147,6 +163,7 @@ def upload_boundary(request):
             context['notifications'].append(
                 "This is not an OGR file. File not uploaded.")
             os.remove(pathname)
+            os.rmdir(filepath)
             return render(request, template, context)
 
         polys = []
@@ -202,14 +219,16 @@ def homepage(request, command=None):
 
     context['memberForm'] = forms.MemberForm(instance=request.user.member)
 
-    context['lists'] = nzaa.models.SiteList.objects.filter(
-        owner=request.user.username)
-    context['updates'] = nzaa.models.Update.objects.filter(
-        owner=request.user.username)
-    context['newsites'] = nzaa.models.NewSite.objects.filter(
-        owner=request.user.username)
-    context['boundaries'] = models.Boundary.objects.filter(
-        member=request.user.member)
+    if authority.nzaa_member(request.user):
+        context['lists'] = nzaa.SiteList.objects.filter(
+            owner=request.user.username)
+        context['updates'] = nzaa.Update.objects.filter(
+            owner=request.user.username)
+        context['newsites'] = nzaa.NewSite.objects.filter(
+            owner=request.user.username)
+    if authority.boundaries(request):
+        context['boundaries'] = models.Boundary.objects.filter(
+            member=request.user.member)
 
     if request.POST:
         memberForm = forms.MemberForm(
