@@ -9,20 +9,6 @@ from django.forms import FileField
 import settings
 import models
 
-class BoundaryForm(ModelForm):
-    class Meta:
-        model = models.Boundary
-        fields =  [
-            'name',
-            'client',
-            'description',
-            'notes',
-        ]
-        widgets = {
-            'description': forms.Textarea(attrs={'rows':2,'cols':40,}),
-            'notes': forms.Textarea(attrs={'rows':2,'cols':40,}),
-        }
-
 class MemberDetails(ModelForm):
     class Meta:
         model = models.Member

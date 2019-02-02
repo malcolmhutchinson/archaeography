@@ -1,5 +1,5 @@
 <!-- nzaa/nav.html -->
-    <h2>nzaa site records</h2>
+    <h2>nzaa site record</h2>
 
     {% if authorised %}
     <ol id='commands_nzaa'>
@@ -18,7 +18,7 @@
 
     {% if simpleSearch %}
     <div id='simpleSearch'>
-    <h3>Simple search</h3>
+    <p>Simple search</p>
 
     <form action='/nzaa/search/' method='get'>
       {{ simpleSearch.as_p }}

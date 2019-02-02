@@ -27,6 +27,11 @@ urlpatterns = [
     url(r'^regions/', views.regions),
     url(r'^tlas/([\w/-]*)', views.tlas),
 
+    #   Boundary records.
+    url(r'^upload/boundary/$', views.upload_boundary),
+    url(r'^([\w-]*)/boundaries/$', views.boundaries),
+    url(r'^boundary/([0-9]*)/$', views.boundary_report),
+
     #   New site records.
     url(r'^newsites/$', views.newsites),
     url(r'^([ABC][A-Z][0-9][0-9]/\d+)/$', views.newsite),

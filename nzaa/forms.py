@@ -30,6 +30,24 @@ UPDATE_STATUS = (
 )
 
 
+class BoundaryForm(ModelForm):
+    class Meta:
+        model = models.Boundary
+        fields =  [
+            'title',
+            'client',
+            'description',
+            'notes',
+            'rights',
+            'comments',
+        ]
+        widgets = {
+            'description': forms.Textarea(attrs={'rows':2,'cols':40,}),
+            'notes': forms.Textarea(attrs={'rows':2,'cols':40,}),
+            'rights': forms.Textarea(attrs={'rows':2,'cols':40,}),
+            'comments': forms.Textarea(attrs={'rows':2,'cols':40,}),
+        }
+
 class SiteList(ModelForm):
     class Meta:
         model = models.SiteList
