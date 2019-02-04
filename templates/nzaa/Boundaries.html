@@ -9,7 +9,7 @@
 
   <table class='sortable' style='font-size: 80%;'>
     <tr>
-      <th>name</th>
+      <th>title</th>
       <th>date</th>
       <th>client</th>
       <th>filename</th>
@@ -17,7 +17,7 @@
       <th style='text-align:right;'>sites</th>
     </tr>
     {% for record in records %}<tr>
-      <td><a href='{{ record.url }}'>{{ record.name }}</a></td>
+      <td><a href='{{ record.url }}'>{{ record.title }}</a></td>
       <td>{{ record.created|date:"Y-m-d" }}</td>
       <td>{{ record.client }}</td>
       <td>{{ record.fname }}</td>

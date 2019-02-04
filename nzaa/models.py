@@ -1635,7 +1635,7 @@ class SiteTypes(models.Model):
         ordering = ['typename']
 
     def get_absolute_url(self):
-        return os.path.join(settings.BASE_URL, 'period', str(self.id))
+        return os.path.join(settings.BASE_URL, 'site_type', str(self.id))
 
     url = property(get_absolute_url)
 
@@ -1922,6 +1922,7 @@ class Boundary(models.Model):
     """
 
     URL = os.path.join(settings.BASE_URL, 'boundary')
+    STATIC_URL = os.path.join(settings.STATIC_URL, 'boundary')
 
     STATUS = [
         ('received', 'received'),
@@ -1965,9 +1966,14 @@ class Boundary(models.Model):
     def __unicode__(self):
         return unicode(self.fname)
 
+    def get_absolute_url(self):
+        return os.psth.join(self.URL, str(self.id))
+
+    url = property(get_absolute_url)
+    
     def closest_site(self):
         site = self.sites_closest(n=1)[0]
-        site.distance = self.geom.distance(site.geom)
+        #site.distance = self.geom.distance(site.geom)
         return site
         
     def display_description(self):
@@ -1985,13 +1991,10 @@ class Boundary(models.Model):
         """Return full filepath to a directory for this boundary file.
         """
 
-        fname = self.fname
-        basename, ext = os.path.splitext(fname)
+        basename, ext = os.path.splitext(self.fname)
         filepath = os.path.join(
             settings.STATICFILES_DIRS[0],
-            'member',
-            self.member.user.username,
-            'boundary',
+            'boundaries',
             basename,
         )
         return filepath
@@ -2010,7 +2013,7 @@ class Boundary(models.Model):
         if not request.user.groups.filter(name='boundary'):
             return False
 
-        if request.user == self.member.user:
+        if request.user == self.owner:
             return True
         
         return False
@@ -2026,6 +2029,10 @@ class Boundary(models.Model):
         if not request.user.is_authenticated:
             return False
 
+        if request.user == self.owner:
+            return True
+        
+        
         
 
     def map(self):
@@ -2034,7 +2041,7 @@ class Boundary(models.Model):
     def parcels_intersecting(self):
         """Return a queryset of the parcels intersecting this boundary."""
 
-        return geolib.Cadastre.objects.filter(geom__intersects=self.geom)
+        return geolib.models.Cadastre.objects.filter(geom__intersects=self.geom)
 
     def receive_file(self, filepath):
         """Register a geometry file with the database.
@@ -2066,7 +2073,7 @@ class Boundary(models.Model):
 
         
         buffer = self.geom.buffer(width=distance)
-        sites_adjacent = nzaa.Site.objects.filter(
+        sites_adjacent = Site.objects.filter(
             geom__intersects=buffer).exclude(nzaa_id__in=sites)
 
         for site in sites_adjacent:
@@ -2082,7 +2089,7 @@ class Boundary(models.Model):
 
         """
 
-        i1 = nzaa.Site.objects.filter(
+        i1 = Site.objects.filter(
             geom__distance_lte=(self.geom, D(m=10000))).exclude(
                 geom__intersects=self.geom)        
         
@@ -2118,30 +2125,26 @@ class Boundary(models.Model):
 
         sites = set(sites)
 
-        return nzaa.Site.objects.filter(nzaa_id__in=sites)
+        return Site.objects.filter(nzaa_id__in=sites)
         
     def sites_within(self):
         """Queryset of sites falling within this boundary."""
 
-        return nzaa.Site.objects.filter(geom__intersects=self.geom)
+        return Site.objects.filter(geom__intersects=self.geom)
 
 
     def static_url(self):
         """Return the url to files for this boundary object."""
 
-        return self.filepath().replace(
-            settings.STATICFILES_DIRS[0], ''
-        )
-        
-        return os.path.join(
-            'member', self.member.user.username,
-            'boundary',
-        )
+        base, ext = os.path.splitext(self.fname)
+        return os.path.join('boundaries', base)
+       
 
     def topomaps(self):
         """Return a queryset of topographic maps this appears on."""
 
-        return geolib.TopoMap.objects.filter(geom__intersects=self.geom)
+        return geolib.models.TopoMap.objects.filter(
+            geom__intersects=self.geom)
 
 
 class SiteList(models.Model):

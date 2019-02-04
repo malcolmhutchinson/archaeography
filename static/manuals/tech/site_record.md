@@ -15,15 +15,15 @@ evidence found at a place where such evidence has not previously been
 recorded.
 
 A site record may be updated an arbitrary number of times after it has
-been created, by archaeologists recording further archaeological
-evidence.
+been created, by archaeologists recording observations from subsequent
+visits, or adding more photos, maps or historic material.
 
 
 ### Composition
 
 The site record contains
 
--   _aggregate_ fields containing short values, like `site type`,
+-   _aggregate_ fields storing short values, like `site type`,
     `ethnicity`, `period`  and so on, which are commonly used as search
     terms. 
 
@@ -31,8 +31,8 @@ The site record contains
     descriptions of the place, the archaeological evidence and
     condition of the place.
 
--   _files_ associated with the record, like photographs, PDF
-    documents and other electronic files.
+-   _files_ associated with the record, like photographs, scanned pages,
+    PDF documents and other electronic files.
 
 -   _administrative_ fields logging change activity and recording the
     identities of people making changes to the record.
@@ -53,7 +53,7 @@ A site record in our model is expressed as an object in the
 
 All site records have at least one update record; that being update
 zero; the copy of the ArchSite record. This may comprise several
-update events, descrete instances of when new matter has been
+update events; descrete instances of when new matter has been
 introduced into the site file. These instances are discernable from
 the files in the record, and can be modelled in the archaeography
 project. 

@@ -33,6 +33,19 @@ def applications(request):
 
     return apps
 
+
+def group_memberships(request):
+    """Return a list of the groups this user is a member of."""
+
+    if not request.user.is_authenticated():
+        return None
+
+    groups = []
+    for group in request.user.groups.all():
+        groups.append(group)
+
+    return groups
+
 def your_stuff(request):
     """List of navigation commands peculiar to the user."""
 
@@ -60,8 +73,8 @@ def your_stuff(request):
 
     if request.user.groups.filter(name='boundary'):
         stuff.append(
-            ('/member/' + request.user.username + '/boundaries/',
-            'your boundary files')
+            ('/nzaa/boundaries/', 'your boundary reports')
         )
     
     return stuff
+

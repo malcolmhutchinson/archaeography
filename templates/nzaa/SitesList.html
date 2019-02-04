@@ -10,7 +10,7 @@
     {% if sitecount == 1 %}
       <p>There is a single record in the set.</p>
     {% else %}
-      <p>There are {{ sitecount|intcomma }} archaeolgical site records here.</p>
+      <p>There are {{ sitecount|intcomma }} archaeological site records here.</p>
       {% endif %}
 
       {% if group_name %}
@@ -30,6 +30,17 @@
       <br /><br />
       {% endif %}
       {% endif %}
+
+      {% if sheets %}
+      <p>NZMS 260 sheets: {% for sheet in sheets %}'{{ sheet }}', {% endfor %}
+      {% endif %}
+
+      <div class='map'>
+
+        <img  style='max-width: 100%;'
+           src='{{ mapimage.0 }}' alt='{{ mapimage.1 }}' />
+
+      </div>
 
 </div>
 

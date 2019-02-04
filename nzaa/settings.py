@@ -816,8 +816,8 @@ NZAA_REGION = {
 
 REGION = {
     "aucklandregion": ("Auckland Region", -37.7846, 175.2797, 10),
-    "bayofplenty": ("Bay of Plenty Region", -37.7846, 175.2797, 13),
-    "canterbury": ("Canterbury Region", -37.7846, 175.2797, 13),
+    "bayofplentyregion": ("Bay of Plenty Region", -37.7846, 175.2797, 13),
+    "canterburyregion": ("Canterbury Region", -37.7846, 175.2797, 13),
     "gisborne": ("Gisborne", -37.7846, 175.2797, 13),
     "hawkesbay": ("Hawke's Bay Region", -37.7846, 175.2797, 13),
     "manawatuwanganui": ("Manawatu-Wanganui Region", -37.7846, 175.2797, 13),

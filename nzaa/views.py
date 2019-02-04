@@ -55,6 +55,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import F
+from django.contrib.gis.gdal import DataSource
+from django.contrib.gis.geos import MultiPolygon, WKBWriter, GEOSGeometry
+
 
 from django.db import transaction
 
@@ -75,6 +78,11 @@ MAIN_FORM = {
     'method': 'POST',
     'class': 'mainForm',
 }
+
+BOUNDARY_EXT = (
+    '.kml', '.KML',
+)
+
 # Limit of site records to list in one whack.
 LIMIT = 100
 
@@ -124,63 +132,18 @@ def actors(request, command=None):
     return render(request, template, context)
 
 
-def boundary_report(request, boundary_id):
-    """Display a report of sites within a boundary."""
-
-    context = build_context(request)
-    context['commands'] = authority.boundary_commands(request)
-    context['nav'] = 'member/nav_boundary.html'
-    context['jsortable'] = True
-    template = 'member/boundary.html'
-    context['main_form'] = MAIN_FORM
-    notifications = []
-
-    try:
-        boundary = models.Boundary.objects.get(id=boundary_id)
-        context['boundary'] = boundary
-        context['h1'] = boundary.name  # Should change to boundary.title.
-        context['editForm'] = forms.BoundaryForm(instance=boundary)
-    except models.Boundary.DoesNotExist:
-        context['notFound'] = True
-        context['h1'] = "Boundary record not found"
-        return render(request, template, context)
-
-    if not boundary.member == request.user.member:
-        context['notAuthorised'] = True
-        context['h1'] = "Boundary record not authorised"
-        context['boundary'] = None
-        return render(request, template, context)
-
-    if boundary.parcels_intersecting().count() < 50:
-        context['cadastral_report'] = True
-
-    if request.POST:
-        editForm = forms.BoundaryForm(request.POST, instance=boundary)
-        if editForm.is_valid():
-            editForm.save()
-            notifications.append('Saving boundary record.')
-            context['editForm'] = editForm
-            context['h1'] = boundary.name  # Should change to boundary.title.
-
-    context['editable'] = boundary.is_editable(request)
-    context['viewable'] = boundary.is_viewable(request)
-    context['notifications'] = notifications
-    context['title'] = context['h1'] + " | " + context['title']
-    
-    return render(request, template, context)
-
-
-def boundaries(request, command):
+def boundaries(request):
     """List the member's boundary files."""
 
     context = build_context(request)
     context['commands'] = authority.boundary_commands(request)
-    context['nav'] = 'member/nav_boundary.html'
-    template = 'member/boundaries.html'
+    context['nav'] = 'nzaa/nav_boundary.html'
     context['h1'] = "List of your boundary files, "
     context['h1'] += request.user.username
     context['title'] = context['h1'] + " | archaeography.nz"
     context['jsortable'] = True
+
+    template = 'nzaa/Boundaries.html'
 
     # Read the KML files in the boundary directory.
     dirpath = os.path.join(
@@ -200,47 +163,93 @@ def boundaries(request, command):
 
     # Get the member's boundary records from the db.
     context['records'] = models.Boundary.objects.filter(
-        member=request.user.member)
+        owner=request.user)
 
     return render(request, template, context)
 
 
-def upload_boundary(request):
+def boundary_report(request, boundary_id):
+    """Display a report of sites within a boundary."""
+
+    context = build_context(request)
+    context['commands'] = authority.boundary_commands(request)
+    context['nav'] = 'nzaa/nav_boundary.html'
+    context['jsortable'] = True
+    context['main_form'] = MAIN_FORM
+    notifications = []
+
+    template = 'nzaa/boundary.html'
+
+    try:
+        boundary = models.Boundary.objects.get(id=boundary_id)
+        context['boundary'] = boundary
+        context['h1'] = boundary.title
+        context['editForm'] = forms.BoundaryForm(instance=boundary)
+    except models.Boundary.DoesNotExist:
+        context['notFound'] = True
+        context['h1'] = "Boundary record not found"
+        return render(request, template, context)
+
+    if not boundary.owner == request.user:
+        context['notAuthorised'] = True
+        context['h1'] = "Boundary record not authorised"
+        context['boundary'] = None
+        return render(request, template, context)
+
+    if boundary.parcels_intersecting().count() < 50:
+        context['cadastral_report'] = True
+
+    if request.POST:
+        editForm = forms.BoundaryForm(request.POST, instance=boundary)
+        if editForm.is_valid():
+            editForm.save()
+            notifications.append('Saving boundary record.')
+            context['editForm'] = editForm
+            context['h1'] = boundary.title
+
+    context['editable'] = boundary.is_editable(request)
+    context['viewable'] = boundary.is_viewable(request)
+    context['notifications'] = notifications
+    context['title'] = context['h1'] + " | " + context['title']
+    
+    return render(request, template, context)
+
+
+def boundary_upload(request):
     """Form and handling for uploading KML boundary files."""
     
     context = build_context(request)
     context['commands'] = authority.boundary_commands(request)
-    context['nav'] = 'member/nav_boundary.html'
-    template = 'member/uploadboundary.html'
+    context['nav'] = 'nzaa/nav_boundary.html'
     context['h1'] = "Upload a new boundary file"
     context['title'] = context['h1'] + " | archaeography.nz"
     context['jsortable'] = True
     context['main_form'] = MAIN_FORM
-    context['boundaryFileForm'] = forms.BoundaryForm()
-    context['uploadFile'] = forms.UploadFile()
+    context['boundaryForm'] = forms.BoundaryForm()
+    context['uploadFile'] = forms.UploadFileRequired()
     context['notifications'] = []
 
+    template = 'nzaa/uploadboundary.html'
+
     if request.POST:
-        context['boundaryFileForm'] = forms.BoundaryForm(request.POST)
-        boundary = context['boundaryFileForm'].save(commit=False)
+        context['boundaryForm'] = forms.BoundaryForm(request.POST)
+        boundary = context['boundaryForm'].save(commit=False)
         fname = str(request.FILES['filename']).replace(' ', '_')
+        boundary.fname = fname
         base, ext = os.path.splitext(fname)
 
         # Check that it's a KML file by looking at the extension.
         if ext not in BOUNDARY_EXT:
             context['notifications'].append(
                 "Not a KML file. File not processed, try another file.")
-            context['boundaryFileForm'] = boundaryFileForm 
+
             return render(request, template, context)
 
-        filepath = os.path.join(
-            settings.STATICFILES_DIRS[0],
-            'member/', request.user.username, 'boundary', base
-        )
-
         # We have to save the file before we can analyse it.
-        request.user.member.mkdir()
+        filepath = boundary.filepath()
+
         if not os.path.isdir(filepath):
+            print "Making directory at ", filepath
             os.makedirs(filepath)
 
         pathname = os.path.join(filepath, fname)
@@ -251,12 +260,11 @@ def upload_boundary(request):
                 destination.write(chunk)
 
         context['notifications'].append("File " + fname + " submitted.")
-        
+
         try:
             ds = DataSource(pathname)
             geoms = ds[0].get_geoms()
 
-            # extract polygons from the geometry.
         except:
             context['notifications'].append(
                 "This is not an OGR file. File not uploaded.")
@@ -275,6 +283,7 @@ def upload_boundary(request):
             note += "file has not been uploaded."
             context['notifications'].append(note)
             os.remove(pathname)
+            so.rmdir(filepath)
             return render(request, template, context)
 
         if len(polys) > 1:
@@ -288,8 +297,7 @@ def upload_boundary(request):
         tmp = wkb.write(MultiPolygon(polys[0].geos))
         
         boundary.geom = GEOSGeometry(tmp, srid=4326).transform(2193, clone=True)
-        boundary.member = request.user.member
-        boundary.fname = fname
+        boundary.owner = request.user
         boundary.save()
         context['notifications'].append('KML file uploaded successfully.')
                 
@@ -399,16 +407,18 @@ def features(request, command=None):
 def homepage(request):
 
     context = build_context(request)
-    template = 'nzaa.html'
     context['h1'] = 'NZAA archaeological site records'
     context['title'] = context['h1'] + " | archaeography.nz"
     context['subhead'] = 'Modelling the Site Recording Scheme (SRS)'
     context['jsortable'] = True
     context['total_records'] = models.Site.objects.all().count()
-    context['simpleSearch'] = forms.SimpleSearch
+
+    context['user_groups'] = authority.group_memberships(request)
     request.session['siteset'] = None
 
-#   Natural groups of sites.
+    template = 'nzaa.html'
+
+    #   Natural groups of sites.
     context['nzaa_region'] = []
     for item in sorted(settings.NZAA_REGION.keys()):
         context['nzaa_region'].append((item, settings.NZAA_REGION[item][0]))
@@ -507,7 +517,7 @@ def newsite(request, site_id, command=None):
         context['buttons'] = ['save', ]
         context['subhead'] = 'Edit this new site record'
         context['NewSiteForm'] = forms.NewSiteForm(instance=site)
-        context['UploadFile'] = forms.UploadFile()
+        context['UploadFile'] = forms.UploadFileRequired()
 
     if request.POST:
         NewSiteForm = forms.NewSiteForm(request.POST, instance=site)
@@ -708,7 +718,6 @@ def search(request):
     parts = terms.split('/')
     site_ids = []
     if len(parts) == 2:
-        # if parts[0].upper() in settings.NZMS260:
         sheet = parts[0].upper()
         try:
             ordinal = int(parts[1])
@@ -813,6 +822,11 @@ def selector(request, command, option=None):
     if option == "assess":
         template = 'nzaa/SitesListAssessment.html'
 
+    context['mapimage'] = (
+        os.path.join(settings.STATIC_URL, 'img', command + '.png'),
+        'Map of ' + command
+    )
+
     if command in settings.TLA.keys():
         tla = settings.TLA[command][0]
         h1 = tla
@@ -832,6 +846,7 @@ def selector(request, command, option=None):
         h1 = region
         sheets = settings.NZAA_REGION_SHEETS[command]
         sites = models.Site.objects.filter(nzms_sheet__in=sheets)
+        context['sheets'] = sheets
         listtype = 'nzaa'
         siteset['setname'] = region
 
@@ -918,7 +933,6 @@ def selector(request, command, option=None):
     return render(request, template, context)
 
 
-@user_passes_test(authority.nzaa_member)
 def site(request, command, argument=None):
     """Display an archaeological site record.
 
@@ -966,6 +980,8 @@ def site(request, command, argument=None):
     update_id = None
     template = 'nzaa/Site.html'
 
+    context = build_context(request)
+
 #   Find the nzaa_id, sheet identifier and ordinal.
     split = command.split('-')
     nzaa_id = split[0]
@@ -975,9 +991,15 @@ def site(request, command, argument=None):
     if len(split) > 1:
         update_id = command
 
-    context = build_context(request)
+    context['nzaa_id'] = nzaa_id
     context['update_id'] = update_id
 
+#   If the user is not authenticated, change the template and return.
+    if not request.user.is_authenticated:
+        template = 'nzaa/SiteNotAuth.html'
+        context['h1'] = "NZAA archaeological site record " + nzaa_id
+        return render(request, template, context)
+    
 #   Go download the record from ArchSite.
     if argument == "scrape":
         s = scrape.Scrape([nzaa_id])
@@ -1843,7 +1865,8 @@ def build_context(request):
     context['member'] = authority.nzaa_member(request.user)
     context['buttons'] = None
     context['URL'] = settings.BASE_URL
-
+    context['simpleSearch'] = forms.SimpleSearch
+    
     if authority.nzaa_member:
         context['authorised'] = True
 

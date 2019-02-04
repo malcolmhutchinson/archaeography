@@ -1,9 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.gis.gdal import DataSource
-from django.contrib.gis.geos import MultiPolygon, WKBWriter, GEOSGeometry
-
 import datetime
 import os
 
@@ -12,7 +9,7 @@ import forms
 import geolib.models
 import home.views
 import models
-import nzaa.models as nzaa
+import nzaa
 import settings
 
 MAIN_FORM = {
@@ -21,10 +18,6 @@ MAIN_FORM = {
     'method': 'POST',
     'class': 'mainForm',
 }
-
-BOUNDARY_EXT = (
-    '.kml', '.KML',
-)
 
 @login_required
 def homepage(request, command=None):
@@ -48,15 +41,15 @@ def homepage(request, command=None):
     context['memberForm'] = forms.MemberForm(instance=request.user.member)
 
     if authority.nzaa_member(request.user):
-        context['lists'] = nzaa.SiteList.objects.filter(
+        context['lists'] = nzaa.models.SiteList.objects.filter(
             owner=request.user.username)
-        context['updates'] = nzaa.Update.objects.filter(
+        context['updates'] = nzaa.models.Update.objects.filter(
             owner=request.user.username)
-        context['newsites'] = nzaa.NewSite.objects.filter(
+        context['newsites'] = nzaa.models.NewSite.objects.filter(
             owner=request.user.username)
     if authority.boundaries(request):
-        context['boundaries'] = models.Boundary.objects.filter(
-            member=request.user.member)
+        context['boundaries'] = nzaa.models.Boundary.objects.filter(
+            owner=request.user)
 
     if request.POST:
         memberForm = forms.MemberForm(

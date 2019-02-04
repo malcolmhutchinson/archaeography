@@ -62,18 +62,18 @@
 
     {% if boundaries %}<div class='indextile'>
 
-    <h2>Your boundary files</h2>
+    <h2>Your boundary reports</h2>
 
     <table class='sortable'>
         <tr>
-            <th>name</th>
+            <th>title</th>
             <th>file</th>
             <th>client</th>
             <th>description</th>
             <th>sites</th>
         </tr>
         {% for boundary in boundaries %}<tr>
-            <td><a href='{{ boundary.url }}'>{{ boundary.name }}</a></td>
+            <td><a href='{{ boundary.url }}'>{{ boundary.title }}</a></td>
             <td>{{ boundary.fname }}</td>
             <td>{{ boundary.client }}</td>
             <td>{{ boundary.description }}</td>

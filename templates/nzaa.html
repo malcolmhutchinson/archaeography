@@ -17,7 +17,7 @@
 
 </div>
 
-<div class='two-col'>
+<div class='two-col' style='font-size: 90%;'>
 
   <h2>Your stuff here</h2>
   {% if updates.count == 1 %}
@@ -39,6 +39,12 @@
   <p>You have <a href='/nzaa/newsites/{{ user.username }}/'>
       {{ newsites.count }} new site records</a> active.</p>
   {% endif %}
+
+  {% if user_groups %}
+  <p>Your groups:<br />
+  {% for group in user_groups %}{{ group }} | {% endfor %}
+  {% endif %}
+
 </div>
 
 

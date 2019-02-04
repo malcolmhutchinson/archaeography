@@ -28,9 +28,9 @@ urlpatterns = [
     url(r'^tlas/([\w/-]*)', views.tlas),
 
     #   Boundary records.
-    url(r'^upload/boundary/$', views.upload_boundary),
-    url(r'^([\w-]*)/boundaries/$', views.boundaries),
+    url(r'^boundaries/$', views.boundaries),
     url(r'^boundary/([0-9]*)/$', views.boundary_report),
+    url(r'^boundary/upload/$', views.boundary_upload),
 
     #   New site records.
     url(r'^newsites/$', views.newsites),

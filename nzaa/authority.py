@@ -35,14 +35,14 @@ def boundary_commands(request):
         return None
 
     boundary_url = os.path.join(
-        settings.BASE_URL, request.user.username, 'boundaries/')
+        settings.BASE_URL, 'boundaries/')
 
     upload_url = os.path.join(
-        settings.BASE_URL, 'upload/boundary/')
+        settings.BASE_URL, 'boundary/upload/')
 
     
     commands = [
-        (boundary_url, 'your boundary files'),
+        (boundary_url, 'your boundary reports'),
         (upload_url, 'upload a boundary file'),
     ]
 
@@ -58,8 +58,6 @@ def commands(request, site=None, update=None, sitelist=None, newsite=None):
         (settings.BASE_URL + 'newsites/', 'new site records'),
         (settings.BASE_URL + 'changes/', 'recent changes'),
         (settings.BASE_URL + 'sitelists/', 'site lists'),
-        (settings.BASE_URL + 'updates/' + request.user.username,
-            'your update records'),
     ]
 
     if 'sitelist' in request.path:
@@ -71,6 +69,10 @@ def commands(request, site=None, update=None, sitelist=None, newsite=None):
             (settings.BASE_URL + 'sitelist/create', 'new site list')
         )
 
+    if models.Update.objects.filter(owner=request.user.username).count():
+        commands.append((settings.BASE_URL + 'updates/' + request.user.username,
+            'your update records'))
+        
     if site:
 
         archsite = settings.SITE_PAGE + site.nzaa_id

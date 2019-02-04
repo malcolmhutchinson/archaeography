@@ -78,32 +78,32 @@ rivers, cadastral parcels etc).
         
     geolib_territorialauthority
 
-        Copy of Statistics NZ territorial authority
-        boundaries. Polygon geometries.
+        Copy of Statistics NZ territorial authority boundaries.
+        Polygon geometries.
 
     geolib_topo50_island
 
-        Copy of the LINZ dataset. geometries.
+        Copy of the LINZ dataset. Polygon geometries.
 
     geolib_topo50_lake
 
-        Copy of the LINZ dataset. geometries.
+        Copy of the LINZ dataset. Polygon geometries.
 
     geolib_topo50_rail
 
-        Copy of the LINZ dataset. geometries.
+        Copy of the LINZ dataset. Linestring geometries.
 
     geolib_topo50_riverline
 
-        Copy of the LINZ dataset. geometries.
+        Copy of the LINZ dataset. Linestring geometries.
 
     geolib_topo50_riverpoly
 
-        Copy of the LINZ dataset. geometries.
+        Copy of the LINZ dataset. Polygon geometries.
 
     geolib_topo50_road
 
-        Copy of the LINZ dataset. geometries.
+        Copy of the LINZ dataset. Linestring geometries.
 
     geolib_topo50grid
 
@@ -112,7 +112,7 @@ rivers, cadastral parcels etc).
         
     geolib_topocontour20metre
 
-        Copy of the LINZ dataset. geometries.
+        Copy of the LINZ dataset. Linestring geometries.
 
     geolib_topomapseries
 
@@ -124,7 +124,8 @@ rivers, cadastral parcels etc).
 
     geolib_topomapfile
 
-        Index to files associated with a topomap sheet.
+        Index to files associated with a topomap sheet. Tracks
+        versions of the sheet.
 
     geolib_waterways
 
@@ -195,7 +196,7 @@ archaeography project.
 
     nzaa_sitetypes
 
-        Unique cvalues for 'site type' extracted from the site
+        Unique values for 'site type' extracted from the site
         records.
         
     nzaa_sitetypes_sites

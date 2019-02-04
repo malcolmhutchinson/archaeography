@@ -244,6 +244,12 @@ class SiteReview(ModelForm):
 class UploadFile(Form):
     filename = FileField(required=False)
 
+class UploadFile(Form):
+    filename = FileField(required=False)
+
+class UploadFileRequired(Form):
+    filename = FileField(required=True)
+
 
 class UpdateFull(ModelForm):
     class Meta:

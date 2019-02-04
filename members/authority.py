@@ -6,8 +6,7 @@ import os
 import settings
 
 from django.contrib.auth.models import User
-
-import nzaa.authority
+from nzaa.authority import *
 
 
 def nzaa_member(user):

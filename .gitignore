@@ -4,7 +4,9 @@
 etc/
 secrets.py
 static/admin
+static/boundaries/*
 static/geolib
+static/img/*
 static/member/*
 static/nzaa
 static/tmp
