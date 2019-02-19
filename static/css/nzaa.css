@@ -97,6 +97,15 @@
     height: 100%;
 }
 
+.siteSummary {
+    font-size: 90%;
+    
+}
+.siteSummary h3 {
+    font-style: normal;
+    font-weight: bold;
+    font-family: sans-serif;
+}
 
 /*  These may be retired. */
 

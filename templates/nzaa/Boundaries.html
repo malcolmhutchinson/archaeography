@@ -5,7 +5,7 @@
 <h1>{{ h1 }}</h1>
 
   {% if records %}
-  <h3>In database</h3>
+  <h3>{{ records.count|intcomma }} records</h3>
 
   <table class='sortable' style='font-size: 80%;'>
     <tr>

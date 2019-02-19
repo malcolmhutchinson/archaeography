@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <th>coords</th>
-        <td colspan='2'>NZTM {{ site.nztm_coords }}</td>
+        <td colspan='2'>NZTM {{ site.nztm_coords|safe }}</td>
     </tr>    
     <tr>
         <td></td>
@@ -24,49 +24,30 @@
     </tr>
     <tr>
 
-        <th></th>
-
-        <th>Adjusted values</th>
-
-        <th>Archsite values</th>
-
-    </tr>
-
-    <tr>
-
         <th>Site type</th>
 
-        <td>{{ site.site_type }}{% if site.site_subtype %}
-        <br />{{ site.site_subtype }}{% endif %}</td>
-
-        <td>{{ site.lgcy_type }} </td>
+        <td colspan='2'>{{ site.lgcy_type }} </td>
 
     </tr>
     <tr>
 
         <th>Ethnicity</th>
 
-        <td>{{ site.ethnicity }}</td>
-
-        <td>{{ site.lgcy_ethnicity }}</td>
+        <td colspan='2'>{{ site.lgcy_ethnicity }}</td>
 
     </tr>
     <tr>
 
         <th>Period</th>
 
-        <td>{{ site.period }}</td>
-
-        <td>{{ site.lgcy_period }}</td>
+        <td colspan='2'>{{ site.lgcy_period }}</td>
 
     </tr>
     <tr>
 
         <th>Features</th>
 
-        <td>{{ site.features }}</td>
-
-        <td>{{ site.lgcy_features }}</td>
+        <td colspan='2'>{{ site.lgcy_features }}</td>
 
     </tr>
 
@@ -74,27 +55,21 @@
 
         <th>Associated sites</th>
 
-        <td>{{ site.associated_sites }}</td>
-
-        <td>{{ site.lgcy_assocsites }}</td>
+        <td colspan='2'>{{ site.lgcy_assocsites }}</td>
 
     </tr>
     <tr>
 
         <th>Threats</th>
 
-        <td>{{ site.threats }}</td>
-
-        <td>{{ site.lgcy_threats }}</td>
+        <td colspan='2'>{{ site.lgcy_threats }}</td>
 
     </tr>
     <tr>
 
         <th>Inspected</th>
 
-        <td></td>
-
-        <td>{{ site.lgcy_inspected }}</td>
+        <td colspan='2'>{{ site.lgcy_inspected }}</td>
 
     </tr>
     <tr>
@@ -113,10 +88,7 @@
     </tr>
     <tr>
         <th>Visited</th>
-        <td>{{ site.display_visited }}</td>
-        <td>{% if site.lgcy_inspected %}
-          {{ site.lgcy_inspected }}{% endif %}</td>
-
+        <td colspan='2'>{{ site.display_visited }}</td>
     </tr>
     {% if site.reviews.all %}<tr>
 

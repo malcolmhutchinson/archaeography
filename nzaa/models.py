@@ -858,7 +858,7 @@ class Record(models.Model):
         return False
 
     def nztm_coords(self):
-        coords = str(self.easting) + ' ' + str(self.northing)
+        coords = str(self.easting) + '&nbsp;' + str(self.northing)
         return coords
 
     def ortho_tiles(self):
@@ -1335,7 +1335,7 @@ class Site(Record):
 
     def short_description(self):
 
-        if self.updates[0].ordinal == 0:
+        if self.updates()[0].ordinal == 0:
             return self.lgcy_shortdesc
 
         description = ''
@@ -1975,6 +1975,13 @@ class Boundary(models.Model):
         site = self.sites_closest(n=1)[0]
         #site.distance = self.geom.distance(site.geom)
         return site
+
+    def display_centroid(self):
+        """NZTM coords as a string."""
+
+        centroid = str(int(self.geom.centroid.x)) + '&nbsp'
+        centroid += str(int(self.geom.centroid.y)) 
+        return centroid
         
     def display_description(self):
         return markdown(self.description)        
@@ -2032,9 +2039,6 @@ class Boundary(models.Model):
         if request.user == self.owner:
             return True
         
-        
-        
-
     def map(self):
         return None
 
@@ -2106,7 +2110,7 @@ class Boundary(models.Model):
         return sites
 
     def sites_identified(self):
-        """A list of all sites mentioned in the report.
+        """A queryset of all sites mentioned in the report.
 
         This is a union of sites_adjacent, sites_closest, sites_within.
 
@@ -2126,7 +2130,10 @@ class Boundary(models.Model):
         sites = set(sites)
 
         return Site.objects.filter(nzaa_id__in=sites)
-        
+
+    def sites_list(self):
+        """A list of the nzaa_id values for the sites_identified."""
+    
     def sites_within(self):
         """Queryset of sites falling within this boundary."""
 

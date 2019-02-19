@@ -138,7 +138,7 @@ def boundaries(request):
     context = build_context(request)
     context['commands'] = authority.boundary_commands(request)
     context['nav'] = 'nzaa/nav_boundary.html'
-    context['h1'] = "List of your boundary files, "
+    context['h1'] = "List of your boundary reports, "
     context['h1'] += request.user.username
     context['title'] = context['h1'] + " | archaeography.nz"
     context['jsortable'] = True
@@ -206,6 +206,9 @@ def boundary_report(request, boundary_id):
             notifications.append('Saving boundary record.')
             context['editForm'] = editForm
             context['h1'] = boundary.title
+
+    analysis = analyse.Site(boundary.sites_identified())
+    context['sites_by_lgcy_type'] = analysis.count_by_lgcy_type()
 
     context['editable'] = boundary.is_editable(request)
     context['viewable'] = boundary.is_viewable(request)

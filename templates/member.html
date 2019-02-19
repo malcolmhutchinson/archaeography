@@ -62,7 +62,7 @@
 
     {% if boundaries %}<div class='indextile'>
 
-    <h2>Your boundary reports</h2>
+    <h2>Your boundary reports ({{ boundaries.count }})</h2>
 
     <table class='sortable'>
         <tr>
@@ -77,7 +77,7 @@
             <td>{{ boundary.fname }}</td>
             <td>{{ boundary.client }}</td>
             <td>{{ boundary.description }}</td>
-            <td>{{ boundary.sites.count }}</td>
+            <td>{{ boundary.sites_identified.count }}</td>
         </tr>{% endfor %}
     </table>
     </div>
@@ -103,7 +103,7 @@
 
     {% if newsites %}<div class='indextile'>
 
-      <h2>Your new site records</h2>
+      <h2>Your new site records ({{ newsites.count }})</h2>
 
     <table class='sortable'>
         <tr>

@@ -24,6 +24,7 @@
 
 <div class='block-page-edit'>
 
+  <h3>Recorded archaeological context</h3>
   
 <h1>{{ h1 }}</h1>
 
@@ -45,14 +46,12 @@
   <tr>
     <td width='50%'>
       
-<h2>Boundary metadata</h2>
+<h2>Geographic setting</h2>
       
 <table style='font-size: 80%;'>
   <tr>
-    <td colspan='2'><b>maps</b><br />
-    {% for map in boundary.topomaps %}
-    <a href='{{ map.url }}'>{{ map.display_name }}</a><br />
-    {% endfor %}</td>
+    <th>centred at NZTM </th>
+    <td>{{ boundary.display_centroid|safe }}</td>
   </tr>
   <tr>
     <td colspan='2' style='border-top:black 1px solid;'></td>
@@ -60,6 +59,15 @@
   <tr>
     <th>No. parcels<br />intersecting</th>
     <td>{{ boundary.parcels_intersecting.count|intcomma }}</td>
+  </tr>
+  <tr>
+    <td colspan='2' style='border-top:black 1px solid;'></td>
+  </tr>
+  <tr>
+    <td colspan='2'><b>maps</b><br />
+    {% for map in boundary.topomaps %}
+    <a href='{{ map.url }}'>{{ map.display_name }}</a><br />
+    {% endfor %}</td>
   </tr>
   <tr>
     <td colspan='2' style='border-top:black 1px solid;'></td>
@@ -84,7 +92,7 @@
     <td colspan='2' style='border-top:black 1px solid;'></td>
   </tr>
   <tr>
-    <th>No. sites adjacent <br />to 500 m</th>
+    <th>No. sites within 500 m</th>
     <td>{{ boundary.sites_adjacent.count|intcomma }}</td>
   </tr>
   <tr>
@@ -92,7 +100,7 @@
   </tr>
   <tr>
     <th>No. sites identified</th>
-    <td>{{ boundary.sites_identified.count|intcomma }}</td>
+    <td>{{ boundary.sites_identified.count|intcomma }} (inc. 10 closest sites)</td>
   </tr>
   <tr>
     <td colspan='2' style='border-top:black 1px solid;'></td>
@@ -141,7 +149,7 @@
         <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
         <td>{{ site.title }}</td>
         <td>{{ site.lgcy_type }}</td>
-        <td style='text-align:right'>{{ site.nztm_coords }}</td>
+        <td style='text-align:right'>{{ site.nztm_coords|safe }}</td>
         <td style='text-align:right'>{{ site.distance|floatformat:0|intcomma }}</td>
     </tr>{% endfor %}
 </table>
@@ -165,7 +173,7 @@
         <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
         <td>{{ site.title }}</td>
         <td>{{ site.lgcy_type }}</td>
-        <td>{{ site.nztm_coords }}</td>
+        <td>{{ site.nztm_coords|safe }}</td>
     </tr>{% endfor %}
 </table>
 </div>
@@ -200,7 +208,7 @@
         <td><A href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
         <td>{{ site.title }}</td>
         <td>{{ site.lgcy_type }}</td>
-        <td>{{ site.nztm_coords }}</td>
+        <td>{{ site.nztm_coords|safe }}</td>
         <td style='text-align:right;'>{{ site.distance|floatformat:0|intcomma }}</td>
     </tr>{% endfor %}
 </table>
@@ -240,27 +248,78 @@
 
 {% endif %}
 
-<div style='font-size: 80%;'>
+<div>
+  <h2 style='page-break-after: avoid;'>Analysis</h2>
 
-<h2 style='border-top: black solid 1px; padding-top: 1em;'>Rights</h2>
 
-<p>Compiled by archaeography.nz from data contained in the New Zealand
-Archaeological Association's Site Recording Scheme.</p>
+  <div class='data'>
+{% include 'nzaa/panel/sites_by_lgcy_type.html' %}
+  </div>
 
 </div>
+
+
+<div style='page-break-inside: avoid;'>
+  <h2>All site records identified ({{ boundary.sites_identified.count }})</h2>
+
+  <p>This is the list of the ten closest sites, and any within 500 m
+  of this boundary.</p>
+
+  <table class='sortable' style='font-size: 80%;'>
+    <tr>
+      <th>nzaa id</th>
+      <th>title</th>
+      <th>type</th>
+      <th>ethnicity</th>
+      <th>period</th>
+      <th>features</th>
+    </tr>
+    
+    {% for site in boundary.sites_identified %}<tr>
+      <td><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></td>
+      <td>{{ site.title }}</td>
+      <td>{{ site.lgcy_type }}</td>
+      <td>{{ site.lgcy_ethnicity }}</td>
+      <td>{{ site.lgcy_period }}</td>
+      <td>{{ site.lgcy_features }}</td>
+    </tr>{% endfor %}
+  </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 <div class='noprint'>
 <h2>Here's the non-printing stuff</h2>
 
 <p>These fields don't appear in the printed copy. They are here to
 provide easy selections for site lists etc.</p>
-</div>
+
 
 <h3>All the site identifiers</h2>
 
-<textarea width='80' height='2'>somethinggoes here</textarea>
+<textarea width='80' height='2'>something goes here</textarea>
 
 </div>
+
+
+<div style='font-size: 80%; page-break-inside: avoid;'>
+
+  <h2 style='border-top: black solid 1px; padding-top: 1em;'>Rights</h2>
+
+  <p>Compiled by archaeography.nz from data contained in the New Zealand
+  Archaeological Association's Site Recording Scheme.</p>
+
+</div>
+
 
 {% endif %}
 

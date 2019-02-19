@@ -1,0 +1,56 @@
+<!-- nzaa/panel/site_summary.html -->
+<div class='siteSummary'>
+
+
+<table>
+
+    <tr>
+
+      <td><h3><a href='{{ site.url }}'>{{ site.nzaa_id }}</a></h3></td>
+      <td>{{ site.title }}</td>
+
+      <td rowspan='2'>
+
+        <table>
+          <tr>
+            <th>site type</th>
+            <td>{{ site.lgcy_sitetype }}</td>
+          </tr>
+          <tr>
+            <th>period</th>
+            <td>{{ site.period }}</td>
+          </tr>
+          <tr>
+            <th>ethnicity</th>
+            <td>{{ site.ethnicity }}</td>
+          </tr>
+          <tr>
+            <th>features</th>
+            <td>{{ site.features }}</td>
+          </tr>
+          <tr>
+            <th></th>
+            <td></td>
+          </tr>
+        </table>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+        <td colspan='2'>{{ site.short_description }}</td>      
+
+    </tr>
+
+
+</table>
+
+  
+
+
+
+</div>
+<!-- close nzaa/panel/site_summary.html -->
+
