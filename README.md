@@ -16,13 +16,6 @@ NOTE: There are NO DATA BELONGING TO THE NZAA present in this
 codebase. 
 
 
-The user can upload a polygon geometry, as a KML file. This is
-injected into a database table, where the model can be used to extract
-lists of site records by distance -- those inside the shape, those
-intersecting, and those adjacent. It will also collect cadastral
-parcels intersecting with the shape.
-
-
 Mission
 ---------
 

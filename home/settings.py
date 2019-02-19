@@ -103,7 +103,7 @@ WSGI_APPLICATION = 'home.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'arch_breport',
+        'NAME': 'archaeography',
         'USER': MACHINE[0],
         'PASSWORD': MACHINE[1],
         'HOST': 'localhost',
