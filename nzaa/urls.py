@@ -2,7 +2,7 @@
 from django.conf.urls import url
 
 import nzaa.views as views
-from nzaa.models import Site
+#from nzaa.models import Site
 
 urlpatterns = [
     #   The home pages
