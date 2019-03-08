@@ -37,14 +37,6 @@ class MemberForm(ModelForm):
             'email',
             'phone',
         ]
-class PersonDetails(ModelForm):
-    class Meta:
-        model = models.Person
-        fields = [
-            'name_first',
-            'name_last',
-        ]
-
 
 class UploadFile(Form):
     filename = FileField(required=False)

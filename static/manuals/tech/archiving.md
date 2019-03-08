@@ -60,7 +60,7 @@ The process is:
 
         scp user@host/path/to/data.sql.gz ./
         gunzip prop_data.sql.gz
-	psql archaeography < data.sql
+        psql archaeography < data.sql
 
 4.  Run the script to copy these values from the work schema into public.
 

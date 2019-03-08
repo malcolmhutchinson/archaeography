@@ -126,6 +126,10 @@ available to the archaeography code. In shell:
     virtualenv env
     source env/bin/activate
 
+    # Upgrade pop and setuptools.
+    pip install --upgrade pip
+    pip install --upgrade setuptools
+
     # Install Python packages
     pip install \
         Pillow bs4 django ephem exifread markdown2 \

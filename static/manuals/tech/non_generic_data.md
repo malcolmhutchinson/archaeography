@@ -18,6 +18,8 @@ Here are the non-generic tables:
     geolib_aerialsurvey
     geolib_waterways
 
+    members_member
+
     nzaa_actor
     nzaa_actor_sites
     nzaa_boundary

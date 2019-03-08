@@ -20,7 +20,7 @@ import socket
 # release our own, so this section provides dummy versions, which
 # won't work.
 
-SECRET_KEY = 'yyi16c3w@a6+)lcc%0pf9*0ys4wnvkl^clm0qi=65)^ww!p0s7'
+SECRET_KEY = 'this-is-not-a-real-secret-key-l^clm0qi=65)^ww!p0s7'
 MACHINE = ('django_superuser_id', 'some pass phrase')
 LOGIN_ARCHSITE = {
     'default': ('archsite_userid', 'archsite password'),
@@ -36,15 +36,9 @@ GMAIL = ('address@gmail.com', 'gmail password')
 # out the following line.
 from secrets import *
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    'archaeography.nz', 'archaeography.co.nz',
-    'archaeography',
-]
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -143,13 +137,9 @@ DEPRECIATED_AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-nz'
-
 TIME_ZONE = 'NZ'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -163,20 +153,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = GMAIL[0]
 EMAIL_HOST_PASSWORD = GMAIL[1]
 EMAIL_PORT = 587
 DEFAULT_EMAIL_FROM = "archaeographynz@gmail.com"
-
-# Security settings
-
-SECURE_CONTENT_TYPE_NOSNIF = True
-SECURE_BROWSER_XSS_FILTER = True
-SCURE_SSL_REDIRECT = False
-# SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_HTTPONLY = True
-X_FRAME_OPTIONS = 'DENY'
