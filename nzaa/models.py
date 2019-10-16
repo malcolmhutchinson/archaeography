@@ -1766,6 +1766,7 @@ class Update(Record):
             d = webnote.Directory(path, docroot, baseurl)
             self.store_filespace = d
         except webnote.Directory.ParseDirNotFound:
+            #print "ERROR Directory not found", path
             return None
 
         return self.store_filespace
