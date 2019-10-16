@@ -1,0 +1,18 @@
+<!-- nzaa/panel/filedata.html -->
+<h3>Files in record</h3>
+
+<table width='100%' >
+  <tr>
+    <th>Document</th>
+    <th style='text-align: right;'>pages</th>
+  </tr>
+{% for document in site.update0.documents %}
+  <tr>
+    <td>{{ document.origfile }}</td>
+    <td style='text-align: right;'>{{ document.displayfiles|length }}</td>
+  </tr>{% endfor %} 
+  <tr>
+    <td colspan='2' style='border-top: solid 1px black;'></td>
+  </tr>
+</table>
+<!-- end nzaa/panel/filedata.html -->

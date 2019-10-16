@@ -1751,6 +1751,95 @@ class Update(Record):
             status += '/' + self.opstatus
         return status
 
+    def documents(self):
+        """A document is a file downloaded from ArchSite.
+
+        It's called a document because we convert .tif and .pdf files
+        in to .png images for inline display. So each time a file is
+        downloaded, several more files are created. The original file
+        is called the document.
+
+        This method produces a list of document dictionaries (described below).
+        It looks into the directory filespace for this update object.
+
+        Output is the following list of dictionaries:
+
+            [
+                {
+                    'basename': '',
+                    'origfile': '',
+                    'displayfiles': ['',],
+                },
+            ]
+
+        Where:
+            basename      filename sripped of its extension.
+            origfile      filename originally downloaded.
+            displayfiles  png copies of the original files for display inline.
+        """
+
+        documents = []
+        files = []
+        types = {}
+
+        dir = self.filespace_path()
+
+        # First, a dictionary of filetypes, listing each file by that type.
+        for item in sorted(os.listdir(dir)):
+            path = os.path.join(dir, item)
+            if os.path.isdir(path):
+                pass
+            else:
+                files.append(item)
+                (basename, ext) = os.path.splitext(item)
+
+                if ext.lower() in types.keys():
+                    types[ext.lower()].append(item)
+                else:
+                    types[ext.lower()] = [item, ]
+
+        # Go through each .tif, getting basename and original file.
+        if '.tif' in types.keys():
+            for item in types['.tif']:
+                (basename, e) = os.path.splitext(item)
+                document = {
+                    'basename': basename,
+                    'origfile': item,
+                    'displayfiles': [],
+                }
+                # Get the display file (there will only be one for a .tif).
+                if '.png' in types.keys():
+                    pngname = basename + '.png'
+
+                    if pngname in types['.png']:
+                        document['displayfiles'].append(pngname)
+
+                documents.append(document)
+
+        # PDF documents can have multiple pages.
+        if '.pdf' in types.keys():
+            for item in types['.pdf']:
+                (basename, e) = os.path.splitext(item)
+                document = {
+                    'basename': basename,
+                    'origfile': item,
+                    'displayfiles': [],
+                }
+
+                # Compile a list of display pages where the basename
+                # forms the first part of the filename
+                if '.png' in types.keys():
+                    for f in types['.png']:
+                        (b, e) = os.path.splitext(item)
+                        bits = b.split('-')
+
+                        if f[:len(basename)] == basename:
+                            document['displayfiles'].append(f)
+
+                documents.append(document)
+
+        return documents
+
     def filespace(self):
         """Return a webnote Directory object for this record.
         """
@@ -1766,7 +1855,6 @@ class Update(Record):
             d = webnote.Directory(path, docroot, baseurl)
             self.store_filespace = d
         except webnote.Directory.ParseDirNotFound:
-            #print "ERROR Directory not found", path
             return None
 
         return self.store_filespace
@@ -1778,7 +1866,6 @@ class Update(Record):
         with the object_id appended. If the object is an update, the
         update identifier is used instead.
         """
-        update_id = self.update_id.replace('TMP', '')
 
         return os.path.join(
             settings.BASE_FILESPACE, self.update_id.replace('-', '/')
@@ -1915,7 +2002,7 @@ class Boundary(models.Model):
 
     The description is short, a single paragraph.
 
-    Notes will display on the boundary record. 
+    Notes will display on the boundary record.
 
     Comments will display on the screen version, but not on the
     printed version.
@@ -1971,29 +2058,23 @@ class Boundary(models.Model):
         return os.psth.join(self.URL, str(self.id))
 
     url = property(get_absolute_url)
-    
+
     def closest_site(self):
         site = self.sites_closest(n=1)[0]
-        #site.distance = self.geom.distance(site.geom)
         return site
 
     def display_centroid(self):
         """NZTM coords as a string."""
 
         centroid = str(int(self.geom.centroid.x)) + '&nbsp'
-        centroid += str(int(self.geom.centroid.y)) 
+        centroid += str(int(self.geom.centroid.y))
         return centroid
-        
+
     def display_description(self):
-        return markdown(self.description)        
+        return markdown(self.description)
 
     def display_notes(self):
         return markdown(self.notes)
-
-    def get_absolute_url(self):
-        return os.path.join(settings.BASE_URL, self.URL, str(self.id))
-
-    url = property(get_absolute_url)
 
     def filepath(self):
         """Return full filepath to a directory for this boundary file.
@@ -2007,11 +2088,16 @@ class Boundary(models.Model):
         )
         return filepath
 
+    def get_absolute_url(self):
+        return os.path.join(settings.BASE_URL, self.URL, str(self.id))
+
+    url = property(get_absolute_url)
+
     def is_editable(self, request):
         """True or false, can the user edit this?
 
         A user can edit it if they own it, and they are a member of
-        the boundary group..
+        the boundary group.
 
         """
 
@@ -2023,7 +2109,7 @@ class Boundary(models.Model):
 
         if request.user == self.owner:
             return True
-        
+
         return False
 
     def is_viewable(self, request):
@@ -2039,14 +2125,15 @@ class Boundary(models.Model):
 
         if request.user == self.owner:
             return True
-        
+
     def map(self):
         return None
 
     def parcels_intersecting(self):
         """Return a queryset of the parcels intersecting this boundary."""
 
-        return geolib.models.Cadastre.objects.filter(geom__intersects=self.geom)
+        return geolib.models.Cadastre.objects.filter(
+            geom__intersects=self.geom)
 
     def receive_file(self, filepath):
         """Register a geometry file with the database.
@@ -2066,7 +2153,7 @@ class Boundary(models.Model):
         ds = DataSource(filepath)
 
     def sites_adjacent(self, distance=500):
-        """Queryset of sites falling within a distance. 
+        """Queryset of sites falling within a distance.
 
         Sites within (distance = 0) should be excluded.
 
@@ -2074,16 +2161,14 @@ class Boundary(models.Model):
 
         sites = []
         for site in self.sites_within():
-            sites.append(site.nzaa_id)         
+            sites.append(site.nzaa_id)
 
-        
         buffer = self.geom.buffer(width=distance)
         sites_adjacent = Site.objects.filter(
             geom__intersects=buffer).exclude(nzaa_id__in=sites)
 
         for site in sites_adjacent:
             site.distance = site.geom.distance(self.geom)
-
 
         return sites_adjacent
 
@@ -2096,8 +2181,8 @@ class Boundary(models.Model):
 
         i1 = Site.objects.filter(
             geom__distance_lte=(self.geom, D(m=10000))).exclude(
-                geom__intersects=self.geom)        
-        
+                geom__intersects=self.geom)
+
         i2 = i1.annotate(
             distance=Distance('geom', self.geom)).order_by('distance')
 
@@ -2134,19 +2219,17 @@ class Boundary(models.Model):
 
     def sites_list(self):
         """A list of the nzaa_id values for the sites_identified."""
-    
+
     def sites_within(self):
         """Queryset of sites falling within this boundary."""
 
         return Site.objects.filter(geom__intersects=self.geom)
-
 
     def static_url(self):
         """Return the url to files for this boundary object."""
 
         base, ext = os.path.splitext(self.fname)
         return os.path.join('boundaries', base)
-       
 
     def topomaps(self):
         """Return a queryset of topographic maps this appears on."""
