@@ -1704,7 +1704,7 @@ class Update(Record):
             status += '/' + self.opstatus
         return status
 
-    def documents(self):
+    def docfiles(self):
         """A document is a file downloaded from ArchSite.
 
         It's called a document because we convert .tif and .pdf files
@@ -1712,8 +1712,10 @@ class Update(Record):
         downloaded, several more files are created. The original file
         is called the document.
 
-        This method produces a list of document dictionaries (described below).
-        It looks into the directory filespace for this update object.
+        This method produces a list of document dictionaries
+        (described below).  It looks into the directory filespace for
+        this update object, and produces the thing which gets turned
+        into Document and DocFile records.
 
         Output is the following list of dictionaries:
 
@@ -1729,6 +1731,7 @@ class Update(Record):
             basename      filename sripped of its extension.
             origfile      filename originally downloaded.
             displayfiles  png copies of the original files for display inline.
+
         """
 
         documents = []
@@ -1918,12 +1921,12 @@ class Update(Record):
             docset = self.Document_set.filter(filename=item['origfile'])
             if not docset.count():
 
-            
-
+                print "Preparing document record", item['origfile']
                 doc_record = self.Document_set.create(
                     filename=item['origfile'],
                     fileformat=ext,
                 )
+                print "Preparing original file record"
                 orig_file = doc_record.create(
                     filename=item['origfile'],
                     stored_directory=stordir,
@@ -1931,6 +1934,7 @@ class Update(Record):
                 )
                 for viewfile in item['displayfiles']:
                     (basename, ext) = os.path.splitext(viewfile)
+                    print "Preparing display file record", viewfile
                     file_rec = doc_record.create(
                         filename=viewfile,
                         stored_directory=stordir,

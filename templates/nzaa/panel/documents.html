@@ -1,12 +1,12 @@
-<!-- nzaa/panel/filedata.html -->
-<h3>Files in record</h3>
+<!-- nzaa/panel/documents.html -->
+<h3>Documents</h3>
 
 <table width='100%' >
   <tr>
-    <th>File</th>
+    <th>Document</th>
     <th style='text-align: right;'>pages</th>
   </tr>
-{% for document in site.update0.docfiles %}
+{% for document in site.update0.documents %}
   <tr>
     <td>{{ document.origfile }}</td>
     <td style='text-align: right;'>{{ document.displayfiles|length }}</td>
@@ -15,4 +15,4 @@
     <td colspan='2' style='border-top: solid 1px black;'></td>
   </tr>
 </table>
-<!-- end nzaa/panel/filedata.html -->
+<!-- end nzaa/panel/documents.html -->
