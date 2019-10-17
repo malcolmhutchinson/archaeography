@@ -2238,6 +2238,62 @@ class Boundary(models.Model):
             geom__intersects=self.geom)
 
 
+class Document(models.Model):
+    """A document is a file downloaded from ArchSite.
+
+    It has an original file, and a set of zero or more display
+    files. It associates with an Update record, usually Update0.
+
+    """
+
+    update = models.ForeignKey(Update)
+    author = models.CharField(blank=True, null=True, max_length=1024)
+
+    fileformat = models.CharField(max_length=8)
+
+    def displayfiles(self):
+        """Return a queryset of the display file records."""
+
+        return self.files.filter(orig_disp='display')
+
+    def originalfile(self):
+        """Return a file record pointing to the uploaded file."""
+
+        return self.files.filter(orig_disp='original')
+
+
+class DocFile(models.Model):
+    """A DocFile is a file expression of a document.
+
+    It may be the original .tif or .pdf (or other) document downloaded
+    from Archsite or an inline display copy. It will associate with a
+    Document Record.
+
+    Note: the stored directory will be from static. So, for example,
+
+        nzaa/Q15/22/0
+
+    No leading or trailing slashes. Files can be re-allocated to
+    different updates without being moved around the filesystem.
+
+    """
+
+    ORIG_DISP = (
+        ('original', 'original', ),
+        ('display', 'display', ),
+    )
+
+    document = models.ForeignKey(Document, related_name='files')
+    filename = models.CharField(max_length=255)
+    stored_directory = models.CharField(max_length=255)
+    orig_disp = models.CharField(
+        default='display', choices=ORIG_DISP, max_length=16,
+    )
+
+    class Meta:
+        ordering = ['filename']
+
+
 class SiteList(models.Model):
     """User-definable lists or groups of sites. """
 
