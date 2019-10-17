@@ -706,58 +706,6 @@ class Record(models.Model):
 
         return text
 
-    def long_fields(self):
-        """Provide one string containing long text fields.
-
-        Parse the introduction, finder aid, description an condition
-        statement into a single markdown string.
-
-        This is supposed to convert nzaa identifiers to record links,
-        but that bit doesn't work properly yet.
-
-        """
-
-        if self.store_long_fields:
-            return self.store_long_fields
-
-        text = ''
-
-        if self.introduction:
-            text += "### Introduction\n\n"
-            text += self.introduction + '\n\n\n'
-
-        if self.finder_aid:
-            text += "### Full finder aid\n\n"
-            text += self.finder_aid + '\n\n\n'
-
-        if self.description:
-            text += "### Site description\n\n"
-            text += self.description + '\n\n\n'
-
-        if self.condition:
-            text += "### Statement of condition\n\n"
-            text += self.condition + '\n\n\n'
-
-        if self.references:
-            text += "### References\n\n"
-            text += self.references + '\n\n\n'
-
-        if self.rights:
-            text += "### Rights\n\n"
-            text += self.rights + '\n\n\n'
-
-        # This changes state, setting global attributes.
-        if self.filespace():
-            result, unref = self.filespace().reference_text(text)
-            self.store_long_fields = markdown(result)
-            self.store_unref_figs = unref
-
-        else:
-            self.store_long_fields = markdown(text)
-            self.store_unref_figs = []
-
-        return self.store_long_fields
-
     def longitude(self):
         p = Point(self.geom.x, self.geom.y, srid=2193)
         p.transform(4326)
@@ -1736,6 +1684,11 @@ class Update(Record):
 
     url = property(get_absolute_url)
 
+    def display_description(self):
+        result, unref_figs = self.filespace().reference_text(self.description)
+
+        return markdown(result)
+
     def display_owner(self):
         if not self.owner:
             return ""
@@ -1871,26 +1824,119 @@ class Update(Record):
             settings.BASE_FILESPACE, self.update_id.replace('-', '/')
         )
 
-    def list_docs(self):
-        """Return a list of (link, text tuples) to documents."""
-        prefix = os.path.join(
-            settings.BASE_URL, self.update_id.replace('-', '/')
-        )
+    def wordcount(self):
+        """Count words in the long_fields value. """
 
-        prefix = "/static" + prefix
+        text = self.long_fields()
+        words = text.split(' ')
+        return len(words)
+        
+    def long_fields(self):
+        """Provide one string containing long text fields.
 
-        if self.filespace:
-            return self.filespace().link_docs(prefix)
+        Parse the introduction, finder aid, description and condition
+        statement into a single markdown string.
 
-    def list_figs(self):
-        """Return a list of (link, text tuples) to figure files."""
-        prefix = os.path.join(
-            settings.BASE_URL, self.update_id.replace('-', '/')
-        )
-        prefix = "/static" + prefix
+        This is supposed to convert nzaa identifiers to record links,
+        but that bit doesn't work properly yet.
 
-        if self.filespace:
-            return self.filespace().link_figs(prefix)
+        """
+
+        if self.store_long_fields:
+            return self.store_long_fields
+
+        text = ''
+
+        if self.introduction:
+            text += "### Introduction\n\n"
+            text += self.introduction + '\n\n\n'
+
+        if self.finder_aid:
+            text += "### Full finder aid\n\n"
+            text += self.finder_aid + '\n\n\n'
+
+        if self.description:
+            text += "### Site description\n\n"
+            text += self.description + '\n\n\n'
+
+        if self.condition:
+            text += "### Statement of condition\n\n"
+            text += self.condition + '\n\n\n'
+
+        if self.references:
+            text += "### References\n\n"
+            text += self.references + '\n\n\n'
+
+        if self.rights:
+            text += "### Rights\n\n"
+            text += self.rights + '\n\n\n'
+
+        # This changes state, setting global attributes.
+        if self.filespace():
+            result, unref = self.filespace().reference_text(text)
+            self.store_long_fields = markdown(result)
+            self.store_unref_figs = unref
+
+        else:
+            self.store_long_fields = markdown(text)
+            self.store_unref_figs = []
+
+        return self.store_long_fields
+
+    def register_docs(self):
+        """Create Document and file records from files in this Update.
+
+        This method will create a record in the Documents table for
+        each file downloaded from ArchSite.  Associated with this
+        record are File records, one for each of the original file and
+        any PNG-format display copies.
+
+        It should check for the prior existence of such records before
+        making new ones. 
+
+            [
+                {
+                    'basename': '',
+                    'origfile': '',
+                    'displayfiles': ['',],
+                },
+            ]
+
+        """
+
+        stordir = self.filespace_path().replace(settings.BASE_FILESPACE, '')
+
+        for item in self.documents():
+
+            (basename, ext) = os.path.splitext(item['origfile'])
+
+            # Does a record for this already exist?
+            #try:
+            #    doc_record = self.document_set.get(filename=item['origfile'])
+            #except:
+
+            docset = self.Document_set.filter(filename=item['origfile'])
+            if not docset.count():
+
+            
+
+                doc_record = self.Document_set.create(
+                    filename=item['origfile'],
+                    fileformat=ext,
+                )
+                orig_file = doc_record.create(
+                    filename=item['origfile'],
+                    stored_directory=stordir,
+                    orig_disp = 'original'
+                )
+                for viewfile in item['displayfiles']:
+                    (basename, ext) = os.path.splitext(viewfile)
+                    file_rec = doc_record.create(
+                        filename=viewfile,
+                        stored_directory=stordir,
+                        orig_disp = 'display',
+                        fileformat=ext,
+                    )
 
     def upload_condition(self):
 
@@ -1981,12 +2027,6 @@ class Update(Record):
             buttons = ('work')
 
         return buttons
-
-    def display_description(self):
-        # Reference the text with self, source, baseurl, figures
-        result, unref_figs = self.filespace().reference_text(self.description)
-
-        return markdown(result)
 
 
 class Boundary(models.Model):
@@ -2246,15 +2286,39 @@ class Document(models.Model):
 
     """
 
+    DOCTYPE = (
+        ('Site record form', 'Site record form',),
+        ('Site update form', 'Site update form',),
+        ('Photo', 'Photo',),
+        ('Aerial photo', 'Aerial photo',),
+        ('Drawing', 'Drawing',),
+        ('Photo reference form', 'Photo reference form',),
+        ('Report', 'Report',),
+        
+    )
+
     update = models.ForeignKey(Update)
+    filename = models.CharField(max_length=255)
+    doctype = models.CharField(blank=True, max_length=255, null=True)
     author = models.CharField(blank=True, null=True, max_length=1024)
-
+    date = models.DateField(blank=True, null=True)
+    description = models.TextField()            
+                    
     fileformat = models.CharField(max_length=8)
+    downloaded = models.DateTimeField(default='2019-01-01 00:00:00')
 
+    class Meta:
+        ordering = ['date', 'filename']
+        
     def displayfiles(self):
         """Return a queryset of the display file records."""
 
         return self.files.filter(orig_disp='display')
+
+    def pagecount(self):
+        """Count the display pages of a document."""
+
+        return self.files.filter(orig_disp='display').count()
 
     def originalfile(self):
         """Return a file record pointing to the uploaded file."""
@@ -2289,6 +2353,9 @@ class DocFile(models.Model):
     orig_disp = models.CharField(
         default='display', choices=ORIG_DISP, max_length=16,
     )
+
+    fileformat = models.CharField(max_length=8)
+    downloaded = models.DateTimeField(default='2019-01-01 00:00:00')
 
     class Meta:
         ordering = ['filename']
