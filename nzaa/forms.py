@@ -48,6 +48,21 @@ class BoundaryForm(ModelForm):
             'comments': forms.Textarea(attrs={'rows':2,'cols':40,}),
         }
 
+class DocumentForm(ModelForm):
+    class Meta:
+        model= models.Document
+        fields = [
+            'date',
+            'author',
+            'doctype',
+            #'quality',
+            'description',
+        ]
+        widgets = {
+            'doctype': forms.Select(),
+            'description': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
+        }
+
 class SiteList(ModelForm):
     class Meta:
         model = models.SiteList

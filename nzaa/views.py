@@ -360,6 +360,33 @@ def changes(request):
     context['breadcrumbs'] = build_breadcrumbs(request)
     return render(request, template, context)
 
+@user_passes_test(authority.nzaa_member)
+def document(request, doc_id):
+    URL = 'document/'
+    template = 'nzaa/Document.html'
+    context = build_context(request)
+    context['commands'] = authority.commands(request)
+    context['h1'] = 'Document ' + doc_id
+    context['doc_id'] = doc_id
+
+    try:
+        document = models.Document.objects.get(id=doc_id)
+        context['h1'] = document.title
+        context['document'] = document
+        context['site'] = document.update.site
+
+    except models.Document.DoesNotExist:
+        context['h1'] = 'No record for document id ' + doc_id
+        return render(request, template, context)
+
+    if request.POST:
+        form = forms.DocumentForm(request.POST, instance=document)
+        if form.is_valid():
+            form.save()
+            
+    context['documentForm'] = forms.DocumentForm(instance=document)
+
+    return render(request, template, context)
 
 @user_passes_test(authority.nzaa_member)
 def features(request, command=None):
@@ -400,7 +427,7 @@ def features(request, command=None):
         return render(request, template, context)
 
     request.session['siteset'] = siteset
-    print "SITESET", siteset
+    #print "SITESET", siteset
     context['features'] = models.Feature.objects.all()
     context['breadcrumbs'] = build_breadcrumbs(request)
     return render(request, template, context)
@@ -415,7 +442,8 @@ def homepage(request):
     context['subhead'] = 'Modelling the Site Recording Scheme (SRS)'
     context['jsortable'] = True
     context['total_records'] = models.Site.objects.all().count()
-
+    context['total_documents'] = models.Document.objects.all().count()
+    
     context['user_groups'] = authority.group_memberships(request)
     request.session['siteset'] = None
 

@@ -1,4 +1,26 @@
+#docReview {
+    background: #ccc;
+    position: fixed;
+    bottom: 20px;
+    right: 3px;
+    font-size: 80%;
 
+    border: 1px solid black;
+    border-right: 1;
+    padding: 0.5em;
+    padding-top: 0;
+    font-family: sans-serif;
+    font-size: 90%;
+    max-width: 40%;
+    max-height: 60%;
+    overflow-y: auto;
+}
+#docReview form input[type=text], select, textarea {
+    font-size: 80%;
+}
+#docReview th {
+    font-size: 70%;
+}
 
 #mainRecordForm {
     font-family: sans-serif;
@@ -6,7 +28,6 @@
 #mainRecordForm label {
     display: block;
 }
-
 
 #siteAssessment {
     border: 1px solid black;
@@ -31,11 +52,9 @@
     max-height: 4em;
 }
 
-
 #siteMetadata {
     margin-top: 2em;
 }
-
 
 #sitePanel table, #updatePanel table {
     width: 100%;

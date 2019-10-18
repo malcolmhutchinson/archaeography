@@ -539,7 +539,7 @@ def topomap(request, command):
 
                 context['sites'] = sites
 
-                print "-------------------HERE"
+#                print "-------------------HERE"
             except models.TopoMap.DoesNotExist:
                 pass
 

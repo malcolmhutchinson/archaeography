@@ -1,0 +1,21 @@
+<!-- nzaa/panel/docreview.html -->
+<div id='docReview'>
+  <h3>(Please) capture fields for this document</h3>
+  
+  <form method='POST' action=''>
+    {% csrf_token %}
+<table>
+  {{ documentForm }}
+
+  <tr>
+    <th></th>
+    <td style='text-align: right;'>
+      <input type='submit' name='command' value='save' /></td>
+  </tr>
+  <tr>
+    <td colspan='2' style='border-top: solid 1px black;'></td>
+  </tr>
+  
+</table>
+</div>
+<!-- close nzaa/panel/docreview.html -->

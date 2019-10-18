@@ -6,8 +6,10 @@
 
 <h1>{{ h1 }}</h1>
 
-<p>There are currently {{ total_records|intcomma }} archaeological records in
-  our copy of the NZAA database.</p>
+<p>There are currently {{ total_records|intcomma }} archaeological
+  records in our copy of the NZAA database, with 
+  {{ total_documents|intcomma }} <a href='/manuals/nzaa/document'>documents</a>.
+</p>
 
 <p>These relate to {{ actors.count|intcomma }}
   <a href='/manuals/nzaa/actor'>actors</a>, and

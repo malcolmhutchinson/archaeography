@@ -1,0 +1,45 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/Site.html -->
+
+
+<div class='site-left'>
+<p class='note'>{{ subhead }}</p>
+<h3>Document in the file of <a href='{{ site.url }}'>{{ site.title }}</a></h3>
+<h1>{{ h1 }}</h1>
+
+
+
+
+{% for page in document.displayfiles %}
+<div class='figure'>
+
+  <img src='{{ page.src }}' alt='{{ page.alt }}' />
+
+  {% if page.caption %}<p class='caption'>{{ page.caption }}</p>
+  {% endif%}
+
+</div>
+{% endfor %}
+
+
+
+
+
+</div><!-- close the left column -->
+
+<div class='site-right'>
+  <div class='data'>
+    {% include 'nzaa/panel/docdata.html' %}
+    {% include 'nzaa/panel/documents.html' %}
+    {% include 'nzaa/panel/filedata.html' %}
+    {% include 'nzaa/panel/docreview.html' %}
+  </div>
+
+</div><!-- close the right column -->
+
+
+
+
+<!-- end Document.html -->
+{% endblock %}

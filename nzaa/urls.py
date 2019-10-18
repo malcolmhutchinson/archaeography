@@ -32,6 +32,9 @@ urlpatterns = [
     url(r'^boundary/([0-9]*)/$', views.boundary_report),
     url(r'^boundary/upload/$', views.boundary_upload),
 
+    #   Documents and files.
+    url(r'^document/([0-9]*)/$', views.document),
+    
     #   New site records.
     url(r'^newsites/$', views.newsites),
     url(r'^([ABC][A-Z][0-9][0-9]/\d+)/$', views.newsite),

@@ -153,7 +153,15 @@ archaeography project.
     nzaa_actor_sites
 
         Link table.
-        
+
+    nzaa_document
+
+        Records relating to files downloaded from ArchSite.
+
+    nzaa_docfile
+
+        Records relating files to documents.
+
     nzaa_feature
 
         Unique feature descriptors extracted from the site record

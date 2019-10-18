@@ -14,6 +14,7 @@ from home.settings import *
 
 BASE_URL = '/nzaa/'
 BASE_FILESPACE = os.path.join(STATICFILES_DIRS[0], 'nzaa/')
+STATIC_URL = os.path.join(STATIC_URL, 'nzaa')
 LOGIN_PAGE = 'https://archsite.eaglegis.co.nz/NZAA/Account/Login/'
 SITE_PAGE = "https://archsite.eaglegis.co.nz/NZAA/Site/?id="
 EDIT_SITE = "https://archsite.eaglegis.co.nz/NZAA/Site/Edit/?id="

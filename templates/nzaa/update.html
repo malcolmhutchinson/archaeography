@@ -8,7 +8,7 @@
 {% if update.ordinal == 0 %}
 <p class='note'>Update 0 is a copy of the ArchSite record, <br />
   {{ site.extracted|date:"Y-m-d H:i:s" }} last checked against ArchSite<br />
-  {{ update.wordcount }} words.<br />
+  {{ update.wordcount }} words and {{ update.pagecount }} pages.<br />
 </p>
 {% endif %}
 {{ update.long_fields|safe }}

@@ -1274,6 +1274,14 @@ class Site(Record):
         }
         return old_values
 
+    def pagecount(self):
+        """Count all the pages in all the updates."""
+
+        count = 0
+        for u in self.updates().all():
+            count += u.pagecount()
+        return count
+
     def pending_updates(self):
         """Return a queryset of updates with opstatus != None."""
         return self.updates().exclude(opstatus=None)
@@ -1684,6 +1692,43 @@ class Update(Record):
 
     url = property(get_absolute_url)
 
+    def buttons(self, user):
+        """Return a tuple of button commands to be used in the view.
+
+        Buttons on an update record are used to advance or retard it's
+        progress through the production process. They are only
+        displayed on an update record owned by the user.
+
+        The buttons returned depend on the value in the opstatus field.
+
+            Working        Stage, Stand
+            Staging        Complete, Work, Stand
+            Completed      Stage
+            Standing       Work
+        """
+
+        buttons = ()
+
+        if self.owner != user.username:
+            return ()
+
+        if self.opstatus == 'Working':
+            buttons = ('stage', 'stand', 'hold')
+
+        elif self.opstatus == 'Staging':
+            buttons = ('complete', 'work', 'stand', 'hold')
+
+        elif self.opstatus == 'Completed':
+            buttons = ('stage', 'hold')
+
+        elif self.opstatus == 'Standing':
+            buttons = ('work', 'hold')
+
+        elif self.opstatus == 'Hold':
+            buttons = ('work')
+
+        return buttons
+
     def display_description(self):
         result, unref_figs = self.filespace().reference_text(self.description)
 
@@ -1771,7 +1816,23 @@ class Update(Record):
                         document['displayfiles'].append(pngname)
 
                 documents.append(document)
+        # Look for JPEG image files (there should be no display file).
+        if '.jpg' in types.keys():
+            for item in types['.jpg']:
+                (basename, e) = os.path.splitext(item)
+                document = {
+                    'basename': basename,
+                    'origfile': item,
+                    'displayfiles': [item,],
+                }
+                # Get the display file (there will only be one for a .tif).
+                if '.png' in types.keys():
+                    pngname = basename + '.png'
 
+                    if pngname in types['.png']:
+                        document['displayfiles'].append(pngname)
+
+                documents.append(document)
         # PDF documents can have multiple pages.
         if '.pdf' in types.keys():
             for item in types['.pdf']:
@@ -1827,13 +1888,15 @@ class Update(Record):
             settings.BASE_FILESPACE, self.update_id.replace('-', '/')
         )
 
-    def wordcount(self):
-        """Count words in the long_fields value. """
+    def pagecount(self):
+        """Count the display files of all the documents."""
 
-        text = self.long_fields()
-        words = text.split(' ')
-        return len(words)
-        
+        count = 0
+        for d in self.document_set.all():
+            count += d.pagecount()
+
+        return count
+
     def long_fields(self):
         """Provide one string containing long text fields.
 
@@ -1894,53 +1957,47 @@ class Update(Record):
         record are File records, one for each of the original file and
         any PNG-format display copies.
 
-        It should check for the prior existence of such records before
-        making new ones. 
-
-            [
-                {
-                    'basename': '',
-                    'origfile': '',
-                    'displayfiles': ['',],
-                },
-            ]
+        It checks for the prior existence of such records before
+        making new ones. Finding a record skips over it doing nothing.
 
         """
 
         stordir = self.filespace_path().replace(settings.BASE_FILESPACE, '')
 
-        for item in self.documents():
+        for item in self.docfiles():
 
             (basename, ext) = os.path.splitext(item['origfile'])
 
             # Does a record for this already exist?
-            #try:
-            #    doc_record = self.document_set.get(filename=item['origfile'])
-            #except:
+            try:
+                doc_record = self.document_set.get(filename=item['origfile'])
 
-            docset = self.Document_set.filter(filename=item['origfile'])
-            if not docset.count():
+            except Document.DoesNotExist:
 
-                print "Preparing document record", item['origfile']
-                doc_record = self.Document_set.create(
+                doc_record = self.document_set.create(
                     filename=item['origfile'],
                     fileformat=ext,
                 )
-                print "Preparing original file record"
-                orig_file = doc_record.create(
+                orig_file = doc_record.files.create(
                     filename=item['origfile'],
                     stored_directory=stordir,
                     orig_disp = 'original'
                 )
                 for viewfile in item['displayfiles']:
                     (basename, ext) = os.path.splitext(viewfile)
-                    print "Preparing display file record", viewfile
-                    file_rec = doc_record.create(
+                    bits = basename.split('-')
+                    try:
+                        ordinal = int(bits[-1])
+                    except ValueError:
+                        ordinal = 0
+
+                    file_rec = doc_record.files.create(
                         filename=viewfile,
                         stored_directory=stordir,
                         orig_disp = 'display',
                         fileformat=ext,
-                    )
+                        ordinal=ordinal
+                   )
 
     def upload_condition(self):
 
@@ -1995,42 +2052,12 @@ class Update(Record):
         text = self.replace_temp_ids(chop[0])
         return markdown(text)
 
-    def buttons(self, user):
-        """Return a tuple of button commands to be used in the view.
+    def wordcount(self):
+        """Count words in the long_fields value. """
 
-        Buttons on an update record are used to advance or retard it's
-        progress through the production process. They are only
-        displayed on an update record owned by the user.
-
-        The buttons returned depend on the value in the opstatus field.
-
-            Working        Stage, Stand
-            Staging        Complete, Work, Stand
-            Completed      Stage
-            Standing       Work
-        """
-
-        buttons = ()
-
-        if self.owner != user.username:
-            return ()
-
-        if self.opstatus == 'Working':
-            buttons = ('stage', 'stand', 'hold')
-
-        elif self.opstatus == 'Staging':
-            buttons = ('complete', 'work', 'stand', 'hold')
-
-        elif self.opstatus == 'Completed':
-            buttons = ('stage', 'hold')
-
-        elif self.opstatus == 'Standing':
-            buttons = ('work', 'hold')
-
-        elif self.opstatus == 'Hold':
-            buttons = ('work')
-
-        return buttons
+        text = self.long_fields()
+        words = text.split(' ')
+        return len(words)
 
 
 class Boundary(models.Model):
@@ -2290,30 +2317,65 @@ class Document(models.Model):
 
     """
 
+    URL = os.path.join(settings.BASE_URL, 'document')
+
     DOCTYPE = (
-        ('Site record form', 'Site record form',),
-        ('Site update form', 'Site update form',),
-        ('Photo', 'Photo',),
         ('Aerial photo', 'Aerial photo',),
         ('Drawing', 'Drawing',),
+        ('Figure', 'Figure',),
+        ('Map', 'Map',),
+        ('Note', 'Note'),
         ('Photo reference form', 'Photo reference form',),
+        ('Photograph(s)', 'Photograph(s)',),
         ('Report', 'Report',),
-        
+        ('Site description form', 'Site description form'),
+        ('Site record form', 'Site record form',),
+        ('Site reference form', 'Site reference form',),
+        ('Site report form', 'Site report form',),
+        ('Site update form', 'Site update form',),
+    )
+
+    QUALITY = (
+        ('acceptable', 'acceptable'),
+        ('poor', 'poor'),
+        ('unknown', 'unknown'),
+        ('unreadable', 'unreadable'),
     )
 
     update = models.ForeignKey(Update)
     filename = models.CharField(max_length=255)
-    doctype = models.CharField(blank=True, max_length=255, null=True)
+    doctype = models.CharField(
+        blank=True, choices=DOCTYPE, max_length=255, null=True)
     author = models.CharField(blank=True, null=True, max_length=1024)
     date = models.DateField(blank=True, null=True)
-    description = models.TextField()            
-                    
-    fileformat = models.CharField(max_length=8)
-    downloaded = models.DateTimeField(default='2019-01-01 00:00:00')
+    description = models.TextField(blank=True, null=True)
+    #quality = models.CharField(choices=QUALITY, default='unknown')
+
+    fileformat = models.CharField(editable=False, max_length=8)
+    downloaded = models.DateTimeField(
+        editable=False, default='2019-01-01 00:00:00+12')
 
     class Meta:
         ordering = ['date', 'filename']
-        
+
+    def __unicode__(self):
+        return unicode(self.filename)
+
+    def get_absolute_url(self):
+        return os.path.join(self.URL, str(self.id))
+
+    url = property(get_absolute_url)
+
+    def alt(self):
+        """Return text in img alt attribute."""
+
+        return unicode(self.filename)
+
+    def caption(self):
+        """Return text for use in caption."""
+
+        return unicode(self.filename)
+
     def displayfiles(self):
         """Return a queryset of the display file records."""
 
@@ -2322,13 +2384,38 @@ class Document(models.Model):
     def pagecount(self):
         """Count the display pages of a document."""
 
-        return self.files.filter(orig_disp='display').count()
+        if self.fileformat == '.pdf':
+            return self.files.filter(orig_disp='display').count()
+
+        return 1
 
     def originalfile(self):
         """Return a file record pointing to the uploaded file."""
 
-        return self.files.filter(orig_disp='original')
+        return self.files.get(orig_disp='original')
 
+    def src(self):
+        """Return url to the first display image, for use in img tag."""
+
+        return self.files.filter(orig_disp='display')[0].src()
+
+    def title(self):
+        """Return a string for the h1 line on a page."""
+
+        return str(self.filename)
+
+    def ordinals(self):
+        """Populate the ordinal field in associated display fields."""
+
+        for item in self.displayfiles():
+            (basename, ext) = os.path.splitext(item.filename)
+            bits = item.split()
+            try:
+                #item.ordinal = int(bits[-1])
+                print "ordinal set to", int(bits[-1])
+            except TypeError:
+                #item.ordinal = 0
+                print "ordinal set to 0"
 
 class DocFile(models.Model):
     """A DocFile is a file expression of a document.
@@ -2346,12 +2433,15 @@ class DocFile(models.Model):
 
     """
 
+    URL = os.path.join(settings.BASE_URL, 'docfile')
+
     ORIG_DISP = (
         ('original', 'original', ),
         ('display', 'display', ),
     )
 
     document = models.ForeignKey(Document, related_name='files')
+    #ordinal = models/IntegerFile(default=0)
     filename = models.CharField(max_length=255)
     stored_directory = models.CharField(max_length=255)
     orig_disp = models.CharField(
@@ -2362,8 +2452,32 @@ class DocFile(models.Model):
     downloaded = models.DateTimeField(default='2019-01-01 00:00:00')
 
     class Meta:
-        ordering = ['filename']
+        ordering = ['filename'] # add ordinal before filename.
 
+    def __unicode__(self):
+        return unicode(self.filename)
+
+    def get_absolute_url(self):
+        return os.path.join(self.URL, str(self.id))
+
+    url = property(get_absolute_url)
+
+    def alt(self):
+        """Text for the img alt attribute."""
+
+        return unicode(self.filename)
+
+    def caption(self):
+        """Text for the caption."""
+
+        return ''
+
+    def src(self):
+        """Return url to the first display image, for use in img tag."""
+
+        return os.path.join(
+            settings.STATIC_URL, self.stored_directory, self.filename
+        )
 
 class SiteList(models.Model):
     """User-definable lists or groups of sites. """

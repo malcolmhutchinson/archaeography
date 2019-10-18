@@ -1,14 +1,14 @@
 <!-- nzaa/panel/documents.html -->
-<h3>Documents</h3>
+<h3>Registed documents</h3>
 
 <table width='100%' >
   <tr>
     <th>Document</th>
     <th style='text-align: right;'>pages</th>
   </tr>
-{% for document in site.update0.documents %}
+{% for document in site.update0.document_set.all %}
   <tr>
-    <td>{{ document.origfile }}</td>
+    <td><a href='{{ document.url }}'>{{ document.filename }}</a></td>
     <td style='text-align: right;'>{{ document.displayfiles|length }}</td>
   </tr>{% endfor %} 
   <tr>
