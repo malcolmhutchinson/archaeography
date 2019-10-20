@@ -2349,8 +2349,10 @@ class Document(models.Model):
     author = models.CharField(blank=True, null=True, max_length=1024)
     date = models.DateField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    #quality = models.CharField(choices=QUALITY, default='unknown')
-
+    quality = models.CharField(
+        choices=QUALITY, default='unknown', max_length=255)
+    uri = models.CharField(
+        blank=True, editable=False, max_length=255, null=True)
     fileformat = models.CharField(editable=False, max_length=8)
     downloaded = models.DateTimeField(
         editable=False, default='2019-01-01 00:00:00+12')
@@ -2411,10 +2413,10 @@ class Document(models.Model):
             (basename, ext) = os.path.splitext(item.filename)
             bits = item.split()
             try:
-                #item.ordinal = int(bits[-1])
+                item.ordinal = int(bits[-1])
                 print "ordinal set to", int(bits[-1])
             except TypeError:
-                #item.ordinal = 0
+                item.ordinal = 0
                 print "ordinal set to 0"
 
 class DocFile(models.Model):
@@ -2441,7 +2443,7 @@ class DocFile(models.Model):
     )
 
     document = models.ForeignKey(Document, related_name='files')
-    #ordinal = models/IntegerFile(default=0)
+    ordinal = models.IntegerField(default=0)
     filename = models.CharField(max_length=255)
     stored_directory = models.CharField(max_length=255)
     orig_disp = models.CharField(

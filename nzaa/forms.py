@@ -55,7 +55,7 @@ class DocumentForm(ModelForm):
             'date',
             'author',
             'doctype',
-            #'quality',
+            'quality',
             'description',
         ]
         widgets = {
