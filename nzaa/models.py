@@ -1759,7 +1759,7 @@ class Update(Record):
         """A document is a file downloaded from ArchSite.
 
         It's called a document because we convert .tif and .pdf files
-        in to .png images for inline display. So each time a file is
+        into .png images for inline display. So each time a file is
         downloaded, several more files are created. The original file
         is called the document.
 
@@ -2339,6 +2339,7 @@ class Document(models.Model):
         ('Site reference form', 'Site reference form',),
         ('Site report form', 'Site report form',),
         ('Site update form', 'Site update form',),
+        ('Scaled plan', 'Scaled plan',),
         ('Sketch plan', 'Sketch plan',),
     )
 
