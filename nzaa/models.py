@@ -1970,6 +1970,9 @@ class Update(Record):
 
         stordir = self.filespace_path().replace(settings.BASE_FILESPACE, '')
 
+        # This is not a debugging line.
+        print self
+
         for item in self.docfiles():
 
             (basename, ext) = os.path.splitext(item['origfile'])
@@ -1979,7 +1982,7 @@ class Update(Record):
                 doc_record = self.document_set.get(filename=item['origfile'])
 
             except Document.DoesNotExist:
-
+                print "         Creating record for ", item['origfile']
                 doc_record = self.document_set.create(
                     filename=item['origfile'],
                     fileformat=ext,
