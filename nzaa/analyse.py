@@ -12,10 +12,87 @@ from django.contrib.gis.geos import Point, MultiPoint
 from django.contrib.gis.geos import Polygon, MultiPolygon
 
 from itertools import chain
+import markdown2 as markdown
+import textwrap
 
 import settings
 import models
 import geolib.models
+
+
+class Normalise():
+    """Analyse a Site record for normalisation.
+
+    Look at the long fields description and condition, and pick out
+    lines which fit the pattern for update records in ArchSite.
+
+    Provide a list of updates with author and date. We should be able
+    to tell if they are field visits or not.
+
+    Separate the text into updates, by looking for this as the first
+    characters in a line:
+
+        Updated 09/04/2015 
+    or
+
+        Updated: 09/04/2015
+
+    We could do it with an RE. or I could just match "Updated" as the
+    first characters. Go the easy way first, and get some immediate
+    results.
+
+    """
+
+    def __init__(self, site):
+        self.site = site
+
+
+    def find_dates(self):
+        
+        description = self.site.update0().description
+        condition = self.site.update0().condition
+
+        suggestions = []
+
+        for line in description.split('\n'):
+            date = ''
+            name = ''
+            update_type = ''
+            line = line.strip()
+            if line[:6].lower() == 'update': 
+                words = line.split(' ')
+                date = words[1]
+                suggestions.append([date, name, update_type])
+
+        return suggestions
+
+    def find_updates(self):
+        description = self.site.update0().description
+        condition = self.site.update0().condition
+        lines = []
+        updates = []
+
+        for line in description.split('\n'):
+            line = line.strip()
+            
+            if line[:6].lower() == 'update':
+                updates.append(markdown.markdown('\n'.join(lines)))
+                lines = [line, ]
+            else:
+                lines.append(line)
+                print line[:40]
+
+                
+
+        #short_desc = updates.pop[0]
+        
+        return updates
+
+
+
+
+
+
 
 
 class Cadastre():
@@ -102,7 +179,6 @@ class MapSite():
     def username(self):
         return settings.MACHINE[0]
 
-
 class Site():
 
     """Analyse lists of site records.
@@ -114,7 +190,7 @@ class Site():
     called when needed, and not used to populate general statistical
     fields.
 
-    It it has to iterate once throught the queryset, then it sould
+    If it has to iterate once throught the queryset, then it sould
     compute and store all the operations requiring an iteration. This
     will be much more efficient than iterating through potently tens
     of thousands of records several times to collect various bits of

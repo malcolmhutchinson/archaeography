@@ -52,9 +52,9 @@ class DocumentForm(ModelForm):
     class Meta:
         model= models.Document
         fields = [
+            'doctype',
             'date',
             'author',
-            'doctype',
             'quality',
             'description',
         ]

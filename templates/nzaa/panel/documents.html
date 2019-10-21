@@ -4,15 +4,17 @@
 <table width='100%' >
   <tr>
     <th>Document</th>
-    <th style='text-align: right;'>pages</th>
+    <th style='text-align: right;'>pgs</th>
+    <th>date</th>
   </tr>
 {% for document in site.update0.document_set.all %}
   <tr>
     <td><a href='{{ document.url }}'>{{ document.filename }}</a></td>
     <td style='text-align: right;'>{{ document.displayfiles|length }}</td>
+    <td>{{ document.date|date:"Y-m-d" }}</td>
   </tr>{% endfor %} 
   <tr>
-    <td colspan='2' style='border-top: solid 1px black;'></td>
+    <td colspan='3' style='border-top: solid 1px black;'></td>
   </tr>
 </table>
 <!-- end nzaa/panel/documents.html -->

@@ -1,0 +1,42 @@
+<!-- nzaa/panel/recordinghistory.html -->
+<h3>Recording history</h3>
+<table>
+
+    <tr>
+        <th>Recorded</th>
+        <td colspan='2'>{{ site.display_recorded }}</td>
+    </tr>
+    <tr>
+        <th>Updated</th>
+        <td colspan='2'>{{ site.display_updated }}</td>
+    </tr>
+    <tr>
+        <th>Visited</th>
+        <td colspan='2'>{{ site.display_visited }}</td>
+    </tr>
+    {% if site.reviews.all %}<tr>
+
+        <th>Reviewed</th>
+
+        <td colspan='2'>{{ site.reviews.all.0.reviewed|date:"Y-m-d H:i:s" }}
+        by {{ site.reviews.all.0.assessed_by }}</td>
+
+    </tr>
+    <tr>
+        <th>Quality</th>
+        <td>{{ site.reviews.all.0.record_quality }}</td>
+    </tr>
+    {% else %}<tr>
+        <td colspan='2'><a href='{{ site.url }}/review'>
+        Review this record</a></td>
+
+    </tr>
+    {% endif %}
+
+    <tr>
+      <th colspan='3'
+          style='border-top: solid 1px black;padding-top: 0.5em;'></th>
+    </tr>
+
+</table>
+<!-- end nzaa/panel/recordinghistory.html -->

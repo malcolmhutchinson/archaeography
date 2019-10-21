@@ -1003,6 +1003,7 @@ def site(request, command, argument=None):
 
     """
 
+
     site = None
     update = None
     siteReviewForm = None
@@ -1060,6 +1061,7 @@ def site(request, command, argument=None):
 
         return render(request, template, context)
 
+    # Depreciated.
     if argument == 'mapfile':
         context['map'] = site.mapfile()
         template = 'nzaa/mapfile_site.map'
@@ -1099,10 +1101,18 @@ def site(request, command, argument=None):
 
     if argument == 'review':
         context['review'] = True
-        context['buttons'] = ('save',)
+        context['buttons'] = ('save', )
         update_id = None
         r = models.SiteReview()
         siteReviewForm = forms.SiteReview(instance=site)
+
+    if argument == 'normalise':
+        context['buttons'] = ('save', )
+        template = 'nzaa/SiteNormalise.html'
+        update = site.update0()
+        a = analyse.Normalise(site)
+        context['suggested_dates'] = a.find_dates()
+        context['suggested_updates'] = a.find_updates()
 
     if context['filekeeper']:
         context['filekeeper_commands'] = authority.filekeeper_commands(

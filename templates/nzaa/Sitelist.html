@@ -47,6 +47,7 @@
         <th>ethnicity</th>
         <th>period</th>
         <th>features</th>
+        <th style='text-align: right'>words + pages</th>
       </tr>
       
     {% for site in sitelist.sites.all %}
@@ -59,6 +60,7 @@
         <td>{{ site.lgcy_ethnicity }}</td>
         <td>{{ site.lgcy_period }}</td>
         <td>{{ site.features }}</td>
+        <td style='text-align: right'>{{ site.wordcount }} + {{ site.pagecount }}</td>
       </tr>
     {% endfor %}
     </table>

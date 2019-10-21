@@ -1347,6 +1347,12 @@ class Site(Record):
         """Counts non-zero updates."""
         return self.updates.filter(ordinal__gte=1).count()
 
+    def wordcount(self):
+        count = 0
+        for update in self.updates():
+            count += update.wordcount()
+        return count
+
 
 class NewSite(Record):
     """Records for peviously unrecorded archaeolgical sites.
@@ -2333,6 +2339,7 @@ class Document(models.Model):
         ('Site reference form', 'Site reference form',),
         ('Site report form', 'Site report form',),
         ('Site update form', 'Site update form',),
+        ('Sketch plan', 'Sketch plan',),
     )
 
     QUALITY = (
