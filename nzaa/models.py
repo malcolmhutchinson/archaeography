@@ -1971,9 +1971,10 @@ class Update(Record):
             # Does a record for this already exist?
             try:
                 doc_record = self.document_set.get(filename=item['origfile'])
+                print item['origfile'], "record exists"
 
             except Document.DoesNotExist:
-
+                print item['origfile'], "... creating record"
                 doc_record = self.document_set.create(
                     filename=item['origfile'],
                     fileformat=ext,
