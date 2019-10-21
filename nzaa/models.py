@@ -2425,10 +2425,10 @@ class Document(models.Model):
             bits = item.split()
             try:
                 item.ordinal = int(bits[-1])
-                print "ordinal set to", int(bits[-1])
+                #print "ordinal set to", int(bits[-1])
             except TypeError:
                 item.ordinal = 0
-                print "ordinal set to 0"
+                #print "ordinal set to 0"
 
 class DocFile(models.Model):
     """A DocFile is a file expression of a document.

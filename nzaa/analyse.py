@@ -80,10 +80,8 @@ class Normalise():
                 lines = [line, ]
             else:
                 lines.append(line)
-                print line[:40]
-
+                #print line[:40]
                 
-
         #short_desc = updates.pop[0]
         
         return updates
