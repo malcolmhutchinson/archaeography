@@ -16,11 +16,7 @@ to that group.
 
 The tradition with Apache on Debian systems is to have files
 accessible to the webserver kept in `/var/www/`. This is where the
-Django static files should be collected. 
-
-
-
-
+Django static files should be collected.
 
 The process is:
 
@@ -233,4 +229,8 @@ we make a symlink from there to here.
 
     ln -s /opt/archaeography/code/static /var/www/archaeography
 
+
+some static
+files, like the CSS scripts and these manuals, are under version
+control with the codebase,
 

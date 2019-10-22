@@ -24,6 +24,8 @@ Here are the non-generic tables:
     nzaa_actor_sites
     nzaa_boundary
     nzaa_boundary_visible_to
+    nzaa_document
+    nzaa_docfile
     nzaa_feature
     nzaa_feature_sites
     nzaa_newsite
