@@ -2332,6 +2332,7 @@ class Document(models.Model):
         ('Aerial photo', 'Aerial photo',),
         ('Drawing', 'Drawing',),
         ('Figure', 'Figure',),
+        ('Historic document', 'Historic document',),
         ('Map', 'Map',),
         ('Note', 'Note'),
         ('Photo reference form', 'Photo reference form',),
