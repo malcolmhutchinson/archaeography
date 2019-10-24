@@ -2332,6 +2332,7 @@ class Document(models.Model):
         ('Aerial photo', 'Aerial photo',),
         ('Drawing', 'Drawing',),
         ('Figure', 'Figure',),
+        ('Historic document', 'Historic document',),
         ('Map', 'Map',),
         ('Note', 'Note'),
         ('Photo reference form', 'Photo reference form',),
@@ -2342,6 +2343,7 @@ class Document(models.Model):
         ('Site reference form', 'Site reference form',),
         ('Site report form', 'Site report form',),
         ('Site update form', 'Site update form',),
+        ('Site visit form', 'Site visit form',),
         ('Scaled plan', 'Scaled plan',),
         ('Sketch plan', 'Sketch plan',),
     )
