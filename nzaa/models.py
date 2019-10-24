@@ -2343,6 +2343,7 @@ class Document(models.Model):
         ('Site reference form', 'Site reference form',),
         ('Site report form', 'Site report form',),
         ('Site update form', 'Site update form',),
+        ('Site visit form', 'Site visit form',),
         ('Scaled plan', 'Scaled plan',),
         ('Sketch plan', 'Sketch plan',),
     )
