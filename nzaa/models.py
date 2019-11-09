@@ -1199,8 +1199,24 @@ class Site(Record):
         return updated
 
     def display_updates(self):
-        return self.updates().filter(opstatus=None)
+        """Distinguish between normalised site records and un-normalised.
 
+        If this record has more than one update, we deal with it
+        differently than if it has only one. Having only one means it
+        has the archsite record, and has not been normalised.
+
+        Return a list of Update records to display.
+
+        """
+        s = self.updates().filter(opstatus=None)
+        if s.count() > 1:
+            s = s.exclude(ordinal=0)
+
+        return s
+
+
+
+        
     def filespace_path(self):
         """Return a string filepath to the object's filespace.
 
