@@ -43,20 +43,19 @@
 
 <h2>In here we list the registered documents for this site</h2>
 
-<p>Registered documents are the files we've downloaded from
-ArchSite. In a non-normalised site record, these will be associated
-with Update0. So here is a list of all the Update0 documents for this
-site record: </p>
-
-
+<p>This is the list by formset
+<table>
+{% for form in documents %}
+{{ form }}
+{% endfor %}
+</table>
+<p>These ones are the list by Document object.</p>
 
 
 
 {% for document in site.update0.document_set.all %}<tr>
 {% include 'nzaa/panel/doc_form.html' %}
 {% endfor %}
-
-</table>
 
 <hr style='width: 100%; clear: both;' />
 
