@@ -10,6 +10,9 @@
 <h1>{{ h1 }}</h1>
 {% if site %}
 
+
+
+
 {% if suggested_updates %}
 <h2>Updates suggested by analysis</h2>
 
@@ -21,6 +24,42 @@
 {% endfor %}
 {% endif %}
 
+{% if site.updates_count %}
+<h2>In here we put the summary of existing updates</h2>
+
+<table>
+  <tr>
+    <th>id</th>
+    <th></th>
+  </tr>
+  {% for update in site.updates %}<tr>
+    <td>{{ update.update_id }}</td>
+    <td>{{ update.updated_by }}</td>
+  </tr>{% endfor %}
+
+</table>
+{% endif %}
+
+
+<h2>In here we list the registered documents for this site</h2>
+
+<p>Registered documents are the files we've downloaded from
+ArchSite. In a non-normalised site record, these will be associated
+with Update0. So here is a list of all the Update0 documents for this
+site record: </p>
+
+
+
+
+
+{% for document in site.update0.document_set.all %}<tr>
+{% include 'nzaa/panel/doc_form.html' %}
+{% endfor %}
+
+</table>
+
+<hr style='width: 100%; clear: both;' />
+
 {% include 'nzaa/update0.html' %}
 
 <!-- closing the site code -->
@@ -28,6 +67,7 @@
 
 <div class='site-right'>
   <div class='data'>    
+    {% include 'nzaa/panel/existing_updates.html' %}
     {% include 'nzaa/panel/recordinghistory.html' %}
     {% include 'nzaa/panel/documents.html' %}
     {% if suggested_updates %}

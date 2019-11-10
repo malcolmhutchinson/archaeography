@@ -100,6 +100,20 @@ table.sortable thead {
     cursor: default;
 }
 
+#editPanel {
+    border-left: black 1px solid;
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    bottom:0;
+    right: 0;
+    background: #6bb;
+    padding-top: 3em;
+    padding-left: 0.3em;
+    font-size: 80%;
+    font-family: sans-serif;
+}
+
 #headline {
     padding: 0;
     margin: 0;
@@ -360,20 +374,6 @@ table.sortable thead {
     margin-right: 300px;
 }
 
-#editPanel {
-    border-left: black 1px solid;
-    width: 250px;
-    height: 100%;
-    position: fixed;
-    bottom:0;
-    right: 0;
-    background: #6bb;
-    padding-top: 3em;
-    padding-left: 0.3em;
-    font-size: 80%;
-    font-family: sans-serif;
-}
-
 .block-page .figure, .two-col .figure {
     max-width: 640px;
     float: left;
@@ -388,8 +388,6 @@ table.sortable thead {
     padding: 1em;
     margin-bottom: 1em;
 }
-
-
 
 .block-whole {
     clear: both;

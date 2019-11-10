@@ -8,7 +8,7 @@ from django.forms import CharField, ChoiceField, Select, HiddenInput
 from django.forms import FileField, ModelChoiceField
 
 import settings
-import models
+import models 
 
 WHAT_FIELDS = (
     ('site_type', 'Site type'),

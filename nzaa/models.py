@@ -33,12 +33,12 @@ from django.contrib.auth.models import User
 from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
 
-import settings
 import geolib
 import members
+import settings
+import utils
 import webnote
 import webnote.settings
-import utils
 
 
 UPDATE_TYPE = (
@@ -933,7 +933,6 @@ class Site(Record):
     )
 
     update_id = None
-    updateRecords = None
 
     dist_to_coast = 0
     nearest_coast = None
@@ -1214,9 +1213,6 @@ class Site(Record):
 
         return s
 
-
-
-        
     def filespace_path(self):
         """Return a string filepath to the object's filespace.
 
@@ -1302,7 +1298,7 @@ class Site(Record):
         """Return a queryset of updates with opstatus != None."""
         return self.updates().exclude(opstatus=None)
 
-    def set_update(self, update_id):
+    def set_update_dep(self, update_id):
         self.updateRecords = Update.objects.filter(update_id=update_id)
 
     def short_description(self):
@@ -1350,24 +1346,36 @@ class Site(Record):
     def update0(self):
         """Return the single update record update0 (the ArchSite copy). """
 
-        return self.updates().get(ordinal=0)
+        return Update.objects.get(site=self, ordinal=0)
 
     def updates(self, update_id=None):
+        """Return all updates above ordinal zero."""
 
-        if not self.updateRecords:
-            self.updateRecords = Update.objects.filter(site=self)
+        return Update.objects.filter(site=self)
 
-        return self.updateRecords
+    def updates_select(self):
+        """Return a structure to use in a form.
+
+        An iterable of the updates associated with this record.
+        """
+
+        thing = []
+        for update in self.updates():
+            item = (
+                update.update_id,
+                update.update_id + " " + update.updated_by
+            )
+            thing. append(item)
+
+        return thing
 
     def updates_count(self):
         """Counts non-zero updates."""
-        return self.updates.filter(ordinal__gte=1).count()
+
+        return Update.objects.filter(site=self, ordinal__gt=0).count()
 
     def wordcount(self):
-        count = 0
-        for update in self.updates():
-            count += update.wordcount()
-        return count
+        return update0().wordcount()
 
 
 class NewSite(Record):
@@ -1879,6 +1887,14 @@ class Update(Record):
 
         return documents
 
+    def documents(self):
+        """Return a queryset of Document objects related to this update. """
+
+        return self.document_set.all()
+
+
+
+        
     def filespace(self):
         """Return a webnote Directory object for this record.
         """
@@ -1909,15 +1925,6 @@ class Update(Record):
         return os.path.join(
             settings.BASE_FILESPACE, self.update_id.replace('-', '/')
         )
-
-    def pagecount(self):
-        """Count the display files of all the documents."""
-
-        count = 0
-        for d in self.document_set.all():
-            count += d.pagecount()
-
-        return count
 
     def long_fields(self):
         """Provide one string containing long text fields.
@@ -1970,6 +1977,15 @@ class Update(Record):
             self.store_unref_figs = []
 
         return self.store_long_fields
+
+    def pagecount(self):
+        """Count the display files of all the documents."""
+
+        count = 0
+        for d in self.document_set.all():
+            count += d.pagecount()
+
+        return count
 
     def register_docs(self):
         """Create Document and file records from files in this Update.
@@ -2412,6 +2428,17 @@ class Document(models.Model):
 
         return self.files.filter(orig_disp='display')
 
+    def docform(self):
+        """Return an instance of the Document form for this document.
+        """
+        import nzaa.forms
+        return nzaa.forms.DocumentForm(instance=self)
+
+    def originalfile(self):
+        """Return a file record pointing to the uploaded file."""
+
+        return self.files.get(orig_disp='original')
+
     def pagecount(self):
         """Count the display pages of a document."""
 
@@ -2419,11 +2446,6 @@ class Document(models.Model):
             return self.files.filter(orig_disp='display').count()
 
         return 1
-
-    def originalfile(self):
-        """Return a file record pointing to the uploaded file."""
-
-        return self.files.get(orig_disp='original')
 
     def src(self):
         """Return url to the first display image, for use in img tag."""

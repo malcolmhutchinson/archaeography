@@ -1,0 +1,15 @@
+<!-- nzaa/panel/existing_updates.html -->
+<h3>Existing update records ({{ site.updates_count }})</h3>
+
+<table>
+  <tr>
+    <th>id</th>
+    <th></th>
+  </tr>
+  {% for update in site.updates %}<tr>
+    <td>{{ update.update_id }}</td>
+    <td>{{ update.updated_by }}</td>
+  </tr>{% endfor %}
+
+</table>
+<!-- end nzaa/panel/existing_updates.html -->

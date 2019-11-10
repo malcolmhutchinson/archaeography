@@ -50,7 +50,7 @@ from django.core.serializers import serialize
 from django.db import IntegrityError
 
 from django.db.models import F
-from django.forms import formset_factory
+from django.forms import formset_factory, modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
@@ -1106,13 +1106,18 @@ def site(request, command, argument=None):
         r = models.SiteReview()
         siteReviewForm = forms.SiteReview(instance=site)
 
-    if argument == 'normalise':
+    elif argument == 'normalise':
         context['buttons'] = ('save', )
         template = 'nzaa/SiteNormalise.html'
-        update = site.update0()
         a = analyse.Normalise(site)
         context['suggested_dates'] = a.find_dates()
         context['suggested_updates'] = a.find_updates()
+
+        documentFormset = modelformset_factory(
+            models.Document, form=forms.DocumentForm)
+        documents = documentFormset(queryset=site.update0().documents())
+
+        context['documents'] = documents
 
     if context['filekeeper']:
         context['filekeeper_commands'] = authority.filekeeper_commands(

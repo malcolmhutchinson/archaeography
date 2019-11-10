@@ -85,7 +85,9 @@
     overflow-y: auto;
     
 }
-
+.docform {
+    clear: both;
+}
 
 .listUpdates {
     width: 640px;

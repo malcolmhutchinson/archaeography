@@ -1,30 +1,25 @@
 <!-- nzaa/update0.html -->
-<h2><a href='{{ update.url }}'>{{ update.update_name|safe }}</a></h2>
+<h2><a href='{{ site.update0.url }}'>{{ site.update0.update_name|safe }}</a></h2>
 
 
 <p class='note'>Update 0 is a copy of the ArchSite record, <br />
   {{ site.extracted|date:"Y-m-d H:i:s" }} last checked against ArchSite<br />
-  {{ update.wordcount }}{% if update.wordcount == 1 %} word 
+  {{ site.update0.wordcount }}{% if site.update0.wordcount == 1 %} word 
   {% else %} words {% endif %}
   and
-  {{ update.pagecount }}{% if update.pagecount == 1 %} page.
+  {{ site.update0.pagecount }}{% if site.update0.pagecount == 1 %} page.
   {% else %} pages.{% endif %}<br />
 </p>
 
-{{ update.long_fields|safe }}
+{{ site.update0.long_fields|safe }}
 
-<hr />
 
-{% for fig in update.unref_figs %}<div class='figure'>
+
+{% for fig in site.update0.unref_figs %}<div class='figure'>
 
     <img src='{{ fig.0 }}' alt='{{ fig.1 }}' />
     <p class='caption'>{{ fig.1 }}</p>
   
 </div>{% endfor %}
 
-
-
-
-
-{% include 'nzaa/panel/updateUnrefFigs.html' %}
 <!-- end nzaa/update0.html -->
