@@ -25,32 +25,42 @@
 {% endif %}
 
 {% if site.updates_count %}
-<h2>In here we put the summary of existing updates</h2>
+<h2>Summary of existing updates</h2>
 
-<table>
+<table style='font-size: 90%;'>
+  {% for update in site.updates %}
   <tr>
-    <th>id</th>
-    <th></th>
+    <th colspan='4' style='padding-top: 1em; font-size: 100%; '>
+    {{ update }} | {{ update.updated|date:'Y-m-d' }} {{ update.updated_by }} |
+    {{ update.update_type }}</th>
   </tr>
-  {% for update in site.updates %}<tr>
-    <td>{{ update.update_id }}</td>
-    <td>{{ update.updated_by }}</td>
-  </tr>{% endfor %}
-
-</table>
+    {% for document in update.documents %}
+    <tr>
+      <td><a href='{{ document.url }}'>{{ document.filename }}</a></td>
+      <td>{{ document.date|date:'Y-m-d' }}</td>
+      <td>{{ document.doctype }}</td>
+      <td>{{ document.author }}</td>
+    </tr>   
+  {% endfor %}
+    {% endfor %}
+    </table>
 {% endif %}
 
+{% if site.update0.documents %}
+<h2>Uregistered documents for this site</h2>
 
-<h2>In here we list the registered documents for this site</h2>
+<p>Unregistered documents are associated with update 0. They have not
+yet been allocated to an update record.</p>
 
-
-<p>These ones are the list by Document object.</p>
-{% for document in site.update0.document_set.all %}
+{% for document in site.update0.documents %}
 {% include 'nzaa/panel/doc_form.html' %}
 {% endfor %}
 
-<hr style='width: 100%; clear: both;' />
+{% else %}
+<h3>There are no unregistered documents</h3>
+{% endif %}
 
+<br style='clear: both;'/><br /><br /><br />
 {% include 'nzaa/update0.html' %}
 
 <!-- closing the site code -->
@@ -61,6 +71,7 @@
     {% include 'nzaa/panel/existing_updates.html' %}
     {% include 'nzaa/panel/recordinghistory.html' %}
     {% include 'nzaa/panel/documents.html' %}
+    {% include 'nzaa/panel/filedata.html' %}
     {% if suggested_updates %}
     {% include 'nzaa/panel/update_suggestions.html' %}{% endif %}
   </div>

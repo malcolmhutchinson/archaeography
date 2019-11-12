@@ -9,17 +9,38 @@
   </div>
 
   <table>
-    {{ document.docform }}
-
-  <tr>
-    <th><label for='id_update'>Update</label></th>
-    <td>
-      <select name='update' id='id_update'>
-        {% for item in valid_updates %}
-        <option value='{{ item }}'{% if item == document.update %} selected{% endif %}>{{ item }}</option>{% endfor %}
-      </select>
-    </td>
-  </tr>
+    <tr>
+      <th>update</th>
+      <td>{{ document.update }}</td>
+    </tr>
+    <tr>
+      <th>filename</th>
+      <td><a href='{{ document.url }}'>{{ document.filename }}</a></td>
+    </tr>
+    <tr>
+      <th>doctype</th>
+      <td>{{ document.doctype }}</td>
+    </tr>
+    <tr>
+      <th>date</th>
+      <td>{{ document.date }}</td>
+    </tr>
+    <tr>
+      <th>author</th>
+      <td>{{ document.author }}</td>
+    </tr>
+    <tr>
+      <th>quality</th>
+      <td>{{ document.quality }}</td>
+    </tr>
+    <tr>
+      <th>fileformat</th>
+      <td>{{ document.fileformat }}</td>
+    </tr>
+    <tr>
+      <th>description</th>
+      <td>{{ document.description }}</td>
+    </tr>
 
   </table>
 

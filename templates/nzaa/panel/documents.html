@@ -1,6 +1,7 @@
 <!-- nzaa/panel/documents.html -->
-<h3>Registed documents</h3>
+<h3>Unregisted documents</h3>
 
+{% if site.update0.documents.count %}
 <table width='100%' >
   <tr>
     <th>Document</th>
@@ -17,4 +18,35 @@
     <td colspan='3' style='border-top: solid 1px black;'></td>
   </tr>
 </table>
+{% else %}
+<p>None</p>
+{% endif %}
+
+<h3>Registered docs</h3>
+
+{% if site.documents.count %}
+<table width='100%' >
+  <tr>
+    <th>Document</th>
+    <th>date</th>
+    <th>upd</th>
+  </tr>
+{% for document in site.documents %}
+  <tr>
+    <td><a href='{{ document.url }}'>{{ document.filename }}</a></td>
+    <td>{{ document.date|date:"Y-m-d" }}</td>
+    <td>{{ document.update.ordinal }}</td>
+  </tr>{% endfor %} 
+  <tr>
+    <td colspan='3' style='border-top: solid 1px black;'></td>
+  </tr>
+</table>
+{% else %}
+<p>None</p>
+{% endif %}
+
+
+
+
+
 <!-- end nzaa/panel/documents.html -->

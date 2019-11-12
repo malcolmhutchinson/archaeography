@@ -205,10 +205,20 @@
     margin-top: 2em;
     padding-top: 2em;
 }
+.update-summary {
+    font-size: 90%;
+    font-family: sans-serif;
 
+}
 
-
-
+.update-summary h2 {
+    margin-bottom: 0.5em;
+    buffer: 0;
+}
+.update-summary p {
+    margin: 0;
+    buffer: 0;
+}
 
 /* To be retired  */
 /*

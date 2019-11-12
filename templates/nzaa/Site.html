@@ -22,7 +22,7 @@
 
 <h2>Short description</h2>
 
-{{ site.display_short_description|safe }}
+<p>{{ site.short_description|safe }}</p>
 
 
     {% if site.pending_updates.count %}
@@ -33,9 +33,13 @@
     {% endif %}<!-- site.pending_updates.count -->
 
 <hr />
+{% if site.updates %}
 {% for update in site.display_updates %}
 {% include 'nzaa/update.html' %}
 {% endfor %}
+{% else %}
+{% include 'nzaa/update0.html' %}
+{% endif %}
   
 
 <!-- closing the site code -->

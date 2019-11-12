@@ -1213,6 +1213,17 @@ class Site(Record):
 
         return s
 
+    def documents(self):
+        """Return a queryset of documents associated with this site."""
+
+        doc_ids = []
+        for u in self.updates():
+            for item in u.documents():
+                doc_ids.append(item.id)
+
+        documents = Document.objects.filter(id__in=doc_ids)
+        return documents
+    
     def filespace_path(self):
         """Return a string filepath to the object's filespace.
 
@@ -1290,7 +1301,7 @@ class Site(Record):
         """Count all the pages in all the updates."""
 
         count = 0
-        for u in self.updates().all():
+        for u in self.updates_all():
             count += u.pagecount()
         return count
 
@@ -1310,13 +1321,13 @@ class Site(Record):
 
     def short_description(self):
 
-        if self.updates()[0].ordinal == 0:
+        if not self.updates():
             return self.lgcy_shortdesc
 
         description = ''
 
 #       Splitting by paragraphs may give unexpected reslts.
-        if self.updates[0].description:
+        if self.updates()[0].description:
             paras = self.updates[0].description.split('\r\n\r\n')
             if len(paras) > 0:
                 return paras[0]
@@ -1387,7 +1398,7 @@ class Site(Record):
         return Update.objects.filter(site=self, ordinal__gt=0).count()
 
     def wordcount(self):
-        return update0().wordcount()
+        return self.update0().wordcount()
 
 
 class NewSite(Record):
@@ -1722,7 +1733,7 @@ class Update(Record):
     store_doc_catalogue = None
 
     class Meta:
-        ordering = ['site__nzms_sheet', 'site__ordinal', '-ordinal']
+        ordering = ['site__nzms_sheet', 'site__ordinal', 'ordinal']
 
     def __unicode__(self):
         if '-' in str(self.site):
@@ -2373,6 +2384,7 @@ class Document(models.Model):
     URL = os.path.join(settings.BASE_URL, 'document')
 
     DOCTYPE = (
+        ('Additional information', 'Additional information'),
         ('Aerial photo', 'Aerial photo',),
         ('Drawing', 'Drawing',),
         ('Figure', 'Figure',),
@@ -2382,13 +2394,13 @@ class Document(models.Model):
         ('Photo reference form', 'Photo reference form',),
         ('Photograph(s)', 'Photograph(s)',),
         ('Report', 'Report',),
+        ('Scaled plan', 'Scaled plan',),
         ('Site description form', 'Site description form'),
         ('Site record form', 'Site record form',),
         ('Site reference form', 'Site reference form',),
         ('Site report form', 'Site report form',),
         ('Site update form', 'Site update form',),
         ('Site visit form', 'Site visit form',),
-        ('Scaled plan', 'Scaled plan',),
         ('Sketch plan', 'Sketch plan',),
     )
 
@@ -2415,7 +2427,7 @@ class Document(models.Model):
         editable=False, default='2019-01-01 00:00:00+12')
 
     class Meta:
-        ordering = ['date', 'filename']
+        ordering = ['filename']
 
     def __unicode__(self):
         return unicode(self.filename)
