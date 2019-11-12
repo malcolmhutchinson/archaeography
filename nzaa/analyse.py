@@ -91,7 +91,7 @@ class Normalise():
                 
             store.append(line)
             
-        return updates
+        return updates[1:]
 
 
 

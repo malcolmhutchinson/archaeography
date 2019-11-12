@@ -1328,7 +1328,7 @@ class Site(Record):
 
 #       Splitting by paragraphs may give unexpected reslts.
         if self.updates()[0].description:
-            paras = self.updates[0].description.split('\r\n\r\n')
+            paras = self.updates()[0].description.split('\r\n\r\n')
             if len(paras) > 0:
                 return paras[0]
 
@@ -2386,6 +2386,7 @@ class Document(models.Model):
     DOCTYPE = (
         ('Additional information', 'Additional information'),
         ('Aerial photo', 'Aerial photo',),
+        ('Correspondence', 'Correspondence'),
         ('Drawing', 'Drawing',),
         ('Figure', 'Figure',),
         ('Historic document', 'Historic document',),

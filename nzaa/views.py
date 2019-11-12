@@ -1122,7 +1122,7 @@ def site(request, command, argument=None):
         context['foot_field'] = {
             'type': 'number',
             'name': 'amount',
-            'value': 1,
+            'value': 0,
             'size': 3,
         }
         template = 'nzaa/SiteNormalise.html'
