@@ -91,7 +91,12 @@
 
 <!-- Page footer -->
 <div id='pagefoot'>
-    {% if buttons %}<span class='right' id='buttons'>{% for button in buttons %}
+  {% if buttons %}<span class='right' id='buttons'>
+    {% if foot_field %}<input type='{{ foot_field.type }}'
+                              name='{{ foot_field.name }}'
+                              value='{{ foot_field.value }}'
+                              size='{{ foot_field.size }}' />{% endif %}
+    {% for button in buttons %}
       <input type='submit' name='command' value='{{ button }}' />{% endfor %}
     </span>{% endif %}
     {% if breadcrumbs %}<ol class='breadcrumbs'>{% for crumb in breadcrumbs %}

@@ -12,19 +12,22 @@
 
 
 
-
 {% if suggested_updates %}
-<h2>Updates suggested by analysis</h2>
+<h2>Analysis of description and condition fields</h2>
 
 {% for update in suggested_updates %}
 
-<h3>Update </h3>
-{{ update|safe }}
-<hr />
-{% endfor %}
+<pre>
+{{ update.0 }}
+</pre>{% endfor %}
 {% endif %}
 
-{% if site.updates_count %}
+
+<div style='font-size: 80%;'>
+{{ site.update0.long_fields|safe }}
+</div>
+
+{% if site.updates %}
 <h2>Summary of existing updates</h2>
 
 <table style='font-size: 90%;'>
@@ -41,16 +44,35 @@
       <td>{{ document.doctype }}</td>
       <td>{{ document.author }}</td>
     </tr>   
-  {% endfor %}
     {% endfor %}
-    </table>
+  {% endfor %}
+</table>
 {% endif %}
 
 {% if site.update0.documents %}
 <h2>Uregistered documents for this site</h2>
 
 <p>Unregistered documents are associated with update 0. They have not
-yet been allocated to an update record.</p>
+  yet been allocated to an update record.</p>
+
+
+<table style='font-size: 90%;'>
+  <tr>
+    <th colspan='4' style='padding-top: 1em; font-size: 100%; '>
+    Summary </th>
+  </tr>
+    {% for document in site.update0.documents %}
+    <tr>
+      <td><a href='{{ document.url }}'>{{ document.filename }}</a></td>
+      <td>{{ document.date|date:'Y-m-d' }}</td>
+      <td>{{ document.doctype }}</td>
+      <td>{{ document.author }}</td>
+    </tr>   
+    {% endfor %}
+</table>
+
+<br /><br /><br /><br /><br />
+
 
 {% for document in site.update0.documents %}
 {% include 'nzaa/panel/doc_form.html' %}

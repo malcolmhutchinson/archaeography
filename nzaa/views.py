@@ -1118,19 +1118,19 @@ def site(request, command, argument=None):
         siteReviewForm = forms.SiteReview(instance=site)
 
     elif argument == 'normalise':
-        context['buttons'] = ('save', )
+        context['buttons'] = ('create updates', )
+        context['foot_field'] = {
+            'type': 'number',
+            'name': 'amount',
+            'value': 1,
+            'size': 3,
+        }
         template = 'nzaa/SiteNormalise.html'
         a = analyse.Normalise(site)
         context['suggested_dates'] = a.find_dates()
         context['suggested_updates'] = a.find_updates()
 
         context['valid_updates'] = site.updates_all()
-
-        #documentFormset = modelformset_factory(
-        #    models.Document, form=forms.DocumentForm)
-        #documents = documentFormset(queryset=site.update0().documents())
-
-        #context['documents'] = documents
 
     if context['filekeeper']:
         context['filekeeper_commands'] = authority.filekeeper_commands(
@@ -1198,8 +1198,12 @@ def site(request, command, argument=None):
             else:
                 context['notifications'].append(
                     "Site review form not valid.")
-
+                
+        elif argument == 'normalise':
+            pass
+        
         else:
+            log_message = "Unknown call"
             if request.POST['command'] == 'stage':
                 update.opstatus = "Staging"
                 log_message = 'Status set to "Staging".'

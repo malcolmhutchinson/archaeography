@@ -71,19 +71,26 @@ class Normalise():
         condition = self.site.update0().condition
         lines = []
         updates = []
+        store = []
 
         for line in description.split('\n'):
-            line = line.strip()
-            
+            line = textwrap.fill(line.strip())
+
             if line[:6].lower() == 'update':
-                updates.append(markdown.markdown('\n'.join(lines)))
-                lines = [line, ]
-            else:
-                lines.append(line)
-                #print line[:40]
+                updates.append(store)
+                store = []
                 
-        #short_desc = updates.pop[0]
-        
+            store.append(line)
+            
+        for line in condition.split('\n'):
+            line = textwrap.fill(line.strip())
+
+            if line[:6].lower() == 'update':
+                updates.append(store)
+                store = []
+                
+            store.append(line)
+            
         return updates
 
 
