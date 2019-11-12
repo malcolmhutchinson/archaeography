@@ -7,6 +7,18 @@
 <table>
   {{ documentForm }}
 
+
+  <tr>
+    <th><label for='id_update'>Update</label></th>
+    <td>
+      <select name='update' id='id_update'>
+        {% for item in valid_updates %}
+        <option value='{{ item }}'{% if item == document.update %} selected{% endif %}>{{ item }}</option>{% endfor %}
+      </select>
+    </td>
+  </tr>
+  
+
   <tr>
     <th></th>
     <td style='text-align: right;'>

@@ -49,6 +49,7 @@ class BoundaryForm(ModelForm):
         }
 
 class DocumentForm(ModelForm):
+
     class Meta:
         model= models.Document
         fields = [
@@ -57,6 +58,7 @@ class DocumentForm(ModelForm):
             'author',
             'quality',
             'description',
+            #'update',
         ]
         widgets = {
             'doctype': forms.Select(),

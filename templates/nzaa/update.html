@@ -5,17 +5,21 @@
   <span class='alert'>(Status:
     {{ update.opstatus }})</span>{% endif %}</h2>
 
-{% if update.ordinal == 0 %}
-<p class='note'>Update 0 is a copy of the ArchSite record, <br />
-  {{ site.extracted|date:"Y-m-d H:i:s" }} last checked against ArchSite<br />
-  {{ update.wordcount }}{% if update.wordcount == 1 %} word 
-  {% else %} words {% endif %}
-  and
-  {{ update.pagecount }}{% if update.pagecount == 1 %} page.
-  {% else %} pages.{% endif %}<br />
-</p>
-{% endif %}
 {{ update.long_fields|safe }}
+
+{% for document in update.documents %}
+<div class='document'>
+
+  <div class='figure'>
+
+    <a href='{{ document.url }}' />
+    <img src='{{ document.src }}' alt='{{ document.alt }}' />
+
+    <p class='caption'>{{ document.caption }}</p></a>
+
+  </div>
+
+</div>{% endfor %}
 
 <hr />
 

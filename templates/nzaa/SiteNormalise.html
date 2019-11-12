@@ -1,6 +1,6 @@
 {% extends 'framework.html' %}{% block main %}{% load staticfiles %}
 {% load humanize %}
-<!-- nzaa/Site.html -->
+<!-- nzaa/SiteNormalise.html -->
 
 <div class='site-left'>
 <p class='note'>{{ subhead }}</p>
@@ -43,17 +43,9 @@
 
 <h2>In here we list the registered documents for this site</h2>
 
-<p>This is the list by formset
-<table>
-{% for form in documents %}
-{{ form }}
-{% endfor %}
-</table>
+
 <p>These ones are the list by Document object.</p>
-
-
-
-{% for document in site.update0.document_set.all %}<tr>
+{% for document in site.update0.document_set.all %}
 {% include 'nzaa/panel/doc_form.html' %}
 {% endfor %}
 
@@ -97,5 +89,5 @@
 {% include 'nzaa/panel/siteReview.html' %}
 {% endif %}
 
-<!-- end nzaa.html -->
+<!-- end nzaa/SiteNormalise.html -->
 {% endblock %}

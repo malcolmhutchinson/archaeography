@@ -2,14 +2,25 @@
 <div class='docform'>
 
   <div class='figure-left'>
-
+    <a href='{{ document.url }}'>
     <img src='{{ document.src }}' alt='{{ document.alt }}' />
-    <p class='caption'>{{ document.filename }}</p>
+    <p class='caption'>{{ document.filename }}</p></a>
     
   </div>
 
   <table>
     {{ document.docform }}
+
+  <tr>
+    <th><label for='id_update'>Update</label></th>
+    <td>
+      <select name='update' id='id_update'>
+        {% for item in valid_updates %}
+        <option value='{{ item }}'{% if item == document.update %} selected{% endif %}>{{ item }}</option>{% endfor %}
+      </select>
+    </td>
+  </tr>
+
   </table>
 
 

@@ -374,6 +374,7 @@ def document(request, doc_id):
         context['h1'] = document.title
         context['document'] = document
         context['site'] = document.update.site
+        context['valid_updates'] = document.update.site.updates_all()
 
     except models.Document.DoesNotExist:
         context['h1'] = 'No record for document id ' + doc_id
@@ -382,8 +383,18 @@ def document(request, doc_id):
     if request.POST:
         form = forms.DocumentForm(request.POST, instance=document)
         if form.is_valid():
-            form.save()
+            doc = form.save(commit=False)
             
+            if request.POST['update']:
+                try:
+                    u = models.Update.objects.get(
+                        update_id=request.POST['update'])
+                    doc.update = u
+                except models.Update.DoesNotExist:
+                    pass
+
+            doc.save()
+
     context['documentForm'] = forms.DocumentForm(instance=document)
 
     return render(request, template, context)
@@ -1113,11 +1124,13 @@ def site(request, command, argument=None):
         context['suggested_dates'] = a.find_dates()
         context['suggested_updates'] = a.find_updates()
 
-        documentFormset = modelformset_factory(
-            models.Document, form=forms.DocumentForm)
-        documents = documentFormset(queryset=site.update0().documents())
+        context['valid_updates'] = site.updates_all()
 
-        context['documents'] = documents
+        #documentFormset = modelformset_factory(
+        #    models.Document, form=forms.DocumentForm)
+        #documents = documentFormset(queryset=site.update0().documents())
+
+        #context['documents'] = documents
 
     if context['filekeeper']:
         context['filekeeper_commands'] = authority.filekeeper_commands(

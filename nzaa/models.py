@@ -1298,7 +1298,14 @@ class Site(Record):
         """Return a queryset of updates with opstatus != None."""
         return self.updates().exclude(opstatus=None)
 
-    def set_update_dep(self, update_id):
+    def set_update(self, update_id):
+        """When calling a specific update. 
+
+        eg. S13/19-4 
+
+        This sets the list of update records to contain only one update.
+
+        """
         self.updateRecords = Update.objects.filter(update_id=update_id)
 
     def short_description(self):
@@ -1348,8 +1355,13 @@ class Site(Record):
 
         return Update.objects.get(site=self, ordinal=0)
 
-    def updates(self, update_id=None):
+    def updates(self):
         """Return all updates above ordinal zero."""
+
+        return Update.objects.filter(site=self, ordinal__gt=0)
+
+    def updates_all(self, update_id=None):
+        """Return all updates including ordinal zero."""
 
         return Update.objects.filter(site=self)
 
@@ -2428,7 +2440,7 @@ class Document(models.Model):
 
         return self.files.filter(orig_disp='display')
 
-    def docform(self):
+    def docform(self, iterator=0):
         """Return an instance of the Document form for this document.
         """
         import nzaa.forms
