@@ -67,31 +67,134 @@ class Normalise():
         return suggestions
 
     def find_updates(self):
-        description = self.site.update0().description
-        condition = self.site.update0().condition
-        lines = []
-        updates = []
+        """Return a data structure identifying updates from the text.
+
+        Date, actor, description and condition, for each identified
+        update.
+
+        The output is a dictionary, keyed by date, representing a
+        single update event. Each element is a dictionary containing
+        these fields:
+
+            {   
+                '2012-01-01': [
+                    'actor': '',
+                    'description': '',
+                    'condition': '',
+                ]
+
+        """
+        
+        text = (self.site.update0().description + "\n\n" +
+                self.site.update0().condition)
+        
+        chunks = []
         store = []
 
-        for line in description.split('\n'):
-            line = textwrap.fill(line.strip())
-
-            if line[:6].lower() == 'update':
-                updates.append(store)
-                store = []
-                
-            store.append(line)
+        for line in text.split('\n'):
+            line = textwrap.fill(line.strip())    
             
-        for line in condition.split('\n'):
-            line = textwrap.fill(line.strip())
-
-            if line[:6].lower() == 'update':
-                updates.append(store)
-                store = []
+            if 'updated' in line[:10].lower():
+                chunks.append(store)
                 
-            store.append(line)
+                store = []
+
+            if len(line):   
+                store.append(line)
+                
+        chunks.append(store)
+
+        # Drop the first one, it's always a short description.
+        chunks = chunks[1:]
+
+        updates = {}
+
+        # A chunk is a whole update.
+        for chunk in chunks:
+            actor = None
+            visited = False
+            visited_by = False
+
+            # Split the first paragraph into lines.
+            lines = chunk[0].split('\n')
             
-        return updates[1:]
+
+            # Find the actor. 
+            if 'Updated by:' in chunk[0]:
+                discard, name = chunk[0].split('Updated by:')                
+                actor = name.strip().replace('\n', ' ').strip('.')
+                
+            elif 'submitted by' in lines[0].lower(): 
+                discard, name = lines[0].split('submitted by')
+                actor = name.strip().replace('\n', ' ').strip('.')
+                
+            elif 'Inspected' in chunk[0]:
+                discard, name = chunk[0].split(' by:')
+                actor = name.strip().replace('\n', ' ').strip('.')
+                visited_by = actor
+                visited = True                
+
+            # Find the visitor.
+            keep = None
+            if 'Visited:' in lines[0]:
+                discard, keep = lines[0].split('Visited: ')
+                
+            elif '(Field visit)' in chunk[0]:
+                discard, keep = chunk[0].split('visited ')
+
+            if keep:
+                bits = keep[:10].split('/')
+                if len(bits) == 3:
+                    bits.reverse()
+                    visited = '-'.join(bits)
+                
+            if len(lines) > 1:
+                if 'visited' in lines[1].lower():
+                    discard, stuff = lines[1].split(' by ')
+                    visited = discard
+                    visited_by = stuff
+
+            # Get the visited by date.
+            words = discard.split(' ')
+            if words[0] == 'visited':
+                bits = words[1].split('/')
+                if len(bits) == 3:
+                    bits.reverse()
+                    visited = '-'.join(bits)
+
+            words = chunk[0].split(' ')
+            fields = words[1].strip(',').split('/')
+            if len(fields) == 3:
+                fields.reverse()
+                date = '-'.join(fields)
+
+            # Build the dictionary structre
+            if date in updates.keys():
+                updates[date]['actor'] = actor
+                updates[date]['condition'] = '\n\n'.join(chunk)
+            else:
+                updates[date] = {
+                    'actor': actor,
+                    'description': '\n\n'.join(chunk),
+                    'condition': '',
+                    'visited': visited,
+                    'visited_by': visited_by,
+                }
+
+        # Sort and deliver the final data structure.
+        sorted_list = []
+        for item in sorted(updates.keys()):
+            line = {
+                'date': item,
+                'actor': updates[item]['actor'],
+                'description': updates[item]['description'],
+                'condition': updates[item]['condition'],
+                'visited': updates[item]['visited'],
+                'visited_by': updates[item]['visited_by'],
+            }
+            sorted_list.append(line)
+
+        return sorted_list
 
 
 

@@ -779,7 +779,6 @@ def search(request):
             nzaa_id = sheet + '/' + str(ordinal)
             site_ids.append(nzaa_id)
 
-            print "site IDS", site_ids
             if len(site_ids) == 1:
                 return redirect(os.path.join(settings.BASE_URL, nzaa_id))
             else:
@@ -1118,13 +1117,12 @@ def site(request, command, argument=None):
         siteReviewForm = forms.SiteReview(instance=site)
 
     elif argument == 'normalise':
-        context['buttons'] = ('create updates', )
-        context['foot_field'] = {
-            'type': 'number',
-            'name': 'amount',
-            'value': 0,
-            'size': 3,
-        }
+        #context['buttons'] = ('create updates', )
+        #context['foot_field'] = {
+        #    'type': 'number',
+        #    'name': 'amount',
+        #    'value': 0,
+        #}
         template = 'nzaa/SiteNormalise.html'
         a = analyse.Normalise(site)
         context['suggested_dates'] = a.find_dates()

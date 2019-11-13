@@ -13,12 +13,25 @@
 
 
 {% if suggested_updates %}
-<h2>Analysis of description and condition fields</h2>
+<h2>Analysis of fields ({{ suggested_updates|length }} potential updates)</h2>
 
 {% for update in suggested_updates %}
 
 <pre>
-{{ update.0 }}
+DATE       {{ update.date }}
+ACTOR      {{ update.actor }}
+{% if update.visited %}VISITED    {{ update.visited }}
+           by {{ update.visited_by }}{% endif %}
+
+DESCRIPTION
+{{ update.description }}
+
+CONDITION
+{{ update.condition }}
+
+------------------------------------------------------
+
+
 </pre>{% endfor %}
 {% endif %}
 
