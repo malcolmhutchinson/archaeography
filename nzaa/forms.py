@@ -257,7 +257,6 @@ class SiteReview(ModelForm):
             'features': widgets.Textarea(attrs={'rows': 1, 'cols': 80, }),
         }
 
-
 class UploadFile(Form):
     filename = FileField(required=False)
 

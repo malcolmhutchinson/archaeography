@@ -559,7 +559,6 @@ SITE_TYPE = {
         'Rubbish dump',
         'Rubbish heap',
         'Rubbish pit',
-
     ),
     'Midden/oven': (
         'Fireplace',

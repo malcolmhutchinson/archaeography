@@ -108,7 +108,7 @@ class Normalise():
         chunks = chunks[1:]
 
         updates = {}
-
+        index = 0
         # A chunk is a whole update.
         for chunk in chunks:
             actor = None
@@ -140,7 +140,8 @@ class Normalise():
                 discard, keep = lines[0].split('Visited: ')
                 
             elif '(Field visit)' in chunk[0]:
-                discard, keep = chunk[0].split('visited ')
+                discard, keep = chunk[0].split('visited')
+                keep = keep.strip()
 
             if keep:
                 bits = keep[:10].split('/')
@@ -174,17 +175,20 @@ class Normalise():
                 updates[date]['condition'] = '\n\n'.join(chunk)
             else:
                 updates[date] = {
+                    'index': index,
                     'actor': actor,
                     'description': '\n\n'.join(chunk),
                     'condition': '',
                     'visited': visited,
                     'visited_by': visited_by,
                 }
+            index += 1
 
         # Sort and deliver the final data structure.
         sorted_list = []
         for item in sorted(updates.keys()):
             line = {
+                'index': updates[item]['index'],
                 'date': item,
                 'actor': updates[item]['actor'],
                 'description': updates[item]['description'],
@@ -195,12 +199,6 @@ class Normalise():
             sorted_list.append(line)
 
         return sorted_list
-
-
-
-
-
-
 
 
 class Cadastre():

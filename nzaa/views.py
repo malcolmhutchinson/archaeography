@@ -1117,12 +1117,7 @@ def site(request, command, argument=None):
         siteReviewForm = forms.SiteReview(instance=site)
 
     elif argument == 'normalise':
-        #context['buttons'] = ('create updates', )
-        #context['foot_field'] = {
-        #    'type': 'number',
-        #    'name': 'amount',
-        #    'value': 0,
-        #}
+        context['command'] = 'setup'
         template = 'nzaa/SiteNormalise.html'
         a = analyse.Normalise(site)
         context['suggested_dates'] = a.find_dates()

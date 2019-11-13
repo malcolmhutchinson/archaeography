@@ -10,35 +10,8 @@
 <h1>{{ h1 }}</h1>
 {% if site %}
 
-
-
-{% if suggested_updates %}
-<h2>Analysis of fields ({{ suggested_updates|length }} potential updates)</h2>
-
-{% for update in suggested_updates %}
-
-<pre>
-DATE       {{ update.date }}
-ACTOR      {{ update.actor }}
-{% if update.visited %}VISITED    {{ update.visited }}
-           by {{ update.visited_by }}{% endif %}
-
-DESCRIPTION
-{{ update.description }}
-
-CONDITION
-{{ update.condition }}
-
-------------------------------------------------------
-
-
-</pre>{% endfor %}
-{% endif %}
-
-
-<div style='font-size: 80%;'>
-{{ site.update0.long_fields|safe }}
-</div>
+<form action='/nzaa/normalise/{{ site.nzaa_id }}'
+      method='POST'>
 
 {% if site.updates %}
 <h2>Summary of existing updates</h2>
@@ -61,6 +34,70 @@ CONDITION
   {% endfor %}
 </table>
 {% endif %}
+
+{% if suggested_updates %}
+<h2>Analysis of fields ({{ suggested_updates|length }} potential updates)</h2>
+
+
+
+{% for update in suggested_updates %}
+<div class='suggestedUpdate' id=''
+     style='border-bottom: 1px black solid;'>
+
+<table>
+  <tr>
+    <td><!-- left side -->
+  <table>
+    <tr>
+      <th>date</th>
+      <td><input type='text' name='{{ update.index }}-date'
+                 value='{{ update.date }}'></td>
+    </tr>
+    <tr>
+      <th>actor</th>
+      <td><input type='text' name='{{ update.index }}-actor'
+                 value='{{ update.actor }}'></td>
+    </tr>
+    <tr>
+      <th>visited</th>
+      <td><input type='text' name='{{ update.index }}-visited'
+                 value='{{ update.visited }}'></td>
+    </tr>
+    <tr>
+      <th>by</th>
+      <td><input type='text' name='{{ update.index }}-visited_by'
+                 value='{{ update.visied_by }}'></td>
+    </tr>
+  </table>
+    </td><!-- close the left side -->
+    <td><!-- right side -->
+
+  <table>
+    <tr>
+      <td>Description<br />
+        <textarea cols='72'
+                  name='{{ update.index }}-description'>{{ update.description }}</textarea>
+      </td>
+    </tr>
+    <tr>
+      <td>Condition<br />
+        <textarea cols='72'
+                  name='{{ update.index }}-condition'>{{ update.condition }}</textarea>
+      </td>
+    </tr>
+  </table>
+      
+    </td><!-- close the right side -->
+  </tr>
+</table>
+
+</div>{% endfor %}
+{% endif %}
+
+
+<div style='font-size: 80%;'>
+{{ site.update0.long_fields|safe }}
+</div>
 
 {% if site.update0.documents %}
 <h2>Uregistered documents for this site</h2>
@@ -135,5 +172,19 @@ CONDITION
 {% include 'nzaa/panel/siteReview.html' %}
 {% endif %}
 
+<div id='docReview'>
+
+  <h2>Additional updates to create</h2>
+
+  <p>Number of updates in the documents</p>
+
+
+  <input type='number' name='no_updates' />
+  <input type='submit' name='command' value='{{ command }}' />
+  
+</div>
+
+
+</form>
 <!-- end nzaa/SiteNormalise.html -->
 {% endblock %}
