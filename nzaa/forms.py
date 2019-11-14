@@ -48,7 +48,7 @@ class BoundaryForm(ModelForm):
             'comments': forms.Textarea(attrs={'rows':2,'cols':40,}),
         }
 
-class _dep_DocumentForm(ModelForm):
+class DocumentForm(ModelForm):
 
     class Meta:
         model= models.Document

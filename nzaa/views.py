@@ -214,13 +214,13 @@ def boundary_report(request, boundary_id):
     context['viewable'] = boundary.is_viewable(request)
     context['notifications'] = notifications
     context['title'] = context['h1'] + " | " + context['title']
-    
+
     return render(request, template, context)
 
 
 def boundary_upload(request):
     """Form and handling for uploading KML boundary files."""
-    
+
     context = build_context(request)
     context['commands'] = authority.boundary_commands(request)
     context['nav'] = 'nzaa/nav_boundary.html'
@@ -298,12 +298,12 @@ def boundary_upload(request):
         # and we can try loading it into the model object.
         wkb = WKBWriter()
         tmp = wkb.write(MultiPolygon(polys[0].geos))
-        
+
         boundary.geom = GEOSGeometry(tmp, srid=4326).transform(2193, clone=True)
         boundary.owner = request.user
         boundary.save()
         context['notifications'].append('KML file uploaded successfully.')
-                
+
     return render(request, template, context)
 
 
@@ -384,7 +384,7 @@ def document(request, doc_id):
         form = forms.DocumentForm(request.POST, instance=document)
         if form.is_valid():
             doc = form.save(commit=False)
-            
+
             if request.POST['update']:
                 try:
                     u = models.Update.objects.get(
@@ -454,7 +454,7 @@ def homepage(request):
     context['jsortable'] = True
     context['total_records'] = models.Site.objects.all().count()
     context['total_documents'] = models.Document.objects.all().count()
-    
+
     context['user_groups'] = authority.group_memberships(request)
     request.session['siteset'] = None
 
@@ -628,66 +628,118 @@ def normaliseUpdates(request, nzaa_id):
         context['subhead'] = "Create update records to normalise this site"
 
     except models.Site.DoesNotExist:
-        context['h1'] =  'This site does not exist' 
+        context['h1'] =  'This site does not exist'
         return render(request, template, context)
 
     if request.POST:
-        context['post'] = request.POST
+
+        context['command'] = request.POST['command']
 
         useful = []
         row_idx = 0
 
-        # Getting POST fields containing the data we want.
+        # Getting POST fields containing the useful data we want.
         for item in sorted(request.POST.keys()):
             bits = item.split('-')
             try:
                 n = int(bits[0])
                 if n > row_idx:
-                    row_idx = n                
+                    row_idx = n
                 useful.append(item)
-                
+
             except ValueError:
                 pass
 
         useful = sorted(useful)
 
-        initial = []
+        if request.POST['command'] == 'setup':
 
-        # Build the initial updates.
-        for i in range(int(request.POST['no_updates'])):
-            ordinal = i + 1
-            row = {
-                'update_type': '',
-                'updated': '',
-                'updated_by': 'unknown',
-                'visited': '',
-                'visited_by': '',
-                'description': '',
-                'condition': '',
-                'ordinal': ordinal,
-            }
-            initial.append(row)
+            context['main_form'] = MAIN_FORM
+            context['buttons'] = ('create updates',)
 
-        # Build the updates from form data.
-        for j in range(row_idx + 1):
-            
-            if str(j) + '-select' in request.POST:
-                ordinal += 1
-                row = {
-                    'update_type': '',
-                    'updated': request.POST[str(j) + '-date'],
-                    'updated_by': request.POST[str(j) + '-actor'],
-                    'visited': request.POST[str(j) + '-visited'],
-                    'visited_by': request.POST[str(j) + '-visited_by'],
-                    'description': request.POST[str(j) + '-description'],
-                    'condition': request.POST[str(j) + '-condition'],
-                    'ordinal': ordinal,
-                }
-                initial.append(row)
-            
-        context['initial'] = initial
+            initial = []
+            ordinal = 0
 
-    
+            # Build the initial updates.
+            if request.POST['no_updates']:
+                for i in range(int(request.POST['no_updates'])):
+                    ordinal = i + 1
+                    row = {
+                        'update_type': '',
+                        'updated': '',
+                        'updated_by': 'unknown',
+                        'visited': '',
+                        'visited_by': '',
+                        'description': '',
+                        'condition': '',
+                        'ordinal': ordinal,
+                    }
+                    initial.append(row)
+
+            # Build the updates from form data.
+            for j in range(row_idx + 1):
+
+                if str(j) + '-select' in request.POST:
+                    ordinal += 1
+                    row = {
+                        'update_type': '',
+                        'updated': request.POST[str(j) + '-date'],
+                        'updated_by': request.POST[str(j) + '-actor'],
+                        'visited': request.POST[str(j) + '-visited'],
+                        'visited_by': request.POST[str(j) + '-visited_by'],
+                        'description': request.POST[str(j) + '-description'],
+                        'condition': request.POST[str(j) + '-condition'],
+                        'ordinal': ordinal,
+                    }
+                    initial.append(row)
+
+            context['initial'] = initial
+
+        if request.POST['command'] == 'create updates':
+
+            context['useful'] = useful
+
+            updates = []
+
+            for i in range(row_idx):
+                ordinal = i + 1
+
+                update = models.Update(
+                    update_id=str(site) + '-' + str(ordinal),
+                    site=site,
+                    ordinal=ordinal,
+                    updated=request.POST[str(ordinal) + '-updated'],
+                    updated_by=request.POST[str(ordinal) + '-updated_by'],
+                    description=request.POST[str(ordinal) + '-description'],
+                    condition=request.POST[str(ordinal) + '-condition'],
+
+                    easting=site.lgcy_easting,
+                    northing=site.lgcy_northing,
+                    site_name=site.site_name,
+                    site_type=site.lgcy_type,
+                    site_subtype=site.site_subtype,
+                    location=site.location,
+                    period=site.lgcy_period,
+                    ethnicity=site.ethnicity,
+                    threats=site.threats,
+                    landuse=site.lgcy_landuse,
+                    features=site.lgcy_features,
+                    associated_sites=site.lgcy_assocsites,
+                    geom=site.geom,
+                    created=datetime.datetime.now(),
+                )
+
+                if request.POST[str(ordinal) + '-visited']:
+                    update.update_type = 'Site visit'
+                    update.visited = request.POST[str(ordinal) + '-visited']
+                    update.visited_by = request.POST[str(
+                        ordinal) + '-visited_by'],
+
+                update.save()
+                updates.append(update)
+
+            context['updates'] = updates
+
     return render(request, template, context)
 
 
@@ -743,7 +795,7 @@ def periods(request, command=None):
                 'setlist': setlist,
             }
             request.session['siteset'] = siteset
-            
+
             identifiers = ""
             for i in setlist:
                 identifiers += "'" + i + "', "
@@ -1122,7 +1174,7 @@ def site(request, command, argument=None):
         template = 'nzaa/SiteNotAuth.html'
         context['h1'] = "NZAA archaeological site record " + nzaa_id
         return render(request, template, context)
-    
+
 #   Go download the record from ArchSite.
     if argument == "scrape":
         s = scrape.Scrape([nzaa_id])
@@ -1272,10 +1324,10 @@ def site(request, command, argument=None):
             else:
                 context['notifications'].append(
                     "Site review form not valid.")
-                
+
         elif argument == 'normalise':
             pass
-        
+
         else:
             log_message = "Unknown call"
             if request.POST['command'] == 'stage':
@@ -1365,7 +1417,7 @@ def site_create(request):
                 ordinal = records[0].ordinal + 1
             else:
                 ordinal = 1
-            
+
             identifier = sheet.identifier + '/' + str(ordinal)
 
             newsite.newsite_id = identifier
@@ -2003,7 +2055,7 @@ def build_context(request):
     context['buttons'] = None
     context['URL'] = settings.BASE_URL
     context['simpleSearch'] = forms.SimpleSearch
-    
+
     if authority.nzaa_member:
         context['authorised'] = True
 

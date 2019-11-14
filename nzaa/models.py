@@ -2104,6 +2104,9 @@ class Update(Record):
 
             name += self.update_type + " by " + self.updated_by
 
+        elif self.updated_by:
+            name += self.updated_by 
+
         else:
             name = "Update " + str(self.ordinal)
 

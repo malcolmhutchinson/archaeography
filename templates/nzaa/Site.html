@@ -6,7 +6,7 @@
 <div class='site-left'>
 <p class='note'>{{ subhead }}</p>
 
-<h1>{{ h1 }}</h1>
+<h1><a href='{{ site.url }}'>{{ h1 }}</a></h1>
 {% if site %}
 
   {% if update_id %}
@@ -17,8 +17,9 @@
 {% include 'nzaa/update.html' %}
     {% else %}
 <h1>No record found for update {{ update_id }}</h1>
-    {% endif %}
-  {% endif %}<!-- update id not given -->
+{% endif %}
+
+{% else %}
 
 <h2>Short description</h2>
 
@@ -42,6 +43,7 @@
 {% endif %}
   
 
+<!-- update id not given -->{% endif %}
 <!-- closing the site code -->
 </div><!-- close the left column -->
 
