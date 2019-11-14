@@ -5,7 +5,7 @@ of providing updated information to them.
 
 It centres around the Site class, which contains aggregate fields for
 searching and sorting. The descriptive data are held in update records
-attached to sites. Each site record should have an update-0 attached
+attached to sites. Each site record should have an update0 attached
 to it. This will contain a copy of the ArchSite record.
 
 The aggregate fields are common between site and update tables, and
@@ -1656,7 +1656,7 @@ class SiteTypes(models.Model):
 
 class Update(Record):
 
-    UPDATE_TYPE = (
+    _DEP_UPDATE_TYPE = (
         ('Comment', 'Comment'),
         ('Request for deletion', 'Request for deletion'),
         ('Archaeological investigation', 'Archaeological investigation'),

@@ -4,6 +4,9 @@ from django.conf.urls import url
 import nzaa.views as views
 #from nzaa.models import Site
 
+# This is the RE for a site (eg T15/22)
+# [A-Za-z]\d{2}/\d+
+
 urlpatterns = [
     #   The home pages
     url(r'^$', views.homepage, name='NZAA application'),
@@ -34,6 +37,7 @@ urlpatterns = [
 
     #   Documents and files.
     url(r'^document/([0-9]*)/$', views.document),
+    url(r'normalise/([A-Za-z]\d{2}/\d+)/$', views.normaliseUpdates),
     
     #   New site records.
     url(r'^newsites/$', views.newsites),

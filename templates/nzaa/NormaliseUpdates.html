@@ -1,0 +1,76 @@
+{% extends 'framework.html' %}{% block main %}{% load staticfiles %}
+{% load humanize %}
+<!-- nzaa/NormaliseUpdates.html -->
+
+<div class='site-left'>
+<p class='note'>{{ subhead }}</p>
+
+<h1>{{ h1 }}</h1>
+
+
+<p>No. updates:  {{ post.no_updates }}</p>
+<p>Row index {{ row_idx }}</p>
+
+{% for i in initial %}
+<div style='border-top: 1px black solid;' >
+<table>
+  <tr>
+    <td><table>
+    
+      <tr>
+        <th colspan='2'>Proposed update ordinal {{ i.ordinal }}</th>
+      <tr>
+        <th>updated</th>
+        <td><input name='{{ i.ordinal }}-updated' value='{{ i.updated }}' /></td>
+      </tr>
+      <tr>
+        <th>updated by</th>
+        <td><input name='{{ i.ordinal }}-updated_by' value='{{ i.updated_by }}' /></td>
+      </tr>
+      <tr>
+        <th>visited</th>
+        <td><input name='{{ i.ordinal }}-visited' value='{{ i.visited }}' /></td>
+      </tr>
+      <tr>
+        <th>visited by</th>
+        <td><input name='{{ i.ordinal }}-visited_by' value='{{ i.visited_by }}' /></td>
+      </tr>
+
+    </table></td>
+    <td>
+      
+    <p>descrption<br />
+    <textarea cols='72'
+        name='{{ i.ordinal }}-description'>{{ i.description }}</textarea></p>
+
+    <p>condition<br />
+    <textarea cols='72'
+        name='{{ i.ordinal }}-condition'>{{ i.condition }}</textarea></p>
+    </td>
+    </tr>
+</table>
+  </div>
+{% endfor %}
+
+
+
+
+</div><!-- close the left column -->
+<div class='site-right'>
+  <div class='data'>    
+    {% include 'nzaa/panel/recordinghistory.html' %}
+    {% include 'nzaa/panel/documents.html' %}
+    {% include 'nzaa/panel/filedata.html' %}
+  </div>
+
+  {% if site.review.all.count %}
+  <p class='note'>Reviews of this site record:<br />
+  {% for item in site.review.all %}
+  {{ item.reviewed }} by {{ item.assessed_by }}<br />
+  {% endfor %}</p>{% endif %}
+</div><!-- close the right column -->
+
+
+
+<!-- close nzaa/NormaliseUpdates.html -->
+{% endblock %}

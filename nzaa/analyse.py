@@ -91,6 +91,9 @@ class Normalise():
         chunks = []
         store = []
 
+        # separate the text into chunks. A chunk is a block of text
+        # delimited by starting with "updated". It will produce
+        # separate description and condition entries.
         for line in text.split('\n'):
             line = textwrap.fill(line.strip())    
             
@@ -107,9 +110,9 @@ class Normalise():
         # Drop the first one, it's always a short description.
         chunks = chunks[1:]
 
+        
         updates = {}
-        index = 0
-        # A chunk is a whole update.
+        
         for chunk in chunks:
             actor = None
             visited = False
@@ -117,7 +120,6 @@ class Normalise():
 
             # Split the first paragraph into lines.
             lines = chunk[0].split('\n')
-            
 
             # Find the actor. 
             if 'Updated by:' in chunk[0]:
@@ -173,22 +175,22 @@ class Normalise():
             if date in updates.keys():
                 updates[date]['actor'] = actor
                 updates[date]['condition'] = '\n\n'.join(chunk)
+                
             else:
                 updates[date] = {
-                    'index': index,
                     'actor': actor,
                     'description': '\n\n'.join(chunk),
                     'condition': '',
                     'visited': visited,
                     'visited_by': visited_by,
                 }
-            index += 1
-
+                
         # Sort and deliver the final data structure.
         sorted_list = []
+        index = 0
         for item in sorted(updates.keys()):
             line = {
-                'index': updates[item]['index'],
+                'index': index,
                 'date': item,
                 'actor': updates[item]['actor'],
                 'description': updates[item]['description'],
@@ -197,6 +199,7 @@ class Normalise():
                 'visited_by': updates[item]['visited_by'],
             }
             sorted_list.append(line)
+            index += 1
 
         return sorted_list
 

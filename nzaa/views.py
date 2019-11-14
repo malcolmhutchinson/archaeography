@@ -591,7 +591,7 @@ def newsite(request, site_id, command=None):
 
 @user_passes_test(authority.nzaa_member)
 def newsites(request, command=None):
-    """List new site rcords. Those which have not been accessioned.
+    """List new site records. Those which have not been accessioned.
 
     """
 
@@ -607,6 +607,87 @@ def newsites(request, command=None):
 
     context['breadcrumbs'] = build_breadcrumbs(request)
     context['title'] = "List new site records | archaeography.nz"
+    return render(request, template, context)
+
+
+@user_passes_test(authority.nzaa_member)
+def normaliseUpdates(request, nzaa_id):
+    """Manage creating updates for normalising a record."""
+
+    template = 'nzaa/NormaliseUpdates.html'
+    context = build_context(request)
+    context['jsortable'] = True
+    context['commands'] = authority.commands(request)
+
+#   Find the site record, and deal with not finding it.
+    try:
+        site = models.Site.objects.get(nzaa_id=nzaa_id)
+        context['site'] = site
+        context['h1'] = site.title()
+        context['title'] = site.nzaa_id + " | archaeography.nz"
+        context['subhead'] = "Create update records to normalise this site"
+
+    except models.Site.DoesNotExist:
+        context['h1'] =  'This site does not exist' 
+        return render(request, template, context)
+
+    if request.POST:
+        context['post'] = request.POST
+
+        useful = []
+        row_idx = 0
+
+        # Getting POST fields containing the data we want.
+        for item in sorted(request.POST.keys()):
+            bits = item.split('-')
+            try:
+                n = int(bits[0])
+                if n > row_idx:
+                    row_idx = n                
+                useful.append(item)
+                
+            except ValueError:
+                pass
+
+        useful = sorted(useful)
+
+        initial = []
+
+        # Build the initial updates.
+        for i in range(int(request.POST['no_updates'])):
+            ordinal = i + 1
+            row = {
+                'update_type': '',
+                'updated': '',
+                'updated_by': 'unknown',
+                'visited': '',
+                'visited_by': '',
+                'description': '',
+                'condition': '',
+                'ordinal': ordinal,
+            }
+            initial.append(row)
+
+        # Build the updates from form data.
+        for j in range(row_idx + 1):
+            
+            if str(j) + '-select' in request.POST:
+                ordinal += 1
+                row = {
+                    'update_type': '',
+                    'updated': request.POST[str(j) + '-date'],
+                    'updated_by': request.POST[str(j) + '-actor'],
+                    'visited': request.POST[str(j) + '-visited'],
+                    'visited_by': request.POST[str(j) + '-visited_by'],
+                    'description': request.POST[str(j) + '-description'],
+                    'condition': request.POST[str(j) + '-condition'],
+                    'ordinal': ordinal,
+                }
+                initial.append(row)
+            
+        context['initial'] = initial
+
+    
     return render(request, template, context)
 
 
@@ -1037,7 +1118,7 @@ def site(request, command, argument=None):
     context['update_id'] = update_id
 
 #   If the user is not authenticated, change the template and return.
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated():
         template = 'nzaa/SiteNotAuth.html'
         context['h1'] = "NZAA archaeological site record " + nzaa_id
         return render(request, template, context)
@@ -1480,7 +1561,7 @@ def sitelists(request, command):
         if sitelist.owner == request.user.username:
             context['buttons'].append('delete this list')
 
-    # If there in no individual sitelist requested.
+    # If there is no individual sitelist requested.
     else:
         siteset['setlist'] = []
         if not context['sitelists'].count():

@@ -48,7 +48,7 @@ class BoundaryForm(ModelForm):
             'comments': forms.Textarea(attrs={'rows':2,'cols':40,}),
         }
 
-class DocumentForm(ModelForm):
+class _dep_DocumentForm(ModelForm):
 
     class Meta:
         model= models.Document
@@ -166,6 +166,23 @@ class NewSiteForm(ModelForm):
 
         }
 
+
+def NormaliseUpdatesForm(ModelForm):
+    class Meta:
+        model = 'models.Update'
+        fields = [
+            'update_type',
+            'updated',
+            'updated_by',
+            'visited',
+            'visited_by',
+            'description',
+            'condition',
+            'ordinal',
+        ]
+        widgets = {
+            'ordinal': forms.Hidden()
+        }
 
 # Legacy code, not checked.
 class Search(Form):
