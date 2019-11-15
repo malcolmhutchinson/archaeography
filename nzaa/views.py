@@ -709,9 +709,18 @@ def normaliseUpdates(request, nzaa_id):
             for i in range(row_idx):
                 ordinal = i + 1
 
+                if request.POST[str(ordinal) + '-condition']:
+                    condition = request.POST[str(ordinal) + '-condition']
+                else:
+                    condition = site.update0().condition
+                if request.POST[str(ordinal) + '-description']:
+                    description = request.POST[str(ordinal) + '-description']
+                else:
+                    description = site.update0().description
+
                 update = models.Update(
-                    condition=request.POST[str(ordinal) + '-condition'],
-                    description=request.POST[str(ordinal) + '-description'],
+                    condition=condition,
+                    description=description,
                     ordinal=ordinal,
                     site=site,
                     update_id=str(site) + '-' + str(ordinal),
