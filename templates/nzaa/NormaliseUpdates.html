@@ -9,6 +9,22 @@
 
 
 {% if command == 'setup' %}<!-- Setup the update records -->
+<h2>Documents associated with update0</h2>
+<table style='font-size: 80%;'>
+  <tr>
+    <th>date</th>
+    <th>author</th>
+    <th>doctype</th>
+    <th>description</th>
+  </tr>{% for doc in site.update0.documents %}
+  <tr>
+    <td>{{ doc.date|date:'Y-m-d' }}</td>
+    <td>{{ doc.author }}</td>
+    <td>{{ doc.doctype }}</td>
+    <td>{{ doc.description }}</td>
+  </tr>{% endfor %}
+</table>
+
 <p>Suggested updates for this record ({{ initial|length }}).</p>
 
 {% for i in initial %}
@@ -39,13 +55,22 @@
     </table></td>
     <td>
       
-    <p>descrption<br />
+    <p>description<br />
     <textarea cols='72'
         name='{{ i.ordinal }}-description'>{{ i.description }}</textarea></p>
 
     <p>condition<br />
     <textarea cols='72'
-        name='{{ i.ordinal }}-condition'>{{ i.condition }}</textarea></p>
+              name='{{ i.ordinal }}-condition'>{{ i.condition }}</textarea></p>
+
+    <p>Update type<br />
+      <select name='{{ i.ordinal }}-update_type'>
+        {% for item in update_type %}
+      <option value='{{ item.0 }}'{% if  item.0 == 'Site visit' %}{% if i.visited %} selected{% endif %}{% endif %}>{{ item.1 }}</option>{% endfor %}
+      </select>
+
+    </p>
+    
     </td>
     </tr>
 </table>
@@ -62,14 +87,21 @@ don't like what you see here, go back a page and select again.</p>
 
 <tt>
 <table>
+  <tr>
+    <th>id</th>
+    <th>updated</th>
+    <th>by</th>
+    <th>visited</th>
+    <th>by</th>
+    <th>update type</th>
+  </tr>
   {% for update in updates %}
   <tr>
-    <th>{{ update }}</th>
-    <td>{{ update.ordinal }}</td>
+    <th>{{ update.update_id }}</th>
+    <td>{{ update.updated|date:"Y-m-d" }}</td>
     <td>{{ update.updated_by }}</td>
-    <td>{{ update.updated }}</td>
+    <td>{{ update.visited|date:"Y-m-d" }}</td>
     <td>{{ update.visited_by }}</td>
-    <td>{{ update.visited }}</td>
     <td>{{ update.update_type }}</td>
   </tr>{% endfor %}
 </table>
@@ -82,13 +114,15 @@ don't like what you see here, go back a page and select again.</p>
     <th>id</th>
     <th>date</th>
     <th>updated by</th>
+    <th>update type</th>
   </tr>
   
 {% for update in site.updates %}
     <tr>
       <td><a href='{{ update.url }}'>{{ update.update_id }}</a></td>
-      <td>{{ update.updated }}</td>
-      <td>{{ update.updated_by }}</td>      
+      <td>{{ update.updated|date:"Y-m-d" }}</td>
+      <td>{{ update.updated_by }}</td>
+      <td>{{ update.update_type }}</td>
     </tr>
 {% endfor %}
 </table>

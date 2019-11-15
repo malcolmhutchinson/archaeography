@@ -360,6 +360,7 @@ def changes(request):
     context['breadcrumbs'] = build_breadcrumbs(request)
     return render(request, template, context)
 
+
 @user_passes_test(authority.nzaa_member)
 def document(request, doc_id):
     URL = 'document/'
@@ -657,6 +658,8 @@ def normaliseUpdates(request, nzaa_id):
             context['main_form'] = MAIN_FORM
             context['buttons'] = ('create updates',)
 
+            context['update_type'] = models.UPDATE_TYPE
+
             initial = []
             ordinal = 0
 
@@ -681,8 +684,10 @@ def normaliseUpdates(request, nzaa_id):
 
                 if str(j) + '-select' in request.POST:
                     ordinal += 1
+                    if request.POST[str(j) + '-visited']:
+                        update_type = 'Site visit'
                     row = {
-                        'update_type': '',
+                        'update_type': update_type,
                         'updated': request.POST[str(j) + '-date'],
                         'updated_by': request.POST[str(j) + '-actor'],
                         'visited': request.POST[str(j) + '-visited'],
@@ -705,35 +710,36 @@ def normaliseUpdates(request, nzaa_id):
                 ordinal = i + 1
 
                 update = models.Update(
-                    update_id=str(site) + '-' + str(ordinal),
-                    site=site,
+                    condition=request.POST[str(ordinal) + '-condition'],
+                    description=request.POST[str(ordinal) + '-description'],
                     ordinal=ordinal,
+                    site=site,
+                    update_id=str(site) + '-' + str(ordinal),
+                    update_type=request.POST[str(ordinal) + '-update_type'],
                     updated=request.POST[str(ordinal) + '-updated'],
                     updated_by=request.POST[str(ordinal) + '-updated_by'],
-                    description=request.POST[str(ordinal) + '-description'],
-                    condition=request.POST[str(ordinal) + '-condition'],
 
-                    easting=site.lgcy_easting,
-                    northing=site.lgcy_northing,
-                    site_name=site.site_name,
-                    site_type=site.lgcy_type,
-                    site_subtype=site.site_subtype,
-                    location=site.location,
-                    period=site.lgcy_period,
-                    ethnicity=site.ethnicity,
-                    threats=site.threats,
-                    landuse=site.lgcy_landuse,
-                    features=site.lgcy_features,
                     associated_sites=site.lgcy_assocsites,
-                    geom=site.geom,
                     created=datetime.datetime.now(),
+                    easting=site.lgcy_easting,
+                    ethnicity=site.ethnicity,
+                    features=site.lgcy_features,
+                    geom=site.geom,
+                    landuse=site.lgcy_landuse,
+                    location=site.location,
+                    northing=site.lgcy_northing,
+                    period=site.lgcy_period,
+                    site_name=site.site_name,
+                    site_subtype=site.site_subtype,
+                    site_type=site.lgcy_type,
+                    threats=site.threats,
                 )
 
                 if request.POST[str(ordinal) + '-visited']:
                     update.update_type = 'Site visit'
                     update.visited = request.POST[str(ordinal) + '-visited']
                     update.visited_by = request.POST[str(
-                        ordinal) + '-visited_by'],
+                        ordinal) + '-visited_by']
 
                 update.save()
                 updates.append(update)
