@@ -8,7 +8,7 @@ from django.forms import CharField, ChoiceField, Select, HiddenInput
 from django.forms import FileField, ModelChoiceField
 
 import settings
-import models 
+import models
 
 WHAT_FIELDS = (
     ('site_type', 'Site type'),
@@ -33,7 +33,7 @@ UPDATE_STATUS = (
 class BoundaryForm(ModelForm):
     class Meta:
         model = models.Boundary
-        fields =  [
+        fields = [
             'title',
             'client',
             'description',
@@ -42,28 +42,29 @@ class BoundaryForm(ModelForm):
             'comments',
         ]
         widgets = {
-            'description': forms.Textarea(attrs={'rows':2,'cols':40,}),
-            'notes': forms.Textarea(attrs={'rows':2,'cols':40,}),
-            'rights': forms.Textarea(attrs={'rows':2,'cols':40,}),
-            'comments': forms.Textarea(attrs={'rows':2,'cols':40,}),
+            'description': forms.Textarea(attrs={'rows': 2, 'cols': 40, }),
+            'notes': forms.Textarea(attrs={'rows': 2, 'cols': 40, }),
+            'rights': forms.Textarea(attrs={'rows': 2, 'cols': 40, }),
+            'comments': forms.Textarea(attrs={'rows': 2, 'cols': 40, }),
         }
+
 
 class DocumentForm(ModelForm):
 
     class Meta:
-        model= models.Document
+        model = models.Document
         fields = [
             'doctype',
             'date',
             'author',
             'quality',
             'description',
-            #'update',
         ]
         widgets = {
             'doctype': forms.Select(),
             'description': forms.Textarea(attrs={'rows': 2, 'cols': 40}),
         }
+
 
 class SiteList(ModelForm):
     class Meta:
@@ -184,6 +185,7 @@ def NormaliseUpdatesForm(ModelForm):
             'ordinal': forms.Hidden()
         }
 
+
 # Legacy code, not checked.
 class Search(Form):
     site_type = ModelChoiceField(
@@ -274,11 +276,14 @@ class SiteReview(ModelForm):
             'features': widgets.Textarea(attrs={'rows': 1, 'cols': 80, }),
         }
 
-class UploadFile(Form):
-    filename = FileField(required=False)
 
 class UploadFile(Form):
     filename = FileField(required=False)
+
+
+class UploadFile(Form):
+    filename = FileField(required=False)
+
 
 class UploadFileRequired(Form):
     filename = FileField(required=True)

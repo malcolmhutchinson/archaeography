@@ -28,9 +28,10 @@ def boundaries(request):
 
     return True
 
+
 def boundary_commands(request):
     """Return a list of (link, text) tuples listing authorised commands."""
-    
+
     if not request.user.is_authenticated:
         return None
 
@@ -40,7 +41,6 @@ def boundary_commands(request):
     upload_url = os.path.join(
         settings.BASE_URL, 'boundary/upload/')
 
-    
     commands = [
         (boundary_url, 'your boundary reports'),
         (upload_url, 'upload a boundary file'),
@@ -70,9 +70,11 @@ def commands(request, site=None, update=None, sitelist=None, newsite=None):
         )
 
     if models.Update.objects.filter(owner=request.user.username).count():
-        commands.append((settings.BASE_URL + 'updates/' + request.user.username,
-            'your update records'))
-        
+        commands.append(
+            (settings.BASE_URL + 'updates/' + request.user.username,
+             'your update records')
+        )
+
     if site:
 
         archsite = settings.SITE_PAGE + site.nzaa_id

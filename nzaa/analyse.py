@@ -32,7 +32,7 @@ class Normalise():
     Separate the text into updates, by looking for this as the first
     characters in a line:
 
-        Updated 09/04/2015 
+        Updated 09/04/2015
     or
 
         Updated: 09/04/2015
@@ -46,9 +46,8 @@ class Normalise():
     def __init__(self, site):
         self.site = site
 
-
     def find_dates(self):
-        
+
         description = self.site.update0().description
         condition = self.site.update0().condition
 
@@ -59,7 +58,7 @@ class Normalise():
             name = ''
             update_type = ''
             line = line.strip()
-            if line[:6].lower() == 'update': 
+            if line[:6].lower() == 'update':
                 words = line.split(' ')
                 date = words[1]
                 suggestions.append([date, name, update_type])
@@ -76,7 +75,7 @@ class Normalise():
         single update event. Each element is a dictionary containing
         these fields:
 
-            {   
+            {
                 '2012-01-01': [
                     'actor': '',
                     'description': '',
@@ -84,10 +83,10 @@ class Normalise():
                 ]
 
         """
-        
+
         text = (self.site.update0().description + "\n\n" +
                 self.site.update0().condition)
-        
+
         chunks = []
         store = []
 
@@ -95,24 +94,23 @@ class Normalise():
         # delimited by starting with "updated". It will produce
         # separate description and condition entries.
         for line in text.split('\n'):
-            line = textwrap.fill(line.strip())    
-            
+            line = textwrap.fill(line.strip())
+
             if 'updated' in line[:10].lower():
                 chunks.append(store)
-                
+
                 store = []
 
-            if len(line):   
+            if len(line):
                 store.append(line)
-                
+
         chunks.append(store)
 
         # Drop the first one, it's always a short description.
         chunks = chunks[1:]
 
-        
         updates = {}
-        
+
         for chunk in chunks:
             actor = None
             visited = False
@@ -121,36 +119,39 @@ class Normalise():
             # Split the first paragraph into lines.
             lines = chunk[0].split('\n')
 
-            # Find the actor. 
+            # Find the actor.
             if 'Updated by:' in chunk[0]:
-                discard, name = chunk[0].split('Updated by:')                
+                discard, name = chunk[0].split('Updated by:')
                 actor = name.strip().replace('\n', ' ').strip('.')
-                
-            elif 'submitted by' in lines[0].lower(): 
+
+            elif 'submitted by' in lines[0].lower():
                 discard, name = lines[0].split('submitted by')
                 actor = name.strip().replace('\n', ' ').strip('.')
-                
+
             elif 'Inspected' in chunk[0]:
                 discard, name = chunk[0].split(' by:')
                 actor = name.strip().replace('\n', ' ').strip('.')
                 visited_by = actor
-                visited = True                
+                visited = True
 
             # Find the visitor.
             keep = None
             if 'Visited:' in lines[0]:
                 discard, keep = lines[0].split('Visited: ')
-                
+
             elif '(Field visit)' in chunk[0]:
-                discard, keep = chunk[0].split('visited')
-                keep = keep.strip()
+                try:
+                    discard, keep = chunk[0].split('visited')
+                    keep = keep.strip()
+                except ValueError:
+                    pass
 
             if keep:
                 bits = keep[:10].split('/')
                 if len(bits) == 3:
                     bits.reverse()
                     visited = '-'.join(bits)
-                
+
             if len(lines) > 1:
                 if 'visited' in lines[1].lower():
                     discard, stuff = lines[1].split(' by ')
@@ -175,7 +176,7 @@ class Normalise():
             if date in updates.keys():
                 updates[date]['actor'] = actor
                 updates[date]['condition'] = '\n\n'.join(chunk)
-                
+
             else:
                 updates[date] = {
                     'actor': actor,
@@ -184,7 +185,7 @@ class Normalise():
                     'visited': visited,
                     'visited_by': visited_by,
                 }
-                
+
         # Sort and deliver the final data structure.
         sorted_list = []
         index = 0
@@ -262,12 +263,12 @@ class MapSite():
         miny = self.site.northing - scale
         maxx = self.site.easting + scale
         maxy = self.site.northing + scale
-        
-        return str(minx) + ' ' + str(miny) + ' ' + str(maxx)  + ' ' + str(maxy)
+
+        return str(minx) + ' ' + str(miny) + ' ' + str(maxx) + ' ' + str(maxy)
 
     def linz_key(self):
         return settings.LINZ_KEY
-    
+
     def password(self):
         return settings.MACHINE[1]
 
@@ -278,7 +279,7 @@ class MapSite():
         proj += "        'units=m'"
 
         return proj
-        
+
     def size_x(self):
         return "1024"
 
@@ -287,6 +288,7 @@ class MapSite():
 
     def username(self):
         return settings.MACHINE[0]
+
 
 class Site():
 

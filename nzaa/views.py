@@ -290,7 +290,7 @@ def boundary_upload(request):
             return render(request, template, context)
 
         if len(polys) > 1:
-            note ="Multiple polygon geometries found. Only the first "
+            note = "Multiple polygon geometries found. Only the first "
             note += "will be used."
             context['notifications'].append(note)
 
@@ -299,7 +299,8 @@ def boundary_upload(request):
         wkb = WKBWriter()
         tmp = wkb.write(MultiPolygon(polys[0].geos))
 
-        boundary.geom = GEOSGeometry(tmp, srid=4326).transform(2193, clone=True)
+        boundary.geom = GEOSGeometry(
+            tmp, srid=4326).transform(2193, clone=True)
         boundary.owner = request.user
         boundary.save()
         context['notifications'].append('KML file uploaded successfully.')
@@ -400,6 +401,7 @@ def document(request, doc_id):
 
     return render(request, template, context)
 
+
 @user_passes_test(authority.nzaa_member)
 def features(request, command=None):
 
@@ -439,9 +441,9 @@ def features(request, command=None):
         return render(request, template, context)
 
     request.session['siteset'] = siteset
-    #print "SITESET", siteset
     context['features'] = models.Feature.objects.all()
     context['breadcrumbs'] = build_breadcrumbs(request)
+
     return render(request, template, context)
 
 
@@ -629,7 +631,7 @@ def normaliseUpdates(request, nzaa_id):
         context['subhead'] = "Create update records to normalise this site"
 
     except models.Site.DoesNotExist:
-        context['h1'] =  'This site does not exist'
+        context['h1'] = 'This site does not exist'
         return render(request, template, context)
 
     if request.POST:
@@ -1161,7 +1163,6 @@ def site(request, command, argument=None):
 
     """
 
-
     site = None
     update = None
     siteReviewForm = None
@@ -1372,7 +1373,7 @@ def site(request, command, argument=None):
             )
             update.save(log=log)
             context['notifications'].append(log_message)
-            updates_page ='/nzaa/updates/' + request.user.username
+            updates_page = '/nzaa/updates/' + request.user.username
             return redirect(updates_page)
 
     context['update'] = update

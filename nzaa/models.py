@@ -1223,7 +1223,7 @@ class Site(Record):
 
         documents = Document.objects.filter(id__in=doc_ids)
         return documents
-    
+
     def filespace_path(self):
         """Return a string filepath to the object's filespace.
 
@@ -1310,9 +1310,9 @@ class Site(Record):
         return self.updates().exclude(opstatus=None)
 
     def set_update(self, update_id):
-        """When calling a specific update. 
+        """When calling a specific update.
 
-        eg. S13/19-4 
+        eg. S13/19-4
 
         This sets the list of update records to contain only one update.
 
@@ -1876,7 +1876,7 @@ class Update(Record):
                 document = {
                     'basename': basename,
                     'origfile': item,
-                    'displayfiles': [item,],
+                    'displayfiles': [item, ],
                 }
                 # Get the display file (there will only be one for a .tif).
                 if '.png' in types.keys():
@@ -1915,9 +1915,6 @@ class Update(Record):
 
         return self.document_set.all()
 
-
-
-        
     def filespace(self):
         """Return a webnote Directory object for this record.
         """
@@ -2045,7 +2042,7 @@ class Update(Record):
                 orig_file = doc_record.files.create(
                     filename=item['origfile'],
                     stored_directory=stordir,
-                    orig_disp = 'original'
+                    orig_disp='original'
                 )
                 for viewfile in item['displayfiles']:
                     (basename, ext) = os.path.splitext(viewfile)
@@ -2058,10 +2055,10 @@ class Update(Record):
                     file_rec = doc_record.files.create(
                         filename=viewfile,
                         stored_directory=stordir,
-                        orig_disp = 'display',
+                        orig_disp='display',
                         fileformat=ext,
-                        ordinal=ordinal
-                   )
+                        ordinal=ordinal,
+                    )
 
     def upload_condition(self):
 
@@ -2105,7 +2102,7 @@ class Update(Record):
             name += self.update_type + " by " + self.updated_by
 
         elif self.updated_by:
-            name += self.updated_by 
+            name += self.updated_by
 
         else:
             name = "Update " + str(self.ordinal)
@@ -2533,7 +2530,7 @@ class DocFile(models.Model):
     downloaded = models.DateTimeField(default='2019-01-01 00:00:00')
 
     class Meta:
-        ordering = ['filename'] # add ordinal before filename.
+        ordering = ['filename']
 
     def __unicode__(self):
         return unicode(self.filename)
@@ -2559,6 +2556,7 @@ class DocFile(models.Model):
         return os.path.join(
             settings.STATIC_URL, self.stored_directory, self.filename
         )
+
 
 class SiteList(models.Model):
     """User-definable lists or groups of sites. """
