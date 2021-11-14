@@ -3,9 +3,20 @@ archaeography.nz
 
 Experiments with archaeological data.
 
-The archaeography project is an experimental model of the [NZ
+PLEASE NOTE: This project is now abandoned. 
+
+I no longer have any involvement in archaeology, and I am not a 
+member of the New Zealand Archaelogical Association.
+
+The archaeography project was an experimental model of the [NZ
 Archaeological Association's](http://nzarchaeology.org) (NZAA) Site
-Recording Scheme (SRS). It is an engineering prototype, the purpose of
+Recording Scheme (SRS). The project was active from 2012 until 2016, 
+and was abandoned sometime in 2017. This comment was added 
+2021-11-14.
+
+---
+
+It is an engineering prototype, the purpose of
 which is to provide understanding of the problems involved with
 handling large volumes of information describing archaeological sites.
 
